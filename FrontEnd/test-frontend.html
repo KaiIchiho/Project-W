@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html leng="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>test-frontend</title>
+        <!--Phaser 3 CDN-->
+        <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background: #222;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+            canvas {
+                border: 2px solid #fff;
+            }
+        </style>
+    </head>
+    <script>
+         // Phaser config
+        const config = {
+            type: Phaser.AUTO,
+            width: 600,
+            height: 400,
+            backgroundColor: 0x333333,
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
+        const game = new Phaser.Game(config);
+
+        let player;
+
+        function preload() {
+            // LoadAsset
+        }
+
+        function create() {
+            // Create A White Block
+            player = this.add.rectangle(300, 200, 50, 50, 0xffffff);
+
+            // ArrowKey
+            this.cursors = this.input.keyboard.createCursorKeys();
+        }
+
+        function update() {
+            const speed = 3;
+            if (this.cursors.left.isDown) {
+                player.x -= speed;
+            }
+            if (this.cursors.right.isDown) {
+                player.x += speed;
+            }
+            if (this.cursors.up.isDown) {
+                player.y -= speed;
+            }
+            if (this.cursors.down.isDown) {
+                player.y += speed;
+            }
+        }
+    </script>
+</html>
