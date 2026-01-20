@@ -8,8 +8,8 @@ def root():
     b=step_two()
     return {"Message" : "BackEnd Is Running!", "a" : a, "b" : b}
 
-def step_one:
+def step_one():
     return "one"
 
-def step_two:
+def step_two():
     return "two"
