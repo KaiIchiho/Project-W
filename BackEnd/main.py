@@ -17,7 +17,7 @@ def step_two():
 def test_game_flew():
     return "test"
 
-@app.websocket("/api/ws")
+@app.websocket("/ws")
 async def websocket_endpoint(ws:WebSocket):
     await ws.accept()
     try:
