@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,WebSocket,WebSocketDisconnect
 
 app=FastAPI()
 
@@ -13,3 +13,17 @@ def step_one():
 
 def step_two():
     return "two"
+
+def test_game_flew():
+    return "test"
+
+@app.get("/api/ws")
+async def websocket_endpoint(ws:WebSocket):
+    await ws.accept()
+    try:
+        while True:
+            data=await ws.receive_text()
+            print("Received : ",data)
+            await ws.send_text(f"Echo : {data}")
+    except WebSocketDisconnect:
+        print("Client disconnected")
