@@ -25,6 +25,7 @@ async def websocket_endpoint(ws:WebSocket):
     await ws.accept()
     # Add ws To Connected Clients List
     connected_clients.append(ws)
+    print("New client connected. Total:", len(connected_clients))
     try:
         while True:
             data=await ws.receive_text()
@@ -39,3 +40,4 @@ async def websocket_endpoint(ws:WebSocket):
         # Remove ws From Connected Clients List
         connected_clients.remove(ws)
         print("Client disconnected")
+        print("Client disconnected. Total:", len(connected_clients))
