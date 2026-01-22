@@ -17,13 +17,24 @@ def step_two():
 def test_game_flew():
     return "test"
 
+# Connected Clients List
+connected_clients:list[WebSocket]=[]
+
 @app.websocket("/ws")
 async def websocket_endpoint(ws:WebSocket):
     await ws.accept()
+    # Add ws To Connected Clients List
+    connected_clients.append(ws)
     try:
         while True:
             data=await ws.receive_text()
             print("Received : ",data)
-            await ws.send_text(f"Echo : {data}")
+            
+            # Broadcast to other clients
+            for client in connected_clients:
+                if client != ws:
+                    await ws.send_text(f"Echo : {data}")
     except WebSocketDisconnect:
+        # Remove ws From Connected Clients List
+        connected_clients.remove(ws)
         print("Client disconnected")
