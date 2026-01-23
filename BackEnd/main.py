@@ -34,21 +34,14 @@ async def websocket_endpoint(ws:WebSocket):
             # Broadcast to other clients
             for client in connected_clients.copy():
                 print("client id:", id(client), "ws id:", id(ws))
-                #if client is ws:
-                #    continue
                 try:
-                    send_data=""
                     if client is ws:
-                        print("This Client Is Yourself")
-                        send_data=f"(youself){data}"
-                    else:
-                        print("This Client Is Not Yourself")
-                        send_data=data
-                    
-                    print(f"Send Data : {send_data}")
-                    await client.send_text(send_data)
+                        continue
+                    await client.send_text(data)
                 except Exception:
                     connected_clients.remove(client)
+                    
+            await ws.send_text(f"(youself){data}")
             #await ws.send_text(f"Echo : {data}")
     except WebSocketDisconnect:
         # Remove ws From Connected Clients List
