@@ -33,6 +33,7 @@ async def websocket_endpoint(ws:WebSocket):
             
             # Broadcast to other clients
             for client in connected_clients.copy():
+                print("client id:", id(client), "ws id:", id(ws))
                 #if client is ws:
                 #    continue
                 try:
