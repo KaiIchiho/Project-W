@@ -32,9 +32,13 @@ async def websocket_endpoint(ws:WebSocket):
             print("Received : ",data)
             
             # Broadcast to other clients
-            for client in connected_clients:
-                if client != ws:
+            for client in connected_clients.copy():
+                if client is ws:
+                    continue
+                try:
                     await client.send_text(data)
+                except Exception:
+                    connected_clients.remove(client)
             #await ws.send_text(f"Echo : {data}")
     except WebSocketDisconnect:
         # Remove ws From Connected Clients List
