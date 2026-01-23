@@ -36,8 +36,13 @@ async def websocket_endpoint(ws:WebSocket):
                 #if client is ws:
                 #    continue
                 try:
+                    send_data=""
                     if client is ws:
-                    await client.send_text(f"(youself){data}")
+                        send_data=f"(youself){data}"
+                    else:
+                        send_data=data
+                    
+                    await client.send_text(send_data)
                 except Exception:
                     connected_clients.remove(client)
             #await ws.send_text(f"Echo : {data}")
