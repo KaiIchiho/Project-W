@@ -38,8 +38,10 @@ async def websocket_endpoint(ws:WebSocket):
                 try:
                     send_data=""
                     if client is ws:
+                        print("This Client Is Yourself")
                         send_data=f"(youself){data}"
                     else:
+                        print("This Client Is Not Yourself")
                         send_data=data
                     
                     await client.send_text(send_data)
