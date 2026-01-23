@@ -44,6 +44,7 @@ async def websocket_endpoint(ws:WebSocket):
                         print("This Client Is Not Yourself")
                         send_data=data
                     
+                    print(f"Send Data : {send_data}")
                     await client.send_text(send_data)
                 except Exception:
                     connected_clients.remove(client)
