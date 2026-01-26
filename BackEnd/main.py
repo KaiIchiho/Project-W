@@ -79,3 +79,6 @@ def enter_room_test():
     if Room is None:
         return
     #Room.set_player_1()
+    
+    
+app.include_router(api)
