@@ -1,4 +1,5 @@
 from fastapi import FastAPI,WebSocket,WebSocketDisconnect
+import asyncio
 
 app=FastAPI()
 
@@ -41,8 +42,9 @@ async def websocket_endpoint(ws:WebSocket):
                 except Exception:
                     connected_clients.remove(client)
                     
-            await ws.send_text(f"(youself){data}")
+            #await ws.send_text(f"(youself){data}")
             #await ws.send_text(f"Echo : {data}")
+            asyncio.create_task(ws.send_text(f"(youself){data}"))
     except WebSocketDisconnect:
         # Remove ws From Connected Clients List
         connected_clients.remove(ws)
