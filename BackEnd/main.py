@@ -38,11 +38,11 @@ async def websocket_endpoint(ws:WebSocket):
                 try:
                     if client is ws:
                         continue
-                    await client.send_text(data)
+                    await client.send_text(f"From Server - {data}")
                 except Exception:
                     connected_clients.remove(client)
                     
-            await ws.send_text(f"(yourself){data}")
+            await ws.send_text(f"From Server - (yourself){data}")
             #asyncio.create_task(ws.send_text(f"(yourself){data}"))
     except WebSocketDisconnect:
         # Remove ws From Connected Clients List
