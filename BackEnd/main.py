@@ -71,7 +71,7 @@ def login(req: LoginRequest):
     print(f"Player Create Successed , User ID={user_id}")
     
     print(f"Player created: {user_id}")
-    return LoginResponse(True,user_id)
+    return LoginResponse(ok=True, user_id=user_id)
 
 @api.post("/enter_room")
 def enter_room_test():
