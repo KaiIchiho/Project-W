@@ -4,26 +4,25 @@ from .core.room import Room
 from typing import Optional
 from .models.player import Player
 from .services.connection import Connection
+from pydantic import BaseModel
 
 app=FastAPI()
 
 @app.get("/api/hello")
 def root():
-    a=step_one()
-    b=step_two()
-    return {"Message" : "BackEnd Is Running!", "a" : a, "b" : b}
-
-def step_one():
-    return "one"
-
-def step_two():
-    return "two"
-
+    return {"Message" : "BackEnd Is Running!"}
 def test_game_flew():
     return "test"
 
 # Connected Clients List
 connected_clients:list[WebSocket]=[]
+
+players:dict[str,Player]={}
+connections:dict[str,Connection]={}
+test_room:Room=Room()
+
+class LoginRequest():
+    user_id:str
 
 @app.websocket("/ws")
 async def websocket_endpoint(ws:WebSocket):
@@ -31,6 +30,12 @@ async def websocket_endpoint(ws:WebSocket):
     # Add ws To Connected Clients List
     connected_clients.append(ws)
     print("New client connected. Total:", len(connected_clients))
+    
+    # First : client send user_id
+    user_id = await ws.receive_text()
+    connections[user_id]=ws
+    print(f"WebSocket bound to user: {user_id}")
+    
     try:
         while True:
             data=await ws.receive_text()
@@ -53,21 +58,16 @@ async def websocket_endpoint(ws:WebSocket):
         connected_clients.remove(ws)
         print("Client disconnected. Total:", len(connected_clients))
     
-    
-players:dict[str,Player]={}
-connections:dict[str,Connection]={}
-test_room:Room=Room()
-
 @app.post("/login")
-def login(user_id:str,ws:WebSocket):
+#def login(user_id:str,ws:WebSocket):
+def login(req: LoginRequest):
     player=Player("player_1",user_id,"Player1",None)
     print(f"Player Create Successed , User ID={user_id}")
-    connection=Connection(user_id,ws)
-    print(f"connection Create Successed , User ID={user_id}")
-    players[user_id,player]
-    print(f"Player Mapping Successed , User ID={user_id}")
-    connections[user_id,connection]
-    print(f"connection Mapping Successed , User ID={user_id}")
+    user_id=req.user_id
+    players[user_id]=player
+    
+    print(f"Player created: {user_id}")
+    return {"ok": True}
 
 @app.post("/enter_room")
 def enter_room_test():
