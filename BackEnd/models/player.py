@@ -1,6 +1,6 @@
-from base import GameObject
-from card import Card
-from playmat import Playmat
+from models.base import GameObject
+from models.card import Card
+from models.playmat import Playmat
 from typing import Optional
 
 class Player(GameObject):
