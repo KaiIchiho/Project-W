@@ -1,4 +1,4 @@
-from .base import GameObject
+from base import GameObject
 
 class Card(GameObject):
     def __init__(self, 

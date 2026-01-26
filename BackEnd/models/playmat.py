@@ -1,6 +1,6 @@
-from .base import GameObject
-from .deck import Deck
-from .card import Card
+from base import GameObject
+from deck import Deck
+from card import Card
 from typing import Optional,Callable
 
 class Playmat(GameObject):
