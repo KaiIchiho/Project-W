@@ -33,7 +33,7 @@ async def websocket_endpoint(ws:WebSocket):
             print("Received : ",data)
             
             # Broadcast to other clients
-            '''for client in connected_clients.copy():
+            for client in connected_clients.copy():
                 print("client id:", id(client), "ws id:", id(ws))
                 try:
                     if client is ws:
@@ -43,7 +43,7 @@ async def websocket_endpoint(ws:WebSocket):
                     connected_clients.remove(client)
                     
             #await ws.send_text(f"(youself){data}")
-            asyncio.create_task(ws.send_text(f"(youself){data}"))'''
+            asyncio.create_task(ws.send_text(f"(youself){data}"))
     except WebSocketDisconnect:
         # Remove ws From Connected Clients List
         connected_clients.remove(ws)
