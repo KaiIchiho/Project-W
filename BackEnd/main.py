@@ -1,4 +1,4 @@
-from fastapi import FastAPI,WebSocket,WebSocketDisconnect
+from fastapi import FastAPI,APIRouter,WebSocket,WebSocketDisconnect
 from pydantic import BaseModel
 import asyncio
 from typing import Optional
@@ -8,7 +8,9 @@ from services.connection import Connection
 
 app=FastAPI()
 
-@app.get("/api/hello")
+api = APIRouter(prefix="/api")
+
+@app.get("/hello")
 def root():
     return {"Message" : "BackEnd Is Running!"}
 def test_game_flew():
