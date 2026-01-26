@@ -63,7 +63,7 @@ async def websocket_endpoint(ws:WebSocket):
         connected_clients.remove(ws)
         print("Client disconnected. Total:", len(connected_clients))
     
-@app.post("/login", response_model=LoginResponse)
+@api.post("/login", response_model=LoginResponse)
 def login(req: LoginRequest):
     print(f"Player Create Successed , User ID={user_id}")
     user_id=req.user_id
@@ -74,7 +74,7 @@ def login(req: LoginRequest):
     print(f"Player created: {user_id}")
     return LoginResponse(True,user_id)
 
-@app.post("/enter_room")
+@api.post("/enter_room")
 def enter_room_test():
     if Room is None:
         return
