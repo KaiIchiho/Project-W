@@ -21,9 +21,9 @@ players:dict[str,Player]={}
 connections:dict[str,Connection]={}
 test_room:Room=Room()
 
-class LoginRequest():
+class LoginRequest(BaseModel):
     user_id:str
-class LoginResponse():
+class LoginResponse(BaseModel):
     ok:bool
     user_id:str
     
