@@ -1,6 +1,6 @@
 import random
-from .base import GameObject
-from .card import Card
+from base import GameObject
+from card import Card
 from typing import Optional,Callable
 
 class Deck(GameObject):
