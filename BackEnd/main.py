@@ -23,7 +23,10 @@ test_room:Room=Room()
 
 class LoginRequest():
     user_id:str
-
+class LoginResponse():
+    ok:bool
+    user_id:str
+    
 @app.websocket("/ws")
 async def websocket_endpoint(ws:WebSocket):
     await ws.accept()
@@ -58,16 +61,16 @@ async def websocket_endpoint(ws:WebSocket):
         connected_clients.remove(ws)
         print("Client disconnected. Total:", len(connected_clients))
     
-@app.post("/login")
-#def login(user_id:str,ws:WebSocket):
+@app.post("/login", response_model=LoginResponse)
 def login(req: LoginRequest):
-    player=Player("player_1",user_id,"Player1",None)
     print(f"Player Create Successed , User ID={user_id}")
     user_id=req.user_id
+    
+    player=Player("player_1",user_id,"Player1",None)
     players[user_id]=player
     
     print(f"Player created: {user_id}")
-    return {"ok": True}
+    return LoginResponse(True,user_id)
 
 @app.post("/enter_room")
 def enter_room_test():
