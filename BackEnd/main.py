@@ -1,9 +1,9 @@
 from fastapi import FastAPI,WebSocket,WebSocketDisconnect
 import asyncio
-from .core.room import Room
+from core.room import Room
 from typing import Optional
-from .models.player import Player
-from .services.connection import Connection
+from models.player import Player
+from services.connection import Connection
 from pydantic import BaseModel
 
 app=FastAPI()
