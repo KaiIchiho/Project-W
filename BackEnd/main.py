@@ -10,7 +10,7 @@ app=FastAPI()
 
 api = APIRouter(prefix="/api")
 
-@app.get("/hello")
+@api.get("/hello")
 def root():
     return {"Message" : "BackEnd Is Running!"}
 def test_game_flew():
