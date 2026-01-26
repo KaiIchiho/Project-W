@@ -65,11 +65,10 @@ async def websocket_endpoint(ws:WebSocket):
     
 @api.post("/login", response_model=LoginResponse)
 def login(req: LoginRequest):
-    print(f"Player Create Successed , User ID={user_id}")
     user_id=req.user_id
-    
     player=Player("player_1",user_id,"Player1",None)
     players[user_id]=player
+    print(f"Player Create Successed , User ID={user_id}")
     
     print(f"Player created: {user_id}")
     return LoginResponse(True,user_id)
