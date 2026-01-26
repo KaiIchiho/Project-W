@@ -1,5 +1,9 @@
 from fastapi import FastAPI,WebSocket,WebSocketDisconnect
 import asyncio
+from .core.room import Room
+from typing import Optional
+from .models.player import Player
+from .services.connection import Connection
 
 app=FastAPI()
 
@@ -47,5 +51,26 @@ async def websocket_endpoint(ws:WebSocket):
     except WebSocketDisconnect:
         # Remove ws From Connected Clients List
         connected_clients.remove(ws)
-        print("Client disconnected")
         print("Client disconnected. Total:", len(connected_clients))
+    
+    
+players:dict[str,Player]={}
+connections:dict[str,Connection]={}
+test_room:Room=Room()
+
+@app.post("/login")
+def login(user_id:str,ws:WebSocket):
+    player=Player("player_1",user_id,"Player1",None)
+    print(f"Player Create Successed , User ID={user_id}")
+    connection=Connection(user_id,ws)
+    print(f"connection Create Successed , User ID={user_id}")
+    players[user_id,player]
+    print(f"Player Mapping Successed , User ID={user_id}")
+    connections[user_id,connection]
+    print(f"connection Mapping Successed , User ID={user_id}")
+
+@app.post("/enter_room")
+def enter_room_test():
+    if Room is None:
+        return
+    #Room.set_player_1()
