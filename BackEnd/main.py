@@ -30,6 +30,10 @@ class LoginResponse(BaseModel):
     ok:bool
     user_id:str
     user_name:str
+class LogoutRequest(BaseModel):
+    user_id:str
+class LogoutResponse(BaseModel):
+    ok:bool
     
 @app.websocket("/ws")
 async def websocket_endpoint(ws:WebSocket):
@@ -63,6 +67,7 @@ async def websocket_endpoint(ws:WebSocket):
     except WebSocketDisconnect:
         # Remove ws From Connected Clients List
         connected_clients.remove(ws)
+        connections.pop(user_id)
         print("Client disconnected. Total:", len(connected_clients))
     
 @api.post("/login", response_model=LoginResponse)
@@ -73,6 +78,11 @@ def login(req: LoginRequest):
     players[user_id]=player
     print(f"Player Create Successed , UserID={user_id}, UserName={user_name}")
     return LoginResponse(ok=True, user_id=user_id,user_name=user_name)
+@api.post("/logout",response_model=LogoutResponse)
+def logout(req:LogoutRequest):
+    user_id=req.user_id
+    players.pop(user_id)
+    return LogoutResponse(ok=True)
 
 @api.post("/enter_room")
 def enter_room_test():
