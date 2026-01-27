@@ -21,7 +21,7 @@
         </style>
     </head>
     <h2>WebSocket Test</h2>
-    <input id="user_id" type="text" placeholder="User ID"><br>
+    <input id="  user_id" type="text" placeholder="User ID"><br>
     <input id="user_name" type="text" placeholder="User Name">
     <div id="log_button">
             <button onclick="login()">Login</button>
@@ -99,6 +99,25 @@
                         const log_button=document.getElementById("log_button");
                         log_button.innerHTML="<button onclick='logout()'>Logout</button>";
                 }
+        }
+        async function logout(){
+            if(ws==null){
+                    return;
+            }
+
+            const res=await fetch("/api/logout",{
+                    method:"POST",
+                    headers:{"Content-Type":"application/json"},
+                    body:JSON.stringify({user_id:id})
+            });
+            const res_data=await res.json();
+            if(res_data.ok===true){
+                    ws.close();
+                    const log_button=document.getElementById("log_button");
+                    log_button.innerHTML="<button onclick='login()'>Login</button>";
+                    const login_info=document.getElementById("login_user_info");
+                    login_info.innerHTML="";
+            }
         }
     </script>
 
