@@ -29,6 +29,7 @@ class LoginRequest(BaseModel):
 class LoginResponse(BaseModel):
     ok:bool
     user_id:str
+    user_name:str
     
 @app.websocket("/ws")
 async def websocket_endpoint(ws:WebSocket):
@@ -71,7 +72,7 @@ def login(req: LoginRequest):
     player=Player(user_id,user_id,user_name,None)
     players[user_id]=player
     print(f"Player Create Successed , UserID={user_id}, UserName={user_name}")
-    return LoginResponse(ok=True, user_id=user_id)
+    return LoginResponse(ok=True, user_id=user_id,user_name=user_name)
 
 @api.post("/enter_room")
 def enter_room_test():
