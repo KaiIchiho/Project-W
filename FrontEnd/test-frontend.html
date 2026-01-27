@@ -70,7 +70,7 @@
                 return;
             }
             const input=document.getElementById("input");
-            ws.send(user_name.value+": "+input.value);
+            ws.send(user_name+": "+input.value);
             console.log("Send : ",input.value+"\n");
             input.value="";
         }
