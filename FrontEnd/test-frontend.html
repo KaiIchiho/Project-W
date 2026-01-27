@@ -70,7 +70,6 @@
                 return;
             }
             const input=document.getElementById("input");
-            const user_name=document.getElementById("user_name");
             ws.send(user_name.value+": "+input.value);
             console.log("Send : ",input.value+"\n");
             input.value="";
