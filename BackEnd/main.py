@@ -25,6 +25,7 @@ test_room:Room=Room()
 
 class LoginRequest(BaseModel):
     user_id:str
+    user_name:str
 class LoginResponse(BaseModel):
     ok:bool
     user_id:str
@@ -66,11 +67,10 @@ async def websocket_endpoint(ws:WebSocket):
 @api.post("/login", response_model=LoginResponse)
 def login(req: LoginRequest):
     user_id=req.user_id
-    player=Player("player_1",user_id,"Player1",None)
+    user_name=req.user_name
+    player=Player(user_id,user_id,user_name,None)
     players[user_id]=player
-    print(f"Player Create Successed , User ID={user_id}")
-    
-    print(f"Player created: {user_id}")
+    print(f"Player Create Successed , UserID={user_id}, UserName={user_name}")
     return LoginResponse(ok=True, user_id=user_id)
 
 @api.post("/enter_room")
