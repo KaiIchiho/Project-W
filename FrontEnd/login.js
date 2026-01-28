@@ -68,11 +68,10 @@ async function logout(){
     if(ws==null){
         return;
     }
-
     const res=await fetch("/api/logout",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({user_id:id})
+        body:JSON.stringify({user_id:user_id})
     });
     const res_data=await res.json();
     if(res_data.ok===true){

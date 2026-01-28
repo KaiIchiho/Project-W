@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html leng="en">
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>test-frontend</title>
@@ -21,21 +21,34 @@
             }
         </style>
     </head>
-    <h2>WebSocket Test</h2>
-    <input id="user_id" type="text" placeholder="User ID"><br>
-    <input id="user_name" type="text" placeholder="User Name">
-    <div id="log_button">
-            <button onclick="login()">Login</button>
-    </div>
-    <div id="login_user_info"></div><br>
+    <body>
+        <h2>WebSocket Test</h2>
+        <!--Login-->
+        <h3>User Login</h3>
+        <input id="user_id" type="text" placeholder="User ID"><br>
+        <input id="user_name" type="text" placeholder="User Name">
+        <div id="log_button">
+                <button onclick="login()">Login</button>
+        </div>
+        <div id="login_user_info"></div><br>
 
-    <input id="input" type="text" placeholder="Input Text">
-    <button onclick="sendMessage()">Send</button>
-    <div id="log"></div>
+        <!--Room-->
+        <h3>Room</h3>
+        <div id="room_menu">
+            <p>Enter Test Room</p>
+            <button onclick="">As Player</button>
+            <button onclick="">As Viewer</button>
+        </div>
+        
+        <!--WebSocket-->
+        <input id="input" type="text" placeholder="Input Text">
+        <button onclick="sendMessage()">Send</button>
+        <div id="log"></div>
 
-    <script src="./login.js"></script>
+        <!--JavaScript-->
+        <script src="./login.js"></script>
 
-    <!--<script>
+        <!--<script>
          // Phaser config
         const config = {
             type: Phaser.AUTO,
@@ -80,4 +93,6 @@
             }
         }
     </script>-->
+    
+    </body>
 </html>
