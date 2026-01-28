@@ -121,8 +121,8 @@ def enter_room(req:EnterRoomRequest):
 @api.post("/exit_room",response_model=ExitRoomResponse)
 def eixt_room(req:ExitRoomRequest):
     if test_room is None:
-        return EnterRoomResponse(ok=False,detail="test_room is None")
+        return ExitRoomResponse(ok=False,detail="test_room is None")
     result=test_room.exit_by_id(req.user_id)
-    return EnterRoomResponse(ok=result,detail="exit result")
+    return ExitRoomResponse(ok=result,detail="exit result")
     
 app.include_router(api)
