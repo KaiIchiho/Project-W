@@ -62,12 +62,16 @@ async function login(){
         name_input.value="";
         const log_button=document.getElementById("log_button");
         log_button.innerHTML="<button onclick='logout()'>Logout</button>";
+
+        setComponentHidden("has_login_block",false);
     }
 }
 async function logout(){
     if(ws==null){
         return;
     }
+    exitTestRoom()
+
     const res=await fetch("/api/logout",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
@@ -80,5 +84,7 @@ async function logout(){
         log_button.innerHTML="<button onclick='login()'>Login</button>";
         const login_info=document.getElementById("login_user_info");
         login_info.innerHTML="";
+
+        setComponentHidden("has_login_block",true);
     }
 }

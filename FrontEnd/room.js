@@ -10,12 +10,12 @@ async function enterTestRoom(isPlayer){
 
     const res_data=await res.json();
     if(res_data.ok){
-        const enter_menu=document.getElementById("enter_room_menu");
+        /*const enter_menu=document.getElementById("enter_room_menu");
         const exit_menu=document.getElementById("exit_room_menu");
-        //enter_menu.hidden=false;
-        //exit_menu.hidden=true;
         enter_menu.style.display="none";
-        exit_menu.style.display="block";
+        exit_menu.style.display="block";*/
+        setComponentHidden("enter_room_menu",true);
+        setComponentHidden("exit_room_menu",false);
 
         const room_info=document.getElementById("room_info");
         let as_player;
@@ -25,6 +25,7 @@ async function enterTestRoom(isPlayer){
         current_room_id=room_id;
 
         console.log("Enter Test Room Success");
+        setComponentHidden("message_block",false);
     }
     else{
         console.error("Cannot Enter Test Room");
@@ -41,17 +42,28 @@ async function exitTestRoom() {
     const res_data=await res.json();
 
     if(res_data.ok){
-        const enter_menu=document.getElementById("enter_room_menu");
+        /*const enter_menu=document.getElementById("enter_room_menu");
         const exit_menu=document.getElementById("exit_room_menu");
-        //enter_menu.hidden=true;
-        //exit_menu.hidden=false;
         enter_menu.style.display="block";
-        exit_menu.style.display="none";
+        exit_menu.style.display="none";*/
+        setComponentHidden("enter_room_menu",false);
+        setComponentHidden("exit_room_menu",true);
         current_room_id="";
-
+        
         console.log("Exit Test Room Success");
+        setComponentHidden("message_block",true);
     }
     else{
         console.error("Cannot Exit Test Room");
+    }
+}
+
+function setComponentHidden(id,isHidden){
+    component=document.getElementById(id);
+    if(isHidden){
+        component.style.display="none";
+    }
+    else{
+        component.style.display="block";
     }
 }
