@@ -2,11 +2,12 @@ from models.player import Player
 from typing import Optional
 
 class Room():
+    room_id:str=""
     player_1:Optional[Player]=None
     player_2:Optional[Player]=None
     viewer:Optional[Player]=None
-    def __init__(self):
-        pass
+    def __init__(self,room_id:str):
+        self.room_id=room_id
     
     def set_players(self,player_1,player_2):
         self.player_1=player_1
@@ -37,3 +38,14 @@ class Room():
             return True
         else:
             return False
+        
+    def exit_by_id(self,player_id)->bool:
+        if self.player_1 is not None:
+            if self.player_1.player_id==player_id:
+                self.player_1=None
+        if self.player_2 is not None:
+            if self.player_2.player_id==player_id:
+                self.player_2=None
+        if self.viewer is not None:
+            if self.viewer.player_id==player_id:
+                self.viewer=None
