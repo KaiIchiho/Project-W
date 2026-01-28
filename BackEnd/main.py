@@ -123,6 +123,6 @@ def eixt_room(req:ExitRoomRequest):
     if test_room is None:
         return ExitRoomResponse(ok=False,detail="test_room is None")
     #result=test_room.exit_by_id(req.user_id)
-    return ExitRoomResponse(ok=result,detail="exit result")
+    return ExitRoomResponse(ok=False,detail="exit result")
     
 app.include_router(api)
