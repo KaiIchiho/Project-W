@@ -20,7 +20,7 @@ def test_game_flew():
 connected_clients:list[WebSocket]=[]
 
 players:dict[str,Player]={}
-connections:dict[str,Connection]={}
+connections:dict[str,WebSocket]={}
 test_room:Room=Room("test_room_01")
 
 class LoginRequest(BaseModel):
@@ -65,18 +65,42 @@ async def websocket_endpoint(ws:WebSocket):
     
     try:
         while True:
+            is_client_in_room=False
+            for id,client in connections.items():
+                if test_room.player_1.player_id==id:
+                    is_client_in_room=True
+                    break
+                if test_room.player_2.player_id==id:
+                    is_client_in_room=True
+                    break
+            if is_client_in_room==False:
+                continue
+                
             data=await ws.receive_text()
             print("Received : ",data)
             
+            if test_room is not None:
+                ids_in_room=test_room.get_all_player_ids()
+                clients_in_room=[connections.get(id).websocket for id in ids_in_room]
+                for client in clients_in_room.copy():
+                    print("client id:", id(client), "ws id:", id(ws))
+                    try:
+                        if client is None:
+                            continue
+                        if client is ws:
+                            continue
+                        await client.send_text(f"From Server - {data}")
+                    except Exception:
+                        connected_clients.remove(client)
             # Broadcast to other clients
-            for client in connected_clients.copy():
-                print("client id:", id(client), "ws id:", id(ws))
-                try:
-                    if client is ws:
-                        continue
-                    await client.send_text(f"From Server - {data}")
-                except Exception:
-                    connected_clients.remove(client)
+            #for client in connected_clients.copy():
+            #    print("client id:", id(client), "ws id:", id(ws))
+            #    try:
+            #        if client is ws:
+            #            continue
+            #        await client.send_text(f"From Server - {data}")
+            #    except Exception:
+            #        connected_clients.remove(client)
                     
             await ws.send_text(f"From Server - (yourself){data}")
             #asyncio.create_task(ws.send_text(f"(yourself){data}"))
