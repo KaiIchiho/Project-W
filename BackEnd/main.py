@@ -64,34 +64,32 @@ async def websocket_endpoint(ws:WebSocket):
     print(f"WebSocket bound to user: {user_id}")
     
     try:
-        while True:
-            is_client_in_room=False
-            for id,client in connections.items():
-                if test_room.player_1.player_id==id:
-                    is_client_in_room=True
-                    break
-                if test_room.player_2.player_id==id:
-                    is_client_in_room=True
-                    break
-            if is_client_in_room==False:
-                continue
-                
+        while True:    
             data=await ws.receive_text()
             print("Received : ",data)
             
-            if test_room is not None:
-                ids_in_room=test_room.get_all_player_ids()
-                clients_in_room=[connections.get(id).websocket for id in ids_in_room]
-                for client in clients_in_room.copy():
-                    print("client id:", id(client), "ws id:", id(ws))
-                    try:
-                        if client is None:
-                            continue
-                        if client is ws:
-                            continue
-                        await client.send_text(f"From Server - {data}")
-                    except Exception:
-                        connected_clients.remove(client)
+            if test_room is None:
+                continue
+            
+            is_client_in_room=False
+            for id,client in connections.items():
+                is_client_in_room=test_room.check_player_in_room(id)
+                if is_client_in_room==True:
+                    break
+            if is_client_in_room==False:
+                continue
+            
+            ids_in_room=test_room.get_all_player_ids()
+            clients_in_room=[connections.get(id).websocket for id in ids_in_room]
+            for client in clients_in_room.copy():
+                try:
+                    if client is None:
+                        continue
+                    if client is ws:
+                        continue
+                    await client.send_text(f"From Server - {data}")
+                except Exception:
+                    connected_clients.remove(client)
             # Broadcast to other clients
             #for client in connected_clients.copy():
             #    print("client id:", id(client), "ws id:", id(ws))
