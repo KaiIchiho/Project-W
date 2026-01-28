@@ -54,3 +54,9 @@ class Room():
                 self.viewer=None
                 result=True
         return result
+    
+    def get_all_player_ids(self)->list[str]:
+        ids:list[str]=[]
+        ids.append(self.player_1.player_id)
+        ids.append(self.player_2.player_id)
+        ids.append(self.viewer.player_id)
