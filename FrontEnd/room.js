@@ -21,6 +21,8 @@ async function enterTestRoom(isPlayer){
         else as_player="Viewer";
         room_info.textContent="Room ID: "+room_id+", As "+as_player;
         current_room_id=room_id;
+
+        console.log("Enter Test Room Success");
     }
     else{
         console.error("Cannot Enter Test Room");
@@ -42,6 +44,8 @@ async function exitTestRoom() {
         exit_menu.hidden=false;
 
         current_room_id="";
+
+        console.log("Exit Test Room Success");
     }
     else{
         console.error("Cannot Exit Test Room");
