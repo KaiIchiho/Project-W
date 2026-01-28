@@ -16,7 +16,6 @@ async function enterTestRoom(isPlayer){
         //exit_menu.hidden=true;
         enter_menu.style.display="none";
         exit_menu.style.display="block";
-        console.log(enter_menu.hidden, exit_menu.hidden);
 
         const room_info=document.getElementById("room_info");
         let as_player;
@@ -33,6 +32,7 @@ async function enterTestRoom(isPlayer){
 }
 
 async function exitTestRoom() {
+    console.log("Exit Test Room ID: "+current_room_id+"User ID: "+user_id);
     const res=await fetch("/api/exit_room",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
@@ -47,7 +47,6 @@ async function exitTestRoom() {
         //exit_menu.hidden=false;
         enter_menu.style.display="block";
         exit_menu.style.display="none";
-        console.log(enter_menu.hidden, exit_menu.hidden);
         current_room_id="";
 
         console.log("Exit Test Room Success");
