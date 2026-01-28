@@ -33,7 +33,7 @@ class Room():
                 return False
             
     def enter_as_viewer(self,viewer)->bool:
-        if self.viewer is not None:
+        if self.viewer is None:
             self.viewer=viewer
             return True
         else:
