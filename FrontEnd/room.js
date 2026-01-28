@@ -12,8 +12,10 @@ async function enterTestRoom(isPlayer){
     if(res_data.ok){
         const enter_menu=document.getElementById("enter_room_menu");
         const exit_menu=document.getElementById("exit_room_menu");
-        enter_menu.hidden=false;
-        exit_menu.hidden=true;
+        //enter_menu.hidden=false;
+        //exit_menu.hidden=true;
+        enter_menu.style.display="none";
+        exit_menu.style.display="block";
         console.log(enter_menu.hidden, exit_menu.hidden);
 
         const room_info=document.getElementById("room_info");
@@ -41,8 +43,10 @@ async function exitTestRoom() {
     if(res_data.ok){
         const enter_menu=document.getElementById("enter_room_menu");
         const exit_menu=document.getElementById("exit_room_menu");
-        enter_menu.hidden=true;
-        exit_menu.hidden=false;
+        //enter_menu.hidden=true;
+        //exit_menu.hidden=false;
+        enter_menu.style.display="block";
+        exit_menu.style.display="none";
         console.log(enter_menu.hidden, exit_menu.hidden);
         current_room_id="";
 
