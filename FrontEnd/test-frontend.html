@@ -34,13 +34,18 @@
 
         <!--Room-->
         <h3>Room</h3>
-        <div id="room_menu">
-            <p>Enter Test Room</p>
-            <button onclick="">As Player</button>
-            <button onclick="">As Viewer</button>
+        <div id="enter_room_menu">
+            <p>Enter Test Room : </p>
+            <button onclick="enterTestRoom(true)">As Player</button>
+            <button onclick="enterTestRoom(false)">As Viewer</button>
+        </div>
+        <div id="exit_room_menu" hidden>
+            <p id="room_info"></p>
+            <button onclick="exitTestRoom()">Exit Room</button>
         </div>
         
         <!--WebSocket-->
+        <h3>Send Message</h3>
         <input id="input" type="text" placeholder="Input Text">
         <button onclick="sendMessage()">Send</button>
         <div id="log"></div>

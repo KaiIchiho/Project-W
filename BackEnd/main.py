@@ -21,7 +21,7 @@ connected_clients:list[WebSocket]=[]
 
 players:dict[str,Player]={}
 connections:dict[str,Connection]={}
-test_room:Room=Room()
+test_room:Room=Room("test_room_01")
 
 class LoginRequest(BaseModel):
     user_id:str
@@ -34,6 +34,22 @@ class LogoutRequest(BaseModel):
     user_id:str
 class LogoutResponse(BaseModel):
     ok:bool
+    
+class EnterRoomRequest(BaseModel):
+    room_id:str
+    user_id:str
+    as_player:bool
+class EnterRoomResponse(BaseModel):
+    ok:bool
+    room_id:str
+    user_id:str
+class ExitRoomRequest(BaseModel):
+    room_id:str
+    user_id:str
+class ExitRoomResponse(BaseModel):
+    ok:bool
+    detail:str
+    user_id:str
     
 @app.websocket("/ws")
 async def websocket_endpoint(ws:WebSocket):
@@ -84,11 +100,29 @@ def logout(req:LogoutRequest):
     players.pop(user_id)
     return LogoutResponse(ok=True)
 
-@api.post("/enter_room")
-def enter_room_test():
-    if Room is None:
-        return
-    #Room.set_player_1()
+@api.post("/enter_room",response_model=EnterRoomResponse)
+def enter_room(req:EnterRoomRequest):
+    if test_room is None:
+        return EnterRoomResponse(ok=False,user_id=req.user_id,room_id=req.room_id)
+    if test_room.room_id != req.room_id:
+        print 
+        return EnterRoomResponse(ok=False,user_id=req.user_id,room_id=req.room_id)
+    player=players.get(req.user_id)
+    if player is None:
+        return EnterRoomResponse(ok=False,user_id=req.user_id,room_id=req.room_id)
+
+    result=None
+    if req.as_player:
+        result=test_room.entered_as_player(player)
+    else:
+        result=test_room.enter_as_viewer(player)
+    return EnterRoomResponse(ok=result,user_id=req.user_id,room_id=req.room_id)
     
+@api.post("/exit_room",response_model=ExitRoomResponse)
+def eixt_room(req:ExitRoomRequest):
+    if test_room is None:
+        return EnterRoomResponse(ok=False,detail="test_room is None")
+    result=test_room.exit_by_id(req.user_id)
+    return EnterRoomResponse(ok=result,detail="exit result")
     
 app.include_router(api)
