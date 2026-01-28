@@ -14,6 +14,7 @@ async function enterTestRoom(isPlayer){
         const exit_menu=document.getElementById("exit_room_menu");
         enter_menu.hidden=false;
         exit_menu.hidden=true;
+        console.log(enter_menu.hidden, exit_menu.hidden);
 
         const room_info=document.getElementById("room_info");
         let as_player;
@@ -42,7 +43,7 @@ async function exitTestRoom() {
         const exit_menu=document.getElementById("exit_room_menu");
         enter_menu.hidden=true;
         exit_menu.hidden=false;
-
+        console.log(enter_menu.hidden, exit_menu.hidden);
         current_room_id="";
 
         console.log("Exit Test Room Success");
