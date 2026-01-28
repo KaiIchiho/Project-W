@@ -36,7 +36,7 @@ async function exitTestRoom() {
     const res=await fetch("/api/exit_room",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({user_id:user_id,as_player:isPlayer})
+        body:JSON.stringify({room_id:current_room_id,user_id:user_id})
     });
     const res_data=await res.json();
 
