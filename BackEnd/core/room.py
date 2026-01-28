@@ -40,12 +40,17 @@ class Room():
             return False
         
     def exit_by_id(self,player_id)->bool:
+        result=False
         if self.player_1 is not None:
             if self.player_1.player_id==player_id:
                 self.player_1=None
+                result=True
         if self.player_2 is not None:
             if self.player_2.player_id==player_id:
                 self.player_2=None
+                result=True
         if self.viewer is not None:
             if self.viewer.player_id==player_id:
                 self.viewer=None
+                result=True
+        return result
