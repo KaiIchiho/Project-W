@@ -26,15 +26,19 @@
         <!--Login-->
         <div id="login_block">
             <h3>User Login</h3>
-            <input id="user_id" type="text" placeholder="User ID"><br>
-            <input id="user_name" type="text" placeholder="User Name">
-            <div id="log_button">
-                    <button onclick="login()">Login</button>
+            <div id="login_menu"></div>
+                <input id="user_id" type="text" placeholder="User ID"><br>
+                <input id="user_name" type="text" placeholder="User Name">
+                <button onclick="login()">Login</button>
+            </div>
+            <div id="logout_menu" hidden></div>
+                <button onclick="logout()">Logout</button>
             </div>
             <div id="login_user_info"></div>
         </div>
         
-        <div id="has_login_block"><!--hidden-->
+        <!--HasLoginBlock-->
+        <div id="has_login_block" hidden>
             <!--Room-->
             <div id="room_block">
                 <h3>Room</h3>
@@ -43,14 +47,14 @@
                     <button onclick="enterTestRoom(true)">As Player</button>
                     <button onclick="enterTestRoom(false)">As Viewer</button>
                 </div>
-                <div id="exit_room_menu"><!--hidden-->
+                <div id="exit_room_menu" hidden><!--hidden-->
                     <p id="room_info"></p>
                     <button onclick="exitTestRoom()">Exit Room</button>
                 </div>
             </div>
             
             <!--WebSocket-->
-            <div id="message_block"><!--hidden-->
+            <div id="message_block" hidden><!--hidden-->
                 <h3>Send Message</h3>
                 <input id="input" type="text" placeholder="Input Text">
                 <button onclick="sendMessage()">Send</button>
