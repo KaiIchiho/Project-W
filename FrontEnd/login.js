@@ -12,6 +12,10 @@ function createWebSocket(){
         const login_info=document.getElementById("login_user_info");
         login_info.innerHTML="<p>"+"Logged-in User ID: "+user_id+", Name: "+user_name+"</p>";
         ws.send(user_id);
+        
+        setComponentHidden("login_menu",true);
+        setComponentHidden("logout_menu",false);
+        setComponentHidden("has_login_block",false);
         console.log("WebSocket Connect");
     }
     ws.onmessage=(event)=>{
@@ -25,6 +29,12 @@ function createWebSocket(){
     ws.onclose=()=>{
         user_id="";
         user_name="";
+        const login_info=document.getElementById("login_user_info");
+        login_info.innerHTML="";
+        
+        setComponentHidden("login_menu",false);
+        setComponentHidden("logout_menu",true);
+        setComponentHidden("has_login_block",true);
         console.log("WebSocket Disconnect");
     }
 }
@@ -56,14 +66,10 @@ async function login(){
     if(res_data.ok===true){
         user_id=res_data.user_id;
         user_name=res_data.user_name;
-        createWebSocket();
 
         id_input.value="";
         name_input.value="";
-        const log_button=document.getElementById("log_button");
-        log_button.innerHTML="<button onclick='logout()'>Logout</button>";
-
-        setComponentHidden("has_login_block",false);
+        createWebSocket();
     }
 }
 async function logout(){
@@ -80,11 +86,5 @@ async function logout(){
     const res_data=await res.json();
     if(res_data.ok===true){
         ws.close();
-        const log_button=document.getElementById("log_button");
-        log_button.innerHTML="<button onclick='login()'>Login</button>";
-        const login_info=document.getElementById("login_user_info");
-        login_info.innerHTML="";
-
-        setComponentHidden("has_login_block",true);
     }
 }
