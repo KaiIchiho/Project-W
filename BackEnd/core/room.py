@@ -66,8 +66,12 @@ class Room():
         return is_in_room
         
     
-    def get_all_player_ids(self)->list[str]:
+    def get_all_ids(self)->list[str]:
         ids:list[str]=[]
-        ids.append(self.player_1.player_id)
-        ids.append(self.player_2.player_id)
-        ids.append(self.viewer.player_id)
+        if self.player_1 is not None:
+            ids.append(self.player_1.player_id)
+        if self.player_2 is not None:
+            ids.append(self.player_2.player_id)
+        if self.viewer is not None:
+            ids.append(self.viewer.player_id)
+        return ids
