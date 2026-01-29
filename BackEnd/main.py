@@ -20,7 +20,7 @@ def test_game_flew():
 connected_clients:list[WebSocket]=[]
 
 players:dict[str,Player]={}
-connections:dict[str,WebSocket]={}
+connections:dict[str,Connection]={}
 test_room:Room=Room("test_room_01")
 
 class LoginRequest(BaseModel):
@@ -60,7 +60,7 @@ async def websocket_endpoint(ws:WebSocket):
     
     # First : client send user_id
     user_id = await ws.receive_text()
-    connections[user_id]=ws
+    connections[user_id]=Connection(user_id,ws)
     print(f"WebSocket bound to user: {user_id}")
     
     try:
@@ -79,17 +79,16 @@ async def websocket_endpoint(ws:WebSocket):
             if is_client_in_room==False:
                 continue
             
-            ids_in_room=test_room.get_all_player_ids()
-            clients_in_room=[connections.get(id).websocket for id in ids_in_room]
-            for client in clients_in_room.copy():
+            for uid in test_room.get_all_ids():
+                connect=connections.get(uid)
+                if connect is None:
+                    continue
+                if connect.websocket is ws:
+                    continue
                 try:
-                    if client is None:
-                        continue
-                    if client is ws:
-                        continue
-                    await client.send_text(f"From Server - {data}")
-                except Exception:
-                    connected_clients.remove(client)
+                    await connect.websocket.send_text(f"From Server - {data}")
+                except WebSocketDisconnect:
+                    connections.pop(uid)
             # Broadcast to other clients
             #for client in connected_clients.copy():
             #    print("client id:", id(client), "ws id:", id(ws))
@@ -106,6 +105,10 @@ async def websocket_endpoint(ws:WebSocket):
         # Remove ws From Connected Clients List
         connected_clients.remove(ws)
         connections.pop(user_id)
+        #for uid in test_room.get_all_player_ids():
+        #    if connect.websocket is ws:
+        #        connections.pop(uid)
+        #        break
         print("Client disconnected. Total:", len(connected_clients))
     
 @api.post("/login", response_model=LoginResponse)
