@@ -10,7 +10,7 @@ function createWebSocket(){
     ws=new WebSocket(`ws://${location.host}/api/ws`);
     ws.onopen=()=>{
         const login_info=document.getElementById("login_user_info");
-        //login_info.innerHTML="<p>"+"Logged-in User ID: "+user_id+", Name: "+user_name+"</p>";
+        login_info.innerHTML="<p>"+"Logged-in User ID: "+user_id+", Name: "+user_name+"</p>";
         ws.send(user_id);
         
         setComponentHidden("login_menu",true);
@@ -20,7 +20,7 @@ function createWebSocket(){
     }
     ws.onmessage=(event)=>{
         const log=document.getElementById("log");
-        //log.innerHTML+="<p>"+event.data+"</p>";
+        log.innerHTML+="<p>"+event.data+"</p>";
         console.log("Server back : ",event.data);
     }
     ws.onerror = (err) => {
@@ -30,7 +30,7 @@ function createWebSocket(){
         user_id="";
         user_name="";
         const login_info=document.getElementById("login_user_info");
-        //login_info.innerHTML="";
+        login_info.innerHTML="";
         
         setComponentHidden("login_menu",false);
         setComponentHidden("logout_menu",true);
