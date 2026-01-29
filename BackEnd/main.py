@@ -77,8 +77,12 @@ async def websocket_endpoint(ws:WebSocket):
                 if is_client_in_room==True:
                     break
             if is_client_in_room==False:
+                print("Client Is Not In Room As Player")
                 continue
             
+            print("Client Is In Room As Player")
+            
+            # Broadcast to other clients
             for uid in test_room.get_all_ids():
                 connect=connections.get(uid)
                 if connect is None:
@@ -89,15 +93,6 @@ async def websocket_endpoint(ws:WebSocket):
                     await connect.websocket.send_text(f"From Server - {data}")
                 except WebSocketDisconnect:
                     connections.pop(uid)
-            # Broadcast to other clients
-            #for client in connected_clients.copy():
-            #    print("client id:", id(client), "ws id:", id(ws))
-            #    try:
-            #        if client is ws:
-            #            continue
-            #        await client.send_text(f"From Server - {data}")
-            #    except Exception:
-            #        connected_clients.remove(client)
                     
             await ws.send_text(f"From Server - (yourself){data}")
             #asyncio.create_task(ws.send_text(f"(yourself){data}"))
