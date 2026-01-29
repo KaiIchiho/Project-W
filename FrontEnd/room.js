@@ -51,11 +51,11 @@ async function exitTestRoom() {
 }
 
 function setComponentHidden(id,isHidden){
-    /*component=document.getElementById(id);
+    component=document.getElementById(id);
     if(isHidden){
         component.style.display="none";
     }
     else{
         component.style.display="block";
-    }*/
+    }
 }
