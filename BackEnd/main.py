@@ -121,8 +121,9 @@ def enter_room(req:EnterRoomRequest):
     if test_room is None:
         return EnterRoomResponse(ok=False,user_id=req.user_id,room_id=req.room_id)
     if test_room.room_id != req.room_id:
-        print 
         return EnterRoomResponse(ok=False,user_id=req.user_id,room_id=req.room_id)
+    
+    print(f"Enter Room, RoomID: {req.room_id}, UserID: {req.user_id}, IsPlayer: {req.as_player}")
     player=players.get(req.user_id)
     if player is None:
         return EnterRoomResponse(ok=False,user_id=req.user_id,room_id=req.room_id)
