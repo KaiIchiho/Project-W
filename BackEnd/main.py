@@ -116,6 +116,8 @@ def logout(req:LogoutRequest):
 def enter_room(req:EnterRoomRequest):
     if test_room is None:
         return EnterRoomResponse(ok=False,user_id=req.user_id,room_id=req.room_id)
+    if test_room.check_user_in_room(req.user_id)==True:
+        return EnterRoomResponse(ok=False,user_id=req.user_id,room_id=req.room_id)
     if test_room.room_id != req.room_id:
         return EnterRoomResponse(ok=False,user_id=req.user_id,room_id=req.room_id)
     

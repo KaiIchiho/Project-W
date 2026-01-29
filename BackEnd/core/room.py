@@ -55,6 +55,10 @@ class Room():
                 result=True
         return result
     
+    def check_user_in_room(self,id)->bool:
+        is_in_room=self.check_player_in_room(id) or self.check_viewer_in_room(id)
+        return is_in_room
+    
     def check_player_in_room(self,id)->bool:
         is_in_room=False
         if self.player_1 is not None:
@@ -65,6 +69,12 @@ class Room():
                 is_in_room=True
         return is_in_room
         
+    def check_viewer_in_room(self,id)->bool:
+        is_in_room=False
+        if self.viewer is not None:
+            if self.viewer.id==id:
+                is_in_room=True
+        return is_in_room
     
     def get_all_ids(self)->list[str]:
         ids:list[str]=[]
