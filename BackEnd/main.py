@@ -71,11 +71,7 @@ async def websocket_endpoint(ws:WebSocket):
             if test_room is None:
                 continue
             
-            is_client_in_room=False
-            for id,client in connections.items():
-                is_client_in_room=test_room.check_player_in_room(id)
-                if is_client_in_room==True:
-                    break
+            is_client_in_room=test_room.check_player_in_room(user_id)
             if is_client_in_room==False:
                 print("Client Is Not In Room As Player")
                 continue
