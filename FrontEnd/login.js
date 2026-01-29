@@ -26,8 +26,8 @@ function createWebSocket(){
     ws.onerror = (err) => {
         console.error("WS error", err);
     };
-    ws.onclose=()=>{
-        exitTestRoom()
+    ws.onclose=async()=>{
+        await exitTestRoom()
         user_id="";
         user_name="";
         const login_info=document.getElementById("login_user_info");
