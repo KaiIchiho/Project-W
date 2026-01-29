@@ -100,10 +100,6 @@ async def websocket_endpoint(ws:WebSocket):
         # Remove ws From Connected Clients List
         connected_clients.remove(ws)
         connections.pop(user_id)
-        #for uid in test_room.get_all_player_ids():
-        #    if connect.websocket is ws:
-        #        connections.pop(uid)
-        #        break
         print("Client disconnected. Total:", len(connected_clients))
     
 @api.post("/login", response_model=LoginResponse)
@@ -144,6 +140,5 @@ def eixt_room(req:ExitRoomRequest):
         return ExitRoomResponse(ok=False,detail="test_room is None",user_id=req.user_id)
     result=test_room.exit_by_id(req.user_id)
     return ExitRoomResponse(ok=result,detail="exit result",user_id=req.user_id)
-    #return ExitRoomResponse(ok=False,detail="exit result",user_id=req.user_id)
     
 app.include_router(api)
