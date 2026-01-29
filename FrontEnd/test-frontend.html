@@ -34,7 +34,7 @@
             <div id="login_user_info"></div>
         </div>
         
-        <div id="has_login_block" hidden>
+        <div id="has_login_block"><!--hidden-->
             <!--Room-->
             <div id="room_block">
                 <h3>Room</h3>
@@ -43,14 +43,14 @@
                     <button onclick="enterTestRoom(true)">As Player</button>
                     <button onclick="enterTestRoom(false)">As Viewer</button>
                 </div>
-                <div id="exit_room_menu" hidden>
+                <div id="exit_room_menu"><!--hidden-->
                     <p id="room_info"></p>
                     <button onclick="exitTestRoom()">Exit Room</button>
                 </div>
             </div>
             
             <!--WebSocket-->
-            <div id="message_block" hidden>
+            <div id="message_block"><!--hidden-->
                 <h3>Send Message</h3>
                 <input id="input" type="text" placeholder="Input Text">
                 <button onclick="sendMessage()">Send</button>
