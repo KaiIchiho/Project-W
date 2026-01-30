@@ -9,6 +9,7 @@ function bindEvents(){
 }
 
 async function updateRoomIDOptions(){
+    console.log("RoomID Options Update");
     room_id_select
     select.innerHTML = "";
 
