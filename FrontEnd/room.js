@@ -14,15 +14,18 @@ function bindEvents(){
 
 async function updateRoomIDOptions(){
     console.log("RoomID Options Update");
-    room_id_select
-    select.innerHTML = "";
-
+    room_id_select.innerHTML = "";
+    const default_opt = document.createElement("option");
+    default_opt.value="None";
+    default_opt.textContent="None";
+    room_id_select.appendChild(default_opt);
+    
     const room_ids = await getAllRoomIDs();
     for (const id of room_ids) {
         const opt = document.createElement("option");
         opt.value = id;
         opt.textContent = id;
-        select.appendChild(opt);
+        room_id_select.appendChild(opt);
     }
 }
 
