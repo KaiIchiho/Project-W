@@ -30,15 +30,14 @@ async function updateRoomIDOptions(){
 }
 
 async function getAllRoomIDs() {
-    room_id_list;
     const res=await fetch("/api/get_room_id_list");
     if(!res.ok){
         console.error("fetch failed");
         throw new Error("fetch failed");
     }
-    const room_ids=await res.json();
+    const room_id_list=await res.json();
 
-    return room_id_select;
+    return room_id_list;
 }
 
 async function createRoom() {
