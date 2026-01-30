@@ -1,5 +1,9 @@
 let current_room_id;
 
+window.addEventListener("DOMContentLoaded", () => {
+  bindEvents();
+});
+
 const room_id_select=document.getElementById("room_id_select");
 function bindEvents(){
     room_id_select.addEventListener("focus", () => {
