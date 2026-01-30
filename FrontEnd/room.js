@@ -47,7 +47,6 @@ async function createRoom() {
         console.log("Room ID Should Not Be None.");
         return;
     }
-    input_room_id.value="";
 
     const res=await fetch("/api/create_room",{
         method:"POST",
@@ -56,6 +55,7 @@ async function createRoom() {
     });
     const res_data=await res.json();
     if(res.ok){
+        input_room_id.value="";
         console.log("Room Create Success.");
     }
     else{
