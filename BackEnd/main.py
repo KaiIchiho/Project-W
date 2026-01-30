@@ -21,7 +21,9 @@ connected_clients:list[WebSocket]=[]
 
 players:dict[str,Player]={}
 connections:dict[str,Connection]={}
-test_room:Room=Room("test_room_01")
+#test_room:Room=Room("test_room_01")
+rooms:dict[str,Room]={}
+player_room:dict[str,str]={}
 
 class LoginRequest(BaseModel):
     user_id:str
@@ -34,7 +36,12 @@ class LogoutRequest(BaseModel):
     user_id:str
 class LogoutResponse(BaseModel):
     ok:bool
-    
+
+class CreateRoomRequest(BaseModel):
+    room_id:str
+class CreateRoomResponse(BaseModel):
+    ok:bool
+    room_id:str
 class EnterRoomRequest(BaseModel):
     room_id:str
     user_id:str
@@ -68,10 +75,14 @@ async def websocket_endpoint(ws:WebSocket):
             data=await ws.receive_text()
             print("Received : ",data)
             
-            if test_room is None:
+            room_id=player_room.get(user_id)
+            if room_id is None:
+                continue
+            room=rooms.get(room_id)
+            if room is None:
                 continue
             
-            is_client_in_room=test_room.check_player_in_room(user_id)
+            is_client_in_room=room.check_player_in_room(user_id)
             if is_client_in_room==False:
                 print("Client Is Not In Room As Player")
                 continue
@@ -79,7 +90,7 @@ async def websocket_endpoint(ws:WebSocket):
             print("Client Is In Room As Player")
             
             # Broadcast to other clients
-            for uid in test_room.get_all_ids():
+            for uid in room.get_all_ids():
                 connect=connections.get(uid)
                 if connect is None:
                     continue
@@ -112,13 +123,30 @@ def logout(req:LogoutRequest):
     players.pop(user_id)
     return LogoutResponse(ok=True)
 
+@api.get("/get_room_id_list")
+def get_room_id_list():
+    room_id_list=[id for id,room in rooms]
+    return room_id_list
+    
+@api.post("/create_room",response_model=CreateRoomResponse)
+def create_room(req:CreateRoomRequest):
+    room_id=req.room_id
+    if rooms.get(room_id) is not None:
+        return CreateRoomResponse(ok=False,room_id=room_id)
+    rooms[room_id]=Room(room_id)
+    return CreateRoomResponse(ok=True,room_id=room_id)
+
 @api.post("/enter_room",response_model=EnterRoomResponse)
 def enter_room(req:EnterRoomRequest):
-    if test_room is None:
+    if player_room.get(req.user_id) is not None:
         return EnterRoomResponse(ok=False,user_id=req.user_id,room_id=req.room_id)
-    if test_room.check_user_in_room(req.user_id)==True:
+
+    room=rooms.get(req.room_id)
+    if room is None:
         return EnterRoomResponse(ok=False,user_id=req.user_id,room_id=req.room_id)
-    if test_room.room_id != req.room_id:
+    if room.check_user_in_room(req.user_id)==True:
+        return EnterRoomResponse(ok=False,user_id=req.user_id,room_id=req.room_id)
+    if room.room_id != req.room_id:
         return EnterRoomResponse(ok=False,user_id=req.user_id,room_id=req.room_id)
     
     print(f"Enter Room, RoomID: {req.room_id}, UserID: {req.user_id}, IsPlayer: {req.as_player}")
@@ -128,16 +156,25 @@ def enter_room(req:EnterRoomRequest):
 
     result=None
     if req.as_player:
-        result=test_room.entered_as_player(player)
+        result=room.entered_as_player(player)
     else:
-        result=test_room.enter_as_viewer(player)
+        result=room.enter_as_viewer(player)
+    if result==True:
+        player_room[req.user_id]=req.room_id
     return EnterRoomResponse(ok=result,user_id=req.user_id,room_id=req.room_id)
     
 @api.post("/exit_room",response_model=ExitRoomResponse)
 def eixt_room(req:ExitRoomRequest):
-    if test_room is None:
-        return ExitRoomResponse(ok=False,detail="test_room is None",user_id=req.user_id)
-    result=test_room.exit_by_id(req.user_id)
+    room_id=player_room.get(req.user_id)
+    if room_id is None:
+        return ExitRoomResponse(ok=False,detail="player is not in any room",user_id=req.user_id)
+    
+    room=rooms.get(room_id)
+    if room is None:
+        return ExitRoomResponse(ok=False,detail="room is None",user_id=req.user_id)
+    result=room.exit_by_id(req.user_id)
+    if result==True:
+        player_room.pop(req.user_id)
     return ExitRoomResponse(ok=result,detail="exit result",user_id=req.user_id)
     
 app.include_router(api)
