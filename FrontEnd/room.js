@@ -16,8 +16,8 @@ async function updateRoomIDOptions(){
     console.log("RoomID Options Update");
     room_id_select.innerHTML = "";
     const default_opt = document.createElement("option");
-    default_opt.value="None";
-    default_opt.textContent="None";
+    default_opt.value="--Room ID--";
+    default_opt.textContent="--Room ID--";
     room_id_select.appendChild(default_opt);
     
     const room_ids = await getAllRoomIDs();
