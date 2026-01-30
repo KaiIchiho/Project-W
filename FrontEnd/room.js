@@ -103,7 +103,7 @@ async function exitRoom() {
     const res_data=await res.json();
 
     if(res_data.ok){
-        document.getElementById("log").value="";
+        document.getElementById("log").innerHTML="";
 
         setComponentHidden("enter_room_menu",false);
         setComponentHidden("exit_room_menu",true);
