@@ -42,19 +42,27 @@
             <!--Room-->
             <div id="room_block">
                 <h3>Room</h3>
-                <div id="enter_room_menu">
-                    <p>Enter Test Room : </p>
-                    <button onclick="enterTestRoom(true)">As Player</button>
-                    <button onclick="enterTestRoom(false)">As Viewer</button>
+                <div id="create_room_menu">
+                    <p>Create Room</p>
+                    <input id="input_room_id" type="text" placeholder="Room ID">
+                    <button onclick="createRoom()">Create Room</button>
                 </div>
-                <div id="exit_room_menu" hidden><!--hidden-->
+                <div id="enter_room_menu">
+                    <p>Enter Room : </p>
+                    <select id="room_id_select">
+                        <option value="None">None</option>
+                    </select>
+                    <button onclick="enterRoom(true)">As Player</button>
+                    <button onclick="enterRoom(false)">As Viewer</button>
+                </div>
+                <div id="exit_room_menu" hidden>
                     <p id="room_info"></p>
-                    <button onclick="exitTestRoom()">Exit Room</button>
+                    <button onclick="exitRoom()">Exit Room</button>
                 </div>
             </div>
             
             <!--WebSocket-->
-            <div id="message_block" hidden><!--hidden-->
+            <div id="message_block" hidden>
                 <h3>Send Message</h3>
                 <input id="input" type="text" placeholder="Input Text">
                 <button onclick="sendMessage()">Send</button>
