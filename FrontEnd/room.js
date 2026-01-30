@@ -43,6 +43,10 @@ async function getAllRoomIDs() {
 async function createRoom() {
     const input_room_id=document.getElementById("input_room_id");
     room_id=input_room_id.value;
+    if(room_id==""){
+        console.log("Room ID Should Not Be None.");
+        return;
+    }
     input_room_id.value="";
 
     const res=await fetch("/api/create_room",{
@@ -52,10 +56,10 @@ async function createRoom() {
     });
     const res_data=await res.json();
     if(res.ok){
-
+        console.log("Room Create Success.");
     }
     else{
-
+        console.error("Room Create Failed.");
     }
 }
 

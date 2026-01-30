@@ -54,14 +54,18 @@ async function login(){
     const id_input=document.getElementById("user_id");
     const name_input=document.getElementById("user_name");
 
-    id=id_input.value;
-    name=name_input.value,
-    console.log("input Id: "+id,"input name: "+name);
+    login_id=id_input.value;
+    login_name=name_input.value;
+    if(login_id=="" || login_name==""){
+        console.log("User ID Or Name Should Not Be None.");
+        return;
+    }
+    console.log("input Id: "+login_id,"input name: "+login_name);
 
     const res=await fetch("/api/login",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({user_id:id,user_name:name})
+        body:JSON.stringify({user_id:login_id,user_name:login_name})
     });
     const res_data=await res.json();
     if(res_data.ok===true){
