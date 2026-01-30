@@ -125,7 +125,7 @@ def logout(req:LogoutRequest):
 
 @api.get("/get_room_id_list")
 def get_room_id_list():
-    room_id_list=[id for id,room in rooms]
+    room_id_list=list(rooms.keys())
     return room_id_list
     
 @api.post("/create_room",response_model=CreateRoomResponse)
