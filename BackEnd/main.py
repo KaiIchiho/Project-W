@@ -58,7 +58,8 @@ class ExitRoomResponse(BaseModel):
     detail:str
     user_id:str
     
-@app.websocket("/ws")
+#@app.websocket("/ws")
+@api.websocket("/ws")
 async def websocket_endpoint(ws:WebSocket):
     await ws.accept()
     # Add ws To Connected Clients List
