@@ -33,7 +33,7 @@ async def websocket(ws:WebSocket):
             
             msg_type=await read_wsmsg_type(msg)
             if msg_type==1:
-                await receive_text(ws,room,msg)
+                await receive_text(ws,room,msg["text"])
             elif msg_type==2:
                 await receive_json(ws,room)
             
