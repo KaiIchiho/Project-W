@@ -1,10 +1,4 @@
 from fastapi import FastAPI,APIRouter
-#import asyncio
-#from typing import Optional
-#from core.room import Room
-#from models.player import Player
-#from services.connection import Connection
-
 from api.router import api_router
 
 app=FastAPI()
@@ -13,6 +7,12 @@ app.include_router(api_router)
 
 #=======================================================
 
+#import asyncio
+#from typing import Optional
+#from core.room import Room
+#from models.player import Player
+#from services.connection import Connection
+
 #api = APIRouter(prefix="/api")
 
 #@api.get("/hello")
@@ -20,9 +20,8 @@ app.include_router(api_router)
 #    return {"Message" : "BackEnd Is Running!"}
 #def test_game_flew():
 #    return "test"
-
+    
+#app.include_router(api)
 #=======================================================
 
 
-    
-#app.include_router(api)
