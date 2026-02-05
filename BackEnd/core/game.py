@@ -1,6 +1,6 @@
-from ..models.player import Player
-from .phase import Phase
-from .attack_step import AttackStep
+from models.player import Player
+from core.phase import Phase
+from core.attack_step import AttackStep
 from typing import Callable
 
 class Game():
