@@ -1,4 +1,4 @@
-from schemas.login import LoginRequest,LoginResponse,LogoutRequest,LogoutResponse
+from schemas.login_logout import LoginRequest,LoginResponse,LogoutRequest,LogoutResponse
 from schemas.global_registration import players
 from models.player import Player
 
