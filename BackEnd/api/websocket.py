@@ -6,4 +6,4 @@ router=APIRouter()
 #@app.websocket("/ws")
 @router.websocket("/ws")
 async def websocket_endpoint(ws:WebSocket):
-    websocket.websocket_endpoint(ws)
+    await websocket.websocket(ws)
