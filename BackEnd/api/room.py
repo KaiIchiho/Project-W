@@ -3,7 +3,7 @@ from api.router import router_api
 from schemas.room import ExitRoomRequest,ExitRoomResponse,EnterRoomRequest,EnterRoomResponse,CreateRoomRequest,CreateRoomResponse
 from services import room
 
-router=APIRouter(prefix=router_api)
+router=APIRouter()
 
 @router.get("/get_room_id_list")
 def get_room_id_list():

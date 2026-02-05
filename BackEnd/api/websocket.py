@@ -2,7 +2,7 @@ from fastapi import APIRouter,WebSocket
 from api.router import router_api
 from services import websocket
 
-router=APIRouter(prefix=router_api)
+router=APIRouter()
 
 #@app.websocket("/ws")
 @router.websocket("/ws")

@@ -3,7 +3,7 @@ from api.router import router_api
 from schemas.login import LoginRequest,LoginResponse,LogoutRequest,LogoutResponse
 from services import login
 
-router=APIRouter(prefix=router_api)
+router=APIRouter()
 
 @router.post("/login", response_model=LoginResponse)
 def login(req: LoginRequest):
