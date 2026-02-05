@@ -1,5 +1,4 @@
 from fastapi import APIRouter
-from api.router import router_api
 from schemas.room import ExitRoomRequest,ExitRoomResponse,EnterRoomRequest,EnterRoomResponse,CreateRoomRequest,CreateRoomResponse
 from services import room
 
