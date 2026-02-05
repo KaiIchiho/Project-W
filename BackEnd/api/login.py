@@ -6,8 +6,8 @@ router=APIRouter()
 
 @router.post("/login", response_model=LoginResponse)
 def login(req: LoginRequest):
-    return login(req)
+    return login.login(req)
 
 @router.post("/logout",response_model=LogoutResponse)
 def logout(req:LogoutRequest):
-    return logout(req)
+    return login.logout(req)
