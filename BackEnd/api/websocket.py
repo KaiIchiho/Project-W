@@ -1,5 +1,4 @@
 from fastapi import APIRouter,WebSocket
-from api.router import router_api
 from services import websocket
 
 router=APIRouter()
