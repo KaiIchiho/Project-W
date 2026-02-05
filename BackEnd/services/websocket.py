@@ -2,7 +2,7 @@ from fastapi import WebSocket,WebSocketDisconnect
 from services.connection import Connection
 from schemas.global_registration import connections,connected_clients,rooms,player_room
 
-async def websocket_endpoint(ws:WebSocket):
+async def websocket(ws:WebSocket):
     await ws.accept()
     # Add ws To Connected Clients List
     connected_clients.append(ws)
