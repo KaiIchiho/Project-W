@@ -105,21 +105,21 @@ class Game():
         self.current_phase=next_phase
         
         new_log:str=""
-        match next_phase:
-            case Phase.STAND:
-                new_log=self.__started_stand_phase()
-            case Phase.DRAW:
-                new_log=self.__started_draw_phase()
-            case Phase.CLOCK:
-                new_log=self.__started_clock_phase()
-            case Phase.MAIN:
-                new_log=self.__started_main_phase()
-            case Phase.CLIMAX:
-                new_log=self.__started_climax_phase()
-            case Phase.ATTACK:
-                new_log=self.__started_attack_phase()
-            case Phase.END:
-                new_log=self.__started_end_phase()
+        
+        if next_phase==Phase.STAND:
+            new_log=self.__started_stand_phase()
+        elif next_phase==Phase.DRAW:
+            new_log=self.__started_draw_phase()
+        elif next_phase==Phase.CLOCK:
+            new_log=self.__started_clock_phase()
+        elif next_phase==Phase.MAIN:
+            new_log=self.__started_main_phase()
+        elif next_phase==Phase.CLIMAX:
+            new_log=self.__started_climax_phase()
+        elif next_phase==Phase.ATTACK:
+            new_log=self.__started_attack_phase()
+        elif next_phase==Phase.END:
+            new_log=self.__started_end_phase()
                 
         self.FLOW_LOGS.append(new_log)
     
@@ -129,17 +129,17 @@ class Game():
         self.current_attack_step=next_attack_step
         
         new_log:str=""
-        match next_attack_step:
-            case AttackStep.ATTACK_DECLARATION:
-                new_log=self.__entered_attack_declaration_step()
-            case AttackStep.TRIGGER:
-                new_log=self.__entered_trigger_step()
-            case AttackStep.DAMAGE:
-                new_log=self.__entered_damage_step()
-            case AttackStep.BATTLE:
-                new_log=self.__entered_battle_step()
-            case AttackStep.ENCORE:
-                new_log=self.__entered_encore_step()
+        
+        if next_attack_step==AttackStep.ATTACK_DECLARATION:
+            new_log=self.__entered_attack_declaration_step()
+        elif next_attack_step==AttackStep.TRIGGER:
+            new_log=self.__entered_trigger_step()
+        elif next_attack_step==AttackStep.DAMAGE:
+            new_log=self.__entered_damage_step()
+        elif next_attack_step==AttackStep.BATTLE:
+            new_log=self.__entered_battle_step()
+        elif next_attack_step==AttackStep.ENCORE:
+            new_log=self.__entered_encore_step()
                 
         self.FLOW_LOGS.append(new_log)
         
