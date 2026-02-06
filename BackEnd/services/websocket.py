@@ -37,7 +37,7 @@ async def websocket(ws:WebSocket):
             if msg_type==1:
                 await receive_text(ws,room,msg["text"])
             elif msg_type==2:
-                await receive_json(ws,user_id,room,json.load(msg["text"]))
+                await receive_json(ws,user_id,room,json.loads(msg["text"]))
             
     except WebSocketDisconnect:
         # Remove ws From Connected Clients List
