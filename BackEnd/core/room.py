@@ -85,3 +85,9 @@ class Room():
         if self.viewer is not None:
             ids.append(self.viewer.player_id)
         return ids
+    
+    def check_is_players_full(self)->bool:
+        if self.player_1 is not None and self.player_2 is not None:
+            return True
+        else:
+            return False
