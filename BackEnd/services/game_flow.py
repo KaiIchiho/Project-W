@@ -14,7 +14,7 @@ def standby(user_id:str)->int:
         return -1
     
     game=create_game_instance(room)
-    result=game.set_player_to_none()
+    result=game.set_player_to_none(player)
     if result==-1:
         print(f"Warning: Game Instance is Players Full !")
     return result    
