@@ -88,11 +88,16 @@ async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
     
     if command_type==Command.STANDBY:
         result=game_flow.standby(user_id)
-        if result==False:
-            await ws.send_text("From Server - Standby Failed !")
+        send_text=""
+        if result==-1:
+            send_text="From Server - Standby Failed !"
         else:
-            await ws.send_text("From Server - Standby Succeeded !")
-            
+            send_text="From Server - Standby Succeeded ! "
+            if result==1:
+                send_text+="As Player 1"
+            elif result==2:
+                send_text+="As Player 2"
+        await ws.send_text(send_text)
     elif command_type==Command.NEXT_PHASE:
         game_flow.next_phase()
     elif command_type==Command.NEXT_TURN:

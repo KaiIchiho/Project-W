@@ -1,7 +1,7 @@
 from models.player import Player
 from core.phase import Phase
 from core.attack_step import AttackStep
-from typing import Callable
+from typing import Callable,Optional
 
 class Game():
     FLOW_LOGS:list[str]=[]
@@ -23,9 +23,9 @@ class Game():
     ]
     
     def __init__(self,
-                 player_1:Player,
-                 player_2:Player,
-                 action_player:Player,
+                 player_1:Optional[Player]=None,
+                 player_2:Optional[Player]=None,
+                 action_player:Optional[Player]=None,
                  on_stand_phase_started:Callable[[Player],None]=None,
                  on_draw_phase_started:Callable[[Player],None]=None,
                  on_clock_phase_started:Callable[[Player],None]=None,
@@ -62,7 +62,26 @@ class Game():
         self.on_damage_as_entered=on_damage_as_entered
         self.on_battle_as_entered=on_battle_as_entered
         self.on_encore_as_entered=on_encore_as_entered
+    
+    def set_player_1(self,player_1:Player):
+        self.player_1=player_1
+    
+    def set_player_2(self,player_2:Player):
+        self.player_2=player_2
+    
+    def set_first_player(self,player:Player):
+        self.action_player=player
         
+    def set_player_to_none(self,player:Player)->int:
+        if self.player_1 is None:
+            self.player_1=player
+            return 1
+        elif self.player_2 is None:
+            self.player_2=player
+            return 2
+        else:
+            return -1
+     
     def start_turn(self):
         self.current_turn+=1
         self.__start_phase(self.PHASE_FLOW(0))
