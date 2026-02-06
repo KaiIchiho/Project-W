@@ -6,11 +6,11 @@ def standby(user_id:str)->int:
     player=global_registration.players.get(user_id)
     room_id=global_registration.player_room.get(user_id)
     if room_id is None:
-        print(f"Error: {user_id} User Is Not In Room")
+        print(f"Warning: {user_id} User Is Not In Room")
         return -1
     room=global_registration.rooms.get(room_id)
     if room is None:
-        print(f"Error: {room_id} Room Not Found")
+        print(f"Warning: {room_id} Room Not Found")
         return -1
     
     game=create_game_instance(room)

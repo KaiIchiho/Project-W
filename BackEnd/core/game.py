@@ -39,7 +39,7 @@ class Game():
                  on_battle_as_entered:Callable[[Player],None]=None,
                  on_encore_as_entered:Callable[[Player],None]=None,
                  ):
-        if player_1 is player_2:
+        if player_1 is not None and player_2 is not None and player_1 is player_2:
             raise ValueError("2 Player Are the Same")
         self.player_1=player_1
         self.player_2=player_2
@@ -64,15 +64,26 @@ class Game():
         self.on_encore_as_entered=on_encore_as_entered
     
     def set_player_1(self,player_1:Player):
+        if player_1 is not None:
+            if player_1 is self.player_2:
+                raise ValueError("2 Player Are the Same")
         self.player_1=player_1
     
     def set_player_2(self,player_2:Player):
+        if player_2 is not None:
+            if player_2 is self.player_1:
+                raise ValueError("2 Player Are the Same")
         self.player_2=player_2
     
     def set_first_player(self,player:Player):
         self.action_player=player
         
     def set_player_to_none(self,player:Player)->int:
+        if player is None:
+            raise ValueError("None Player !")
+        elif player is self.player_1 or player is self.player_2:
+            raise ValueError("2 Player Are the Same")
+        
         if self.player_1 is None:
             self.player_1=player
             return 1
