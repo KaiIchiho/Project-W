@@ -3,6 +3,8 @@ import json
 from core.room import Room
 from services.connection import Connection
 from schemas.global_registration import connections,connected_clients,rooms,player_room
+from services.command import Command
+from services import game_flow
 
 async def websocket(ws:WebSocket):
     await ws.accept()
@@ -35,7 +37,7 @@ async def websocket(ws:WebSocket):
             if msg_type==1:
                 await receive_text(ws,room,msg["text"])
             elif msg_type==2:
-                await receive_json(ws,room)
+                await receive_json(ws,user_id,room,json.load(msg["text"]))
             
     except WebSocketDisconnect:
         # Remove ws From Connected Clients List
@@ -75,5 +77,23 @@ async def receive_text(ws:websocket,room:Room,text:str):
     await ws.send_text(f"From Server - (yourself){text}")
     #asyncio.create_task(ws.send_text(f"(yourself){text}"))
     
-async def receive_json(ws:websocket,room:Room):
-    return
+async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
+    command=json.get("type")
+    if command is None:
+        return
+    try:
+        command_type=Command(command)
+    except ValueError:
+        return
+    
+    if command_type==Command.STANDBY:
+        result=game_flow.standby(user_id)
+        if result==False:
+            await ws.send_text("From Server - Standby Failed !")
+        else:
+            await ws.send_text("From Server - Standby Succeeded !")
+            
+    elif command_type==Command.NEXT_PHASE:
+        game_flow.next_phase()
+    elif command_type==Command.NEXT_TURN:
+        game_flow.next_turn()

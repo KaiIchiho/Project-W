@@ -1,0 +1,6 @@
+from enum import Enum
+
+class Command(Enum):
+    STANDBY="standby"
+    NEXT_PHASE="next_phase"
+    NEXT_TURN="next_turn"

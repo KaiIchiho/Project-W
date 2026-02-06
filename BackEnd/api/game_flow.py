@@ -14,3 +14,4 @@ def next_phase_endpoint():
 @router.post("/next_turn")
 def next_turn_endpoint():
     return
+
