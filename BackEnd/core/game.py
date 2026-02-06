@@ -68,6 +68,8 @@ class Game():
         return next_player
         
     def handle_action(self,action:dict)->str:
+        if self.player_1 is None or self.player_2 is None:
+            return "Game Is Not Players Full !"
         log=self.phase.handle_action(self,action)
         if self.phase.is_complete:
             next_log=self.phase.on_next_phase(self,action)
