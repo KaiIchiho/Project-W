@@ -17,17 +17,11 @@ def standby(user_id:str)->int:
     result=game.set_player_to_none(player)
     if result==-1:
         print(f"Warning: Game Instance is Players Full !")
-    return result    
-    
-def next_phase():
-    return
-
-def next_turn():
-    return
+    return result
 
 def create_game_instance(room:Room)->Game:
     room_id=room.room_id
-    game=global_registration.room_game.get(room_id)
+    game=get_game_by_room_id(room_id)
     if game is not None:
         print(f"Log: {room_id} Room Has GameInstance")
     else:
@@ -35,3 +29,9 @@ def create_game_instance(room:Room)->Game:
         global_registration.room_game[room_id]=game
     return game
     
+def get_game_by_room_id(room_id:str)->Game:
+    return global_registration.room_game.get(room_id)
+
+def receive_command_json(room_id:str,command_json:dict):
+    game=get_game_by_room_id(room_id)
+    game.handle_action(command_json)

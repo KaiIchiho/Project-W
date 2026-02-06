@@ -3,7 +3,7 @@ import json
 from core.room import Room
 from services.connection import Connection
 from schemas.global_registration import connections,connected_clients,rooms,player_room
-from services.command import Command
+from BackEnd.services.sub_command.command_base import Command
 from services import game_flow
 
 async def websocket(ws:WebSocket):
@@ -70,35 +70,26 @@ async def receive_text(ws:websocket,room:Room,text:str):
         if connect.websocket is ws:
             continue
         try:
-            await connect.websocket.send_text(f"From Server - {text}")
+            await connect.websocket.send_text("From Server -\n {text}")
         except WebSocketDisconnect:
             connections.pop(uid)
             
-    await ws.send_text(f"From Server - (yourself){text}")
+    await ws.send_text(f"From Server -\n (yourself){text}")
     #asyncio.create_task(ws.send_text(f"(yourself){text}"))
     
 async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
     command=json.get("type")
     if command is None:
         return
-    try:
-        command_type=Command(command)
-    except ValueError:
-        return
-    
-    if command_type==Command.STANDBY:
+    result_text="From Server -"
+    if command=="standby":
         result=game_flow.standby(user_id)
-        send_text=""
         if result==-1:
-            send_text="From Server - Standby Failed !"
+            result_text+="\n Standby Failed !"
         else:
-            send_text="From Server - Standby Succeeded ! "
-            if result==1:
-                send_text+="As Player 1"
-            elif result==2:
-                send_text+="As Player 2"
-        await ws.send_text(send_text)
-    elif command_type==Command.NEXT_PHASE:
-        game_flow.next_phase()
-    elif command_type==Command.NEXT_TURN:
-        game_flow.next_turn()
+            result_text+=f"\n Standby Succeeded ! As Player {result}"
+    else:
+        result_text+=game_flow.receive_command_json(json)
+        
+    await ws.send_text(result_text)
+    
