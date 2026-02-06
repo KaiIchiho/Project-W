@@ -1,5 +1,6 @@
 function standby(){
-    if(!ws){
+    if(ws.readyState!==WebSocket.OPEN){
+        console.error("WebSocket not open:",ws.readyState);
         return
     }
     ws.send(JSON.stringify({
