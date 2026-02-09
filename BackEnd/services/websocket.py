@@ -69,7 +69,7 @@ async def receive_text(ws:websocket,room:Room,text:str):
         if connect.websocket is ws:
             continue
         try:
-            await connect.websocket.send_text("From Server -\n {text}")
+            await connect.websocket.send_text(f"From Server -\n {text}")
         except WebSocketDisconnect:
             connections.pop(uid)
             
@@ -88,7 +88,7 @@ async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
         else:
             result_text+=f"\n Standby Succeeded ! As Player {result}"
     else:
-        result_text+=game_flow.receive_command_json(json)
+        result_text+=game_flow.receive_command_json(room.room_id,json)
         
     await ws.send_text(result_text)
     
