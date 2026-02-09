@@ -9,8 +9,10 @@
 #    ATTACK=auto()
 #    END=auto()
 
-from core.game import Game
 from services.sub_command.next_turn_command import NextTurnCommand
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from core.game import Game
 
 class Phase:
     handlers={
