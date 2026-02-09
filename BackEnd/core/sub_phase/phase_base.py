@@ -23,24 +23,24 @@ class Phase:
     phase_name="phase_base"
     next_phase=None
     
-    def on_enter(self,game:Game):
+    def on_enter(self,game:"Game"):
         pass
-    def on_exit(self,game:Game):
+    def on_exit(self,game:"Game"):
         pass
-    def handle_action(self,game:Game,action:dict)->str:
+    def handle_action(self,game:"Game",action:dict)->str:
         handler_name=self.handlers.get(action.get("type"))
         if not handler_name:
             raise ValueError("Action Not Found")
         handler=getattr(self,handler_name)
         return handler(self,game,action)
     
-    def on_next_phase(self,game:Game,action:dict):
+    def on_next_phase(self,game:"Game",action:dict):
         if self.next_phase is None:
             return self.on_next_turn(game,action)
         else:
             game.phase=self.next_phase()
             return f"Next Phase : {game.phase.phase_name}"
             
-    def on_next_turn(self,game:Game,action:dict):
+    def on_next_turn(self,game:"Game",action:dict):
         next_player=game.start_next_turn()
         return f"Next Is Player {next_player}'s Turn"
