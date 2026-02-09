@@ -8,7 +8,7 @@ function standby(){
     }));
 }
 
-function next_phase_button(){
+function next_phase(){
     if(ws.readyState!==WebSocket.OPEN){
         console.error("WebSocket not open:",ws.readyState);
         return
