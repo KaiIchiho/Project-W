@@ -69,7 +69,7 @@ async def receive_text(ws:websocket,room:Room,text:str):
         if connect.websocket is ws:
             continue
         try:
-            await connect.websocket.send_text("From Server -\n {text}")
+            await connect.websocket.send_text(f"From Server -\n {text}")
         except WebSocketDisconnect:
             connections.pop(uid)
             
