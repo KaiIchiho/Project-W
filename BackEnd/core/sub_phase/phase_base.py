@@ -32,7 +32,7 @@ class Phase:
         if not handler_name:
             raise ValueError("Action Not Found")
         handler=getattr(self,handler_name)
-        return handler(self,game,action)
+        return handler(game,action)
     
     def on_next_phase(self,game:"Game",action:dict):
         if self.next_phase is None:
