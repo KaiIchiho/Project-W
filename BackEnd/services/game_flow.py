@@ -36,4 +36,6 @@ def receive_command_json(room_id:str,command_json:dict):
     type=command_json.get("type")
     print(f"Log: Command Type Is {type}")
     game=get_game_by_room_id(room_id)
-    game.handle_action(command_json)
+    if game is None:
+        return "Error !"
+    return game.handle_action(command_json)
