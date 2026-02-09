@@ -88,7 +88,7 @@ async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
         else:
             result_text+=f"\n Standby Succeeded ! As Player {result}"
     else:
-        result_text+=game_flow.receive_command_json(json)
+        result_text+=game_flow.receive_command_json(room.room_id,json)
         
     await ws.send_text(result_text)
     
