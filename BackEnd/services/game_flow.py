@@ -33,6 +33,6 @@ def get_game_by_room_id(room_id:str)->Game:
     return global_registration.room_game.get(room_id)
 
 def receive_command_json(room_id:str,command_json:dict):
-    print(f"Log: Command Type Is {command_json["type"]}")
+    print(f"Log: Command Type Is {command_json.get("type")}")
     game=get_game_by_room_id(room_id)
     game.handle_action(command_json)
