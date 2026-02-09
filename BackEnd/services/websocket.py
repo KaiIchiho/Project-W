@@ -79,6 +79,7 @@ async def receive_text(ws:websocket,room:Room,text:str):
 async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
     command=json.get("type")
     if command is None:
+        print("Error: JSON Command Is None !")
         return
     result_text="From Server -"
     if command=="standby":
