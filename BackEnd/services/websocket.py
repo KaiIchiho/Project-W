@@ -3,7 +3,6 @@ import json
 from core.room import Room
 from services.connection import Connection
 from schemas.global_registration import connections,connected_clients,rooms,player_room
-from BackEnd.services.sub_command.command_base import Command
 from services import game_flow
 
 async def websocket(ws:WebSocket):
