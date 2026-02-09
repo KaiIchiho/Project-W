@@ -4,8 +4,10 @@
 #    STANDBY="standby"
 #    NEXT_PHASE="next_phase"
 #    NEXT_TURN="next_turn"
-from core.game import Game
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from core.game import Game
 
 class Command:
-    def execute(self,game:Game):
+    def execute(self,game:"Game"):
         pass
