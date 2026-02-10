@@ -43,7 +43,4 @@ async def receive_command_json(room_id:str,command_json:dict,user_id:str):
     game=get_game_by_room_id(room_id)
     if game is None:
         return #"Error !"
-    
-    player_id=command_json.get("player_id")
-    print(f"Command Player ID: {player_id}")
     await game.handle_action(command_json,user_id)

@@ -83,14 +83,14 @@ async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
     if command is None:
         print("Error: JSON Command Is None !")
         return
+   
+    player_id=command_json.get("player_id")
+    print(f"Command Player ID: {player_id}")
+    
     if command=="standby":
-        #result=
         await game_flow.standby(user_id)
     else:
-        #result_text+=
         await game_flow.receive_command_json(room.room_id,json,user_id)
-        
-    #await ws.send_text(result_text)
 
 async def send_message(message:dict,user_id:str):
     present_text="From Server - "
