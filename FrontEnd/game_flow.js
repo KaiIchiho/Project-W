@@ -13,7 +13,9 @@ function next_phase(){
         console.error("WebSocket not open:",ws.readyState);
         return
     }
+    console.log("Command Player ID: ",user_id)
     ws.send(JSON.stringify({
-        type:"next_phase"
+        type:"next_phase",
+        player_id:user_id
     }));
 }
