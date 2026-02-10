@@ -41,6 +41,7 @@ class Phase:
         
         message=handler(game,action)
         if message.get("room") is not None:
+            print(f"message: {message}")
             message["room"]=text+message["room"]
         
         return message
