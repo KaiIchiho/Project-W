@@ -1,6 +1,7 @@
 from fastapi import WebSocket,WebSocketDisconnect
 import json
 from core.room import Room
+from models.player import Player
 from services.connection import Connection
 from schemas.global_registration import connections,connected_clients,rooms,player_room
 from services import game_flow
@@ -83,7 +84,7 @@ async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
         return
     result_text="From Server -"
     if command=="standby":
-        result=game_flow.standby(user_id)
+        result=await game_flow.standby(user_id)
         if result==-1:
             result_text+="\n Standby Failed !"
         else:
@@ -92,4 +93,36 @@ async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
         result_text+=game_flow.receive_command_json(room.room_id,json)
         
     await ws.send_text(result_text)
+
+async def send_message(message:dict,user_id:str):
+    self_connection=connections.get(user_id)
+    self_ws=None
+    if self_connection is not None:
+        self_ws=self_connection.websocket
+    to_self=message.get("self")
+    to_room=message.get("room")
+    if self_ws is not None and to_self is not None:
+        await self_ws.send_text(to_self)
     
+    room_id=player_room.get(user_id)
+    if room_id is None:
+        return
+    room=rooms.get(room_id)
+    if room is None or to_room is None:
+        return
+    await send_message_by_player(room.player_1,to_room)
+    await send_message_by_player(room.player_2,to_room)
+    await send_message_by_player(room.viewer,to_room)
+    
+async def send_message_by_player(player:Player,message:str):
+    if player is None:
+        return
+    connection=connections.get(player.player_id)
+    if connection is None:
+        return
+    ws=connection.websocket
+    if ws is None:
+        return
+    await ws.send_text(message)
+    
+game_flow.ws_send_handler=send_message
