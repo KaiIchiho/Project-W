@@ -8,7 +8,8 @@ class StandPhase(Phase):
         self.next_phase=DrawPhase
     
     def on_enter(self, game):
-        return super().on_enter(game)
+        #return super().on_enter(game)
+        game.send_message(None,"Enter Start Phase",None)
     
     def on_exit(self, game):
         return super().on_exit(game)
