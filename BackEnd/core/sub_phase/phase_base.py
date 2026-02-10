@@ -47,17 +47,17 @@ class Phase:
     def on_next_phase(self,game:"Game",action:dict):
         player_id=action.get("player_id")
         if not game.check_is_action_player_command(player_id):
-            return game.create_message("Not Your Turn",None,player_id)
+            return game.create_message("Not Your Turn",None)
         if self.next_phase is None:
             text=self.on_next_turn(game,action)
-            return game.create_message(None,text,player_id)
+            return game.create_message(None,text)
         else:
             game.phase=self.next_phase()
-            return game.create_message(None,f"Next Phase : {game.phase.phase_name}",player_id)
+            return game.create_message(None,f"Next Phase : {game.phase.phase_name}")
             
     def on_next_turn(self,game:"Game",action:dict):
         player_id=action.get("player_id")
         if not game.check_is_action_player_command(player_id):
-            return game.create_message("Not Your Turn",None,player_id)  
+            return game.create_message("Not Your Turn",None)
         next_player=game.start_next_turn()
-        return game.create_message(None,f"Next Is Player {next_player}'s Turn",player_id)
+        return game.create_message(None,f"Next Is Player {next_player}'s Turn")
