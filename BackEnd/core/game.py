@@ -51,7 +51,7 @@ class Game():
         if self.player_1 is None:
             self.player_1=player
             #if self.ws_send_message is not None:
-            await self.__send_messgae(
+            await self.send_message(
                 "Standby Succeeded !",
                 "Player 1 Standby",
                 player.player_id)
@@ -61,7 +61,7 @@ class Game():
         elif self.player_2 is None:
             self.player_2=player
             #if self.ws_send_message is not None:
-            await self.__send_messgae(
+            await self.send_message(
                 "Standby Succeeded !",
                 "Player 2 Standby",
                 player.player_id)
@@ -70,7 +70,7 @@ class Game():
             return 2
         else:
             #if self.ws_send_message is not None:
-            await self.__send_messgae(
+            await self.send_message(
                 "Standby Failed !",
                 None,
                 player.player_id)
@@ -81,7 +81,7 @@ class Game():
             return
         self.current_turn=1
         self.set_first_player(self.player_1)
-        await self.__send_messgae(None,"Start Game",player_id)
+        await self.send_message(None,"Start Game",player_id)
     
     def create_message(self,self_text:str,room_text:str)->dict:
         message={}
@@ -89,7 +89,7 @@ class Game():
         message["room"]=room_text
         return message
     
-    async def send_messgae(self,self_text:str,room_text:str,player_id:str):
+    async def send_message(self,self_text:str,room_text:str,player_id:str):
         message=self.create_message(self_text,room_text)
         await self.send_message_backage(message,player_id)
     
@@ -118,7 +118,7 @@ class Game():
         
     async def handle_action(self,action:dict,player_id:str):
         if self.check_is_full_players()==False:
-            await self.__send_messgae("Game Is Not Players Full !",None,None)
+            await self.send_message("Game Is Not Players Full !",None,None)
             return
         
         message=self.phase.handle_action(self,action,player_id)
