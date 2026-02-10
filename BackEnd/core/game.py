@@ -153,10 +153,14 @@ class Game():
             return None
         
     def check_is_action_player_command(self,player_id:str)->bool:
+        print(f"Check is Action Player ID: {player_id}")
         command_player=self.check_command_player(player_id)
         if command_player is None:
+            print(f"Check is Action Player None")
             return False
         if command_player is self.action_player:
+            print(f"Check is Action Player True")
             return True
         else:
+            print(f"Check is Action Player False")
             return False
