@@ -38,6 +38,7 @@ class Phase:
         identity=game.check_player_identity_by_id(player_id)
         if identity!=-1:
             text=f"Player {identity}'s Action: "
+        
         message=handler(game,action)
         if message.get("room") is not None:
             message["room"]=text+message["room"]
