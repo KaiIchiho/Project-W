@@ -117,7 +117,7 @@ class Game():
             await self.__send_messgae("Game Is Not Players Full !",None,None)
             return
         
-        message=self.phase.handle_action(self,action)
+        message=self.phase.handle_action(self,action,player_id)
         await self.__send_message_backage(message,player_id)
         
         if self.phase.is_complete:

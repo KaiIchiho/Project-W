@@ -27,38 +27,34 @@ class Phase:
         pass
     def on_exit(self,game:"Game"):
         pass
-    def handle_action(self,game:"Game",action:dict)->dict:
+    def handle_action(self,game:"Game",action:dict,player_id:str)->dict:
         handler_name=self.handlers.get(action.get("type"))
         if not handler_name:
             raise ValueError("Action Not Found")
         handler=getattr(self,handler_name)
         
-        player_id=action.get("player_id")
         text=""
         identity=game.check_player_identity_by_id(player_id)
         if identity!=-1:
             text=f"Player {identity}'s Action: "
         
-        message=handler(game,action)
+        message=handler(game,action,player_id)
         if message.get("room") is not None:
             print(f"message: {message}")
             message["room"]=text+message["room"]
         
         return message
     
-    def on_next_phase(self,game:"Game",action:dict):
-        player_id=action.get("player_id")
+    def on_next_phase(self,game:"Game",action:dict,player_id:str):
         if not game.check_is_action_player_command(player_id):
             return game.create_message("Not Your Turn",None)
         if self.next_phase is None:
-            message=self.on_next_turn(game,action)
-            return message
+            return self.on_next_turn(game,action)
         else:
             game.phase=self.next_phase()
             return game.create_message(None,f"Next Phase : {game.phase.phase_name}")
             
-    def on_next_turn(self,game:"Game",action:dict):
-        player_id=action.get("player_id")
+    def on_next_turn(self,game:"Game",action:dict,player_id:str):
         if not game.check_is_action_player_command(player_id):
             return game.create_message("Not Your Turn",None)
         next_player=game.start_next_turn()

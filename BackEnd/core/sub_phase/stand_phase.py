@@ -13,5 +13,5 @@ class StandPhase(Phase):
     def on_exit(self, game):
         return super().on_exit(game)
     
-    def handle_action(self, game, action):
-        return super().handle_action(game, action)
+    def handle_action(self, game, action,player_id:str):
+        return super().handle_action(game, action,player_id)

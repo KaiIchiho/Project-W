@@ -15,7 +15,6 @@ function next_phase(){
     }
     console.log("Command Player ID: ",user_id)
     ws.send(JSON.stringify({
-        type:"next_phase",
-        player_id:user_id
+        type:"next_phase"
     }));
 }
