@@ -122,7 +122,7 @@ class Game():
         if self.phase.is_complete:
             next_message=self.phase.on_next_phase(self,action)
             #log=f"{log}\n{next_log}"
-        await self.__send_message_backage(next_message,player_id)
+            await self.__send_message_backage(next_message,player_id)
     
     def check_player_identity(self,user:Player)->int:
         if self.player_1 is user:
