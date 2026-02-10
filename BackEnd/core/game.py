@@ -89,13 +89,17 @@ class Game():
         message["room"]=room_text
         return message
     
-    async def __send_messgae(self,self_text:str,room_text:str,player_id:str):
+    async def send_messgae(self,self_text:str,room_text:str,player_id:str):
         message=self.create_message(self_text,room_text)
-        await self.__send_message_backage(message,player_id)
+        await self.send_message_backage(message,player_id)
     
-    async def __send_message_backage(self,message:dict,player_id:str):
+    async def send_message_backage(self,message:dict,player_id:str):
         if self.ws_send_message is not None:
             await self.ws_send_message(message,player_id)
+    
+    def __in_start_phase(self):
+        self.phase=self.first_phase
+        self.phase
     
     def start_next_turn(self)->int:
         next_player=0
@@ -118,12 +122,12 @@ class Game():
             return
         
         message=self.phase.handle_action(self,action,player_id)
-        await self.__send_message_backage(message,player_id)
+        await self.send_message_backage(message,player_id)
         
         if self.phase.is_complete:
             next_message=self.phase.on_next_phase(self,action)
             #log=f"{log}\n{next_log}"
-            await self.__send_message_backage(next_message,player_id)
+            await self.send_message_backage(next_message,player_id)
     
     def check_player_identity(self,user:Player)->int:
         if self.player_1 is user:
