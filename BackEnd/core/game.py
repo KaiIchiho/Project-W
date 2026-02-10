@@ -161,6 +161,8 @@ class Game():
         if command_player is None:
             print(f"Check is Action Player None")
             return False
+        print(f"Command Player ID: {command_player.player_id}")
+        print(f"Action Player ID: {self.action_player.player_id}")
         if command_player is self.action_player:
             print(f"Check is Action Player True")
             return True
