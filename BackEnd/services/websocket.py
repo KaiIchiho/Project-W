@@ -1,4 +1,4 @@
-from fastapi import WebSocket,WebSocketDisconnect
+from fastapi import WebSocket,WebSocketDisconnect,WebSocketState
 import json
 from core.room import Room
 from models.player import Player
@@ -102,7 +102,8 @@ async def send_message(message:dict,user_id:str):
     to_self=message.get("self")
     to_room=message.get("room")
     if self_ws is not None and to_self is not None:
-        await self_ws.send_text(to_self)
+        if self_ws.application_state == WebSocketState.CONNECTED:
+            await self_ws.send_text(to_self)
     
     room_id=player_room.get(user_id)
     if room_id is None:
@@ -123,6 +124,7 @@ async def send_message_by_player(player:Player,message:str):
     ws=connection.websocket
     if ws is None:
         return
-    await ws.send_text(message)
+    if ws.application_state == WebSocketState.CONNECTED:
+        await ws.send_text(message)
     
 game_flow.ws_send_handler=send_message
