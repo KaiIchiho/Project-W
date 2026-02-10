@@ -80,6 +80,7 @@ class Game():
         if self.check_is_full_players()==False:
             return
         self.current_turn=1
+        self.set_first_player(self.player_1)
         await self.__send_messgae(None,"Start Game",player_id)
     
     def create_message(self,self_text:str,room_text:str)->dict:
