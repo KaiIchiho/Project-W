@@ -83,19 +83,17 @@ async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
     if command is None:
         print("Error: JSON Command Is None !")
         return
-    result_text="From Server -"
     if command=="standby":
-        result=await game_flow.standby(user_id)
-        if result==-1:
-            result_text+="\n Standby Failed !"
-        else:
-            result_text+=f"\n Standby Succeeded ! As Player {result}"
+        #result=
+        await game_flow.standby(user_id)
     else:
-        result_text+=game_flow.receive_command_json(room.room_id,json)
+        #result_text+=
+        await game_flow.receive_command_json(room.room_id,json,user_id)
         
-    await ws.send_text(result_text)
+    #await ws.send_text(result_text)
 
 async def send_message(message:dict,user_id:str):
+    present_text="From Server - "
     self_connection=connections.get(user_id)
     self_ws=None
     if self_connection is not None:
@@ -104,7 +102,7 @@ async def send_message(message:dict,user_id:str):
     to_room=message.get("room")
     if self_ws is not None and to_self is not None:
         if self_ws.application_state == WebSocketState.CONNECTED:
-            await self_ws.send_text(to_self)
+            await self_ws.send_text(present_text+to_self)
     
     room_id=player_room.get(user_id)
     if room_id is None:
@@ -112,9 +110,9 @@ async def send_message(message:dict,user_id:str):
     room=rooms.get(room_id)
     if room is None or to_room is None:
         return
-    await send_message_by_player(room.player_1,to_room)
-    await send_message_by_player(room.player_2,to_room)
-    await send_message_by_player(room.viewer,to_room)
+    await send_message_by_player(room.player_1,present_text+to_room)
+    await send_message_by_player(room.player_2,present_text+to_room)
+    await send_message_by_player(room.viewer,present_text+to_room)
     
 async def send_message_by_player(player:Player,message:str):
     if player is None:

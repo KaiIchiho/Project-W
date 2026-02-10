@@ -9,22 +9,18 @@ async def standby(user_id:str)->int:
     player=global_registration.players.get(user_id)
     room_id=global_registration.player_room.get(user_id)
     if room_id is None:
-        print(f"Warning: {user_id} User Is Not In Room")
-        return -1
+        raise ValueError(f"{user_id} User Is Not In Room")
+        #return -1
     room=global_registration.rooms.get(room_id)
     if room is None:
-        print(f"Warning: {room_id} Room Not Found")
-        return -1
+        raise ValueError(f"{room_id} Room Not Found")
+        #return -1
     
     game=create_game_instance(room)
-    result=await game.set_player_to_none(player,start_game)
-    if result==-1:
-        print(f"Warning: Game Instance is Players Full !")
+    result=await game.set_player_to_none(player,game.start_game)
+    #if result==-1:
+    #    print(f"Warning: Game Instance is Players Full !")
     return result
-
-async def start_game(game:Game,player_id:str):
-    message=game.start_game()
-    await ws_send_handler(message,player_id)
     
 def create_game_instance(room:Room)->Game:
     room_id=room.room_id
@@ -33,16 +29,18 @@ def create_game_instance(room:Room)->Game:
         print(f"Log: {room_id} Room Has GameInstance")
     else:
         game=Game()
+        # delegate
+        game.ws_send_message=ws_send_handler
         global_registration.room_game[room_id]=game
     return game
     
 def get_game_by_room_id(room_id:str)->Game:
     return global_registration.room_game.get(room_id)
 
-def receive_command_json(room_id:str,command_json:dict):
+async def receive_command_json(room_id:str,command_json:dict,user_id:str):
     type=command_json.get("type")
     print(f"Log: Command Type Is {type}")
     game=get_game_by_room_id(room_id)
     if game is None:
-        return "Error !"
-    return game.handle_action(command_json)
+        return #"Error !"
+    await game.handle_action(command_json,user_id)

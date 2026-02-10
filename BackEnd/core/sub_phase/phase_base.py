@@ -27,24 +27,37 @@ class Phase:
         pass
     def on_exit(self,game:"Game"):
         pass
-    def handle_action(self,game:"Game",action:dict)->str:
+    def handle_action(self,game:"Game",action:dict)->dict:
         handler_name=self.handlers.get(action.get("type"))
         if not handler_name:
             raise ValueError("Action Not Found")
         handler=getattr(self,handler_name)
-        return handler(game,action)
+        
+        player_id=action.get("player_id")
+        text=""
+        identity=game.check_user_identity_by_id(player_id)
+        if identity!=-1:
+            text=f"Player {identity}'s Action: "
+        message=handler(game,action)
+        if message.get("room") is not None:
+            message["room"]=text+message["room"]
+        
+        return message
     
     def on_next_phase(self,game:"Game",action:dict):
-        if not game.check_is_action_player_command(action.get("player_id")):
-            return "Not Your Turn"               
+        player_id=action.get("player_id")
+        if not game.check_is_action_player_command(player_id):
+            return game.create_message("Not Your Turn",None,player_id)
         if self.next_phase is None:
-            return self.on_next_turn(game,action)
+            text=self.on_next_turn(game,action)
+            return game.create_message(None,text,player_id)
         else:
             game.phase=self.next_phase()
-            return f"Next Phase : {game.phase.phase_name}"
+            return game.create_message(None,f"Next Phase : {game.phase.phase_name}",player_id)
             
     def on_next_turn(self,game:"Game",action:dict):
-        if not game.check_is_action_player_command(action.get("player_id")):
-            return "Not Your Turn"  
+        player_id=action.get("player_id")
+        if not game.check_is_action_player_command(player_id):
+            return game.create_message("Not Your Turn",None,player_id)  
         next_player=game.start_next_turn()
-        return f"Next Is Player {next_player}'s Turn"
+        return game.create_message(None,f"Next Is Player {next_player}'s Turn",player_id)
