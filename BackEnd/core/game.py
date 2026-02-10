@@ -145,6 +145,9 @@ class Game():
     def check_command_player(self,player_id:str)->Player:
         if self.player_1 is None or self.player_2 is None:
             return None
+        print(f"player 1 ID: {self.player_1.player_id}")
+        print(f"player 2 ID: {self.player_2.player_id}")
+        print(f"checked player ID: {player_id}")
         if self.player_1.player_id==player_id:
             return self.player_1
         elif self.player_2.player_id==player_id:
