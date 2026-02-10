@@ -1,8 +1,11 @@
 from core.game import Game
 from core.room import Room
 from schemas import global_registration
+from typing import Callable,Awaitable
 
-def standby(user_id:str)->int:
+ws_send_handler:Callable[[dict,str],Awaitable[None]]
+
+async def standby(user_id:str)->int:
     player=global_registration.players.get(user_id)
     room_id=global_registration.player_room.get(user_id)
     if room_id is None:
@@ -14,11 +17,15 @@ def standby(user_id:str)->int:
         return -1
     
     game=create_game_instance(room)
-    result=game.set_player_to_none(player)
+    result=await game.set_player_to_none(player,start_game)
     if result==-1:
         print(f"Warning: Game Instance is Players Full !")
     return result
 
+async def start_game(game:Game,player_id:str):
+    message=game.start_game()
+    await ws_send_handler(message,player_id)
+    
 def create_game_instance(room:Room)->Game:
     room_id=room.room_id
     game=get_game_by_room_id(room_id)

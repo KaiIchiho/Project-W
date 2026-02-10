@@ -35,6 +35,8 @@ class Phase:
         return handler(game,action)
     
     def on_next_phase(self,game:"Game",action:dict):
+        if not game.check_is_action_player_command(action.get("player_id")):
+            return "Not Your Turn"               
         if self.next_phase is None:
             return self.on_next_turn(game,action)
         else:
@@ -42,5 +44,7 @@ class Phase:
             return f"Next Phase : {game.phase.phase_name}"
             
     def on_next_turn(self,game:"Game",action:dict):
+        if not game.check_is_action_player_command(action.get("player_id")):
+            return "Not Your Turn"  
         next_player=game.start_next_turn()
         return f"Next Is Player {next_player}'s Turn"
