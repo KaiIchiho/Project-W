@@ -35,7 +35,7 @@ class Phase:
         
         player_id=action.get("player_id")
         text=""
-        identity=game.check_user_identity_by_id(player_id)
+        identity=game.check_player_identity_by_id(player_id)
         if identity!=-1:
             text=f"Player {identity}'s Action: "
         message=handler(game,action)

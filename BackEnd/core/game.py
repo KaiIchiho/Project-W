@@ -53,7 +53,7 @@ class Game():
             #if self.ws_send_message is not None:
             await self.__send_messgae(
                 "Standby Succeeded !",
-                "Player 2 Standby",
+                "Player 1 Standby",
                 player.player_id)
             if callback is not None:
                 await callback(player.player_id)
