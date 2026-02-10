@@ -60,7 +60,7 @@ class Game():
     def start_game(self):
         message={}
         if self.check_is_full_players()==False:
-            return
+            return message
         self.current_turn=1
         message["room"]="Start Game"
         return message
