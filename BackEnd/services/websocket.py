@@ -1,4 +1,5 @@
-from fastapi import WebSocket,WebSocketDisconnect,WebSocketState
+from fastapi import WebSocket,WebSocketDisconnect
+from starlette.websockets import WebSocketState
 import json
 from core.room import Room
 from models.player import Player
