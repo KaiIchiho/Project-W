@@ -84,7 +84,7 @@ async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
         print("Error: JSON Command Is None !")
         return
    
-    player_id=command_json.get("player_id")
+    player_id=json.get("player_id")
     print(f"Command Player ID: {player_id}")
     
     if command=="standby":
