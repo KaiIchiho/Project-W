@@ -60,13 +60,14 @@ class Phase:
             return messages
         
         print(f"Log: on_next_phase, Now Phase Is {self.phase_name}")
-        game.phase.on_exit(game)
+        await game.phase.on_exit(game)
         if self.next_phase is None:
             print("Log: on_next_phase, Next Phase Is None")
             messages=await self.on_next_turn(game,action,player_id)
         else:
             print("Log: on_next_phase, Next Phase Is Not None")
             game.phase=self.next_phase()
+            await game.phase.on_enter(game)
             message=game.create_message(None,f"Next Phase : {game.phase.phase_name}")
             messages.append(message)
         
