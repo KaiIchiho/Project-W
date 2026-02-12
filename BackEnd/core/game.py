@@ -103,7 +103,7 @@ class Game():
         self.phase=self.first_phase
         await self.phase.on_enter(self)
     
-    def start_next_turn(self)->int:
+    async def start_next_turn(self)->int:
         next_player=0
         if self.action_player is self.player_1:
             self.action_player=self.player_2
@@ -112,23 +112,20 @@ class Game():
             self.action_player=self.player_1
             next_player=1
         self.current_turn+=1
-        self.__in_start_phase()
+        await self.__in_start_phase()
         
         return next_player
-    
-    def reset_phase(self):
-        self.phase=self.first_phase
         
     async def handle_action(self,action:dict,player_id:str):
         if self.check_is_full_players()==False:
             await self.send_message("Game Is Not Players Full !",None,None)
             return
         
-        message=self.phase.handle_action(self,action,player_id)
+        message=await self.phase.handle_action(self,action,player_id)
         await self.send_message_backage(message,player_id)
         
         if self.phase.is_complete:
-            next_message=self.phase.on_next_phase(self,action)
+            next_message=await self.phase.on_next_phase(self,action)
             #log=f"{log}\n{next_log}"
             await self.send_message_backage(next_message,player_id)
     

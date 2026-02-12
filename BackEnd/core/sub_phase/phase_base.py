@@ -27,7 +27,7 @@ class Phase:
         pass
     async def on_exit(self,game:"Game"):
         pass
-    def handle_action(self,game:"Game",action:dict,player_id:str)->dict:
+    async def handle_action(self,game:"Game",action:dict,player_id:str)->dict:
         handler_name=self.handlers.get(action.get("type"))
         if not handler_name:
             raise ValueError("Action Not Found")
@@ -38,28 +38,28 @@ class Phase:
         if identity!=-1:
             text=f"Player {identity}'s Action: "
         
-        message=handler(game,action,player_id)
+        message=await handler(game,action,player_id)
         if message.get("room") is not None:
             print(f"message: {message}")
             message["room"]=text+message["room"]
         
         return message
     
-    def on_next_phase(self,game:"Game",action:dict,player_id:str):
+    async def on_next_phase(self,game:"Game",action:dict,player_id:str):
         if not game.check_is_action_player_command(player_id):
             return game.create_message("Not Your Turn",None)
         
         print(f"Log: on_next_phase, Now Phase Is {self.phase_name}")
         if self.next_phase is None:
             print("Log: on_next_phase, Next Phase Is None")
-            return self.on_next_turn(game,action,player_id)
+            return await self.on_next_turn(game,action,player_id)
         else:
             print("Log: on_next_phase, Next Phase Is Not None")
             game.phase=self.next_phase()
             return game.create_message(None,f"Next Phase : {game.phase.phase_name}")
             
-    def on_next_turn(self,game:"Game",action:dict,player_id:str):
+    async def on_next_turn(self,game:"Game",action:dict,player_id:str):
         if not game.check_is_action_player_command(player_id):
             return game.create_message("Not Your Turn",None)
-        next_player=game.start_next_turn()
+        next_player=await game.start_next_turn()
         return game.create_message(None,f"Next Is Player {next_player}'s Turn")
