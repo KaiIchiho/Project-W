@@ -103,7 +103,7 @@ class Game():
         self.phase=self.first_phase
         await self.phase.on_enter(self)
     
-    async def start_next_turn(self,callback:Callable[[],Awaitable[None]])->int:
+    async def start_next_turn(self)->int:
         next_player=0
         if self.action_player is self.player_1:
             self.action_player=self.player_2
