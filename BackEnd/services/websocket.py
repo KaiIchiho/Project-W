@@ -83,9 +83,6 @@ async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
     if command is None:
         print("Error: JSON Command Is None !")
         return
-   
-    player_id=json.get("player_id")
-    print(f"Command Player ID: {player_id}")
     
     if command=="standby":
         await game_flow.standby(user_id)
