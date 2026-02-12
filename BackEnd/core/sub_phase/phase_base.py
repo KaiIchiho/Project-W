@@ -29,7 +29,9 @@ class Phase:
         pass
     
     async def send_message_list(self,game:"Game",player_id:str,message_list:list[dict],room_message_text:str):
+        print(f"Debug Log: send_message_list message_list {message_list}")
         for message in message_list:
+            print(f"Debug Log: send_message_list message {message}")
             if message.get("room") is not None:
                 message["room"]=room_message_text+message["room"]
             await game.send_message_backage(message,player_id)
