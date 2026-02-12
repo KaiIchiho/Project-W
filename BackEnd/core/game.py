@@ -116,7 +116,7 @@ class Game():
         
         if player_switch is not None:
             player_switch()
-        #await self.send_message(None,f"Next Is Player {next_player}'s Turn",self.turn_player.player_id)
+        
         await self.__in_start_phase()
         if in_start_phase is not None:
             in_start_phase()
@@ -128,13 +128,9 @@ class Game():
             await self.send_message("Game Is Not Players Full !",None,None)
             return
         
-        #message=await self.phase.handle_action(self,action,player_id)
-        #await self.send_message_backage(message,player_id)
         await self.phase.handle_action(self,action,player_id)
         
         if self.phase.is_complete:
-            #next_message=await self.phase.on_next_phase(self,action)
-            #await self.send_message_backage(next_message,player_id)
             await self.phase.on_next_phase(self,action)
     
     def check_player_identity(self,user:Player)->int:
