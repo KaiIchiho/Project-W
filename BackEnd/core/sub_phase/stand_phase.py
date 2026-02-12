@@ -7,11 +7,11 @@ class StandPhase(Phase):
         self.phase_name="Stand Phase"
         self.next_phase=DrawPhase
     
-    def on_enter(self, game):
+    async def on_enter(self, game):
         #return super().on_enter(game)
-        game.send_message(None,"Enter Start Phase",None)
+        await game.send_message(None,"Enter Start Phase",None)
     
-    def on_exit(self, game):
+    async def on_exit(self, game):
         return super().on_exit(game)
     
     def handle_action(self, game, action,player_id:str):
