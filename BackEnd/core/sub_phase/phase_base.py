@@ -24,9 +24,9 @@ class Phase:
     next_phase=None
     
     async def on_enter(self,game:"Game"):
-        pass
+        await game.send_message(None,f"Enter {self.phase_name}",game.turn_player.player_id)
     async def on_exit(self,game:"Game"):
-        pass
+        await game.send_message(None,f"Exit {self.phase_name}",game.turn_player.player_id)
     
     async def send_message_list(self,game:"Game",message_list:list[dict],default_player_id:str):
         for message in message_list:
@@ -60,15 +60,17 @@ class Phase:
             return messages
         
         print(f"Log: on_next_phase, Now Phase Is {self.phase_name}")
+        game.phase.on_exit(game)
         if self.next_phase is None:
             print("Log: on_next_phase, Next Phase Is None")
-            return await self.on_next_turn(game,action,player_id)
+            messages=await self.on_next_turn(game,action,player_id)
         else:
             print("Log: on_next_phase, Next Phase Is Not None")
             game.phase=self.next_phase()
             message=game.create_message(None,f"Next Phase : {game.phase.phase_name}")
             messages.append(message)
-            return messages
+        
+        return messages
     
     async def on_next_turn(self,game:"Game",action:dict,player_id:str):
         messages=[]

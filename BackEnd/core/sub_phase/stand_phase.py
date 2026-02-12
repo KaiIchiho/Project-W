@@ -8,8 +8,7 @@ class StandPhase(Phase):
         self.next_phase=DrawPhase
     
     async def on_enter(self, game):
-        #return super().on_enter(game)
-        await game.send_message(None,"Enter Start Phase",game.turn_player.player_id)
+        return super().on_enter(game)
     
     async def on_exit(self, game):
         return super().on_exit(game)
