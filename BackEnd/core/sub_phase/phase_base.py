@@ -28,9 +28,16 @@ class Phase:
     async def on_exit(self,game:"Game"):
         pass
     
-    async def send_message_list(self,game:"Game",player_id:str,message_list:list[dict],room_message_text:str):
+    async def send_message_list(self,game:"Game",message_list:list[dict],default_player_id:str):
         for message in message_list:
-            print(f"Debug Log: send_message_list message {message}")
+            room_message_text=""
+            player_id=message.get("player_id")
+            if player_id is None:
+                player_id=default_player_id
+            identity=game.check_player_identity_by_id(player_id)
+            if identity!=-1:
+                room_message_text=f"Player {identity}'s Action: "
+                
             if message.get("room") is not None:
                 message["room"]=room_message_text+message["room"]
             await game.send_message_backage(message,player_id)
@@ -41,27 +48,13 @@ class Phase:
             raise ValueError("Action Not Found")
         handler=getattr(self,handler_name)
         
-        text=""
-        identity=game.check_player_identity_by_id(player_id)
-        if identity!=-1:
-            text=f"Player {identity}'s Action: "
-            #await game.send_message(None,f"Player {identity}'s Action: ",player_id)
-        
-        #await handler(game,action,player_id)
         messages=await handler(game,action,player_id)
-        #if message.get("room") is not None:
-        #    print(f"message: {message}")
-        #    message["room"]=text+message["room"]
         
-        #await game.send_message_backage(message,player_id)
-        #return message
-        print(f"Debug Log: handle_action messages {messages}")
-        
-        await self.send_message_list(game,player_id,messages,text)
+        await self.send_message_list(game,messages,player_id)
     
     async def on_next_phase(self,game:"Game",action:dict,player_id:str):
         messages=[]
-        if not game.check_is_action_player_command(player_id):
+        if not game.check_is_turn_player_command(player_id):
             message=game.create_message("Not Your Turn",None)
             messages.append(message)
             return messages
@@ -79,7 +72,7 @@ class Phase:
     
     async def on_next_turn(self,game:"Game",action:dict,player_id:str):
         messages=[]
-        if not game.check_is_action_player_command(player_id):
+        if not game.check_is_turn_player_command(player_id):
             message=game.create_message("Not Your Turn",None)
             messages.append(message)
             return messages
@@ -89,6 +82,6 @@ class Phase:
         message1=game.create_message(None,f"Next Is Player {next_player}'s Turn")
         messages.append(message1)
         message2=game.create_message(None,"In Start Phase")
+        message2["player_id"]=game.turn_player.player_id
         messages.append(message2)
         return messages
-        #await game.send_message(None,f"Next Is Player {next_player}'s Turn")

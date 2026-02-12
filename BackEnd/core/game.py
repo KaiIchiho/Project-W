@@ -12,7 +12,7 @@ class Game():
     def __init__(self,
                  player_1:Optional[Player]=None,
                  player_2:Optional[Player]=None,
-                 action_player:Optional[Player]=None,
+                 turn_player:Optional[Player]=None,
                  ws_send_message:Optional[Callable[[dict,str],Awaitable[None]]]=None
                  ):
         if player_1 is not None and player_2 is not None and player_1 is player_2:
@@ -20,7 +20,7 @@ class Game():
         self.player_1=player_1
         self.player_2=player_2
         
-        self.action_player=action_player
+        self.turn_player=turn_player
         self.current_turn=0
         self.current_attack_step:AttackStep
         
@@ -41,7 +41,7 @@ class Game():
         self.player_2=player_2
     
     def set_first_player(self,player:Player):
-        self.action_player=player
+        self.turn_player=player
         
     async def set_player_to_none(self,player:Player,callback:Optional[Callable[[str],Awaitable[None]]]=None)->int:
         if player is None:
@@ -105,16 +105,18 @@ class Game():
     
     async def start_next_turn(self,player_switch:Callable[[],None]=None,in_start_phase:Callable[[],None]=None)->int:
         next_player=0
-        if self.action_player is self.player_1:
-            self.action_player=self.player_2
+        if self.turn_player is self.player_1:
+            self.turn_player=self.player_2
             next_player=2
-        elif self.action_player is self.player_2:
-            self.action_player=self.player_1
+        elif self.turn_player is self.player_2:
+            self.turn_player=self.player_1
             next_player=1
         self.current_turn+=1
+        await self.send_message(None,"Next Turn",self.turn_player.player_id)
+        
         if player_switch is not None:
             player_switch()
-        #await self.send_message(None,f"Next Is Player {next_player}'s Turn",self.action_player.player_id)
+        #await self.send_message(None,f"Next Is Player {next_player}'s Turn",self.turn_player.player_id)
         await self.__in_start_phase()
         if in_start_phase is not None:
             in_start_phase()
@@ -147,6 +149,9 @@ class Game():
         player=self.check_command_player(player_id)
         return self.check_player_identity(player)
     
+    def check_turn_player_identity(self)->int:
+        return self.check_player_identity(self.turn_player)
+    
     def check_is_full_players(self)->bool:
         if self.player_1 is None or self.player_2 is None:
             return False
@@ -166,15 +171,15 @@ class Game():
         else:
             return None
         
-    def check_is_action_player_command(self,player_id:str)->bool:
+    def check_is_turn_player_command(self,player_id:str)->bool:
         print(f"Check is Action Player ID: {player_id}")
         command_player=self.check_command_player(player_id)
         if command_player is None:
             print(f"Check is Action Player None")
             return False
         print(f"Command Player ID: {command_player.player_id}")
-        print(f"Action Player ID: {self.action_player.player_id}")
-        if command_player is self.action_player:
+        print(f"Action Player ID: {self.turn_player.player_id}")
+        if command_player is self.turn_player:
             print(f"Check is Action Player True")
             return True
         else:
