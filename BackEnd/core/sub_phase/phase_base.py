@@ -48,6 +48,8 @@ class Phase:
     def on_next_phase(self,game:"Game",action:dict,player_id:str):
         if not game.check_is_action_player_command(player_id):
             return game.create_message("Not Your Turn",None)
+        
+        print(f"Log: on_next_phase, Now Phase Is {self.phase_name}")
         if self.next_phase is None:
             print("Log: on_next_phase, Next Phase Is None")
             return self.on_next_turn(game,action,player_id)
