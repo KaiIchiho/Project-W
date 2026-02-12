@@ -9,7 +9,7 @@ class StandPhase(Phase):
     
     async def on_enter(self, game):
         #return super().on_enter(game)
-        await game.send_message(None,"Enter Start Phase",None)
+        await game.send_message(None,"Enter Start Phase",game.action_player.player_id)
     
     async def on_exit(self, game):
         return super().on_exit(game)

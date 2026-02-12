@@ -90,6 +90,8 @@ async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
         await game_flow.receive_command_json(room.room_id,json,user_id)
 
 async def send_message(message:dict,user_id:str):
+    if user_id is None:
+        return
     present_text="From Server - "
     self_connection=connections.get(user_id)
     self_ws=None
