@@ -13,4 +13,4 @@ class EndPhase(Phase):
         await super().on_exit(game)
     
     async def handle_action(self, game, action,player_id):
-        super().handle_action(game, action,player_id)
+        await super().handle_action(game, action,player_id)
