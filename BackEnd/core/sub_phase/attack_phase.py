@@ -8,10 +8,10 @@ class AttackPhase(Phase):
         self.next_phase=EndPhase
         
     async def on_enter(self, game):
-        return super().on_enter(game)
+        await super().on_enter(game)
     
     async def on_exit(self, game):
-        return super().on_exit(game)
+        await super().on_exit(game)
     
-    def handle_action(self, game, action,player_id):
-        return super().handle_action(game, action,player_id)
+    async def handle_action(self, game, action,player_id):
+        await super().handle_action(game, action,player_id)

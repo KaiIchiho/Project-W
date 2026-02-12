@@ -8,10 +8,10 @@ class StandPhase(Phase):
         self.next_phase=DrawPhase
     
     async def on_enter(self, game):
-        return super().on_enter(game)
+        await super().on_enter(game)
     
     async def on_exit(self, game):
-        return super().on_exit(game)
+        await super().on_exit(game)
     
-    def handle_action(self, game, action,player_id:str):
-        return super().handle_action(game, action,player_id)
+    async def handle_action(self, game, action,player_id:str):
+        await super().handle_action(game, action,player_id)
