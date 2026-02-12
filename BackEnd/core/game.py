@@ -103,7 +103,7 @@ class Game():
         self.phase=self.first_phase
         await self.phase.on_enter(self)
     
-    async def start_next_turn(self)->int:
+    async def start_next_turn(self,callback:Callable[[],Awaitable[None]])->int:
         next_player=0
         if self.action_player is self.player_1:
             self.action_player=self.player_2
@@ -112,6 +112,7 @@ class Game():
             self.action_player=self.player_1
             next_player=1
         self.current_turn+=1
+        await self.send_message(None,f"Next Is Player {next_player}'s Turn",self.action_player.player_id)
         await self.__in_start_phase()
         
         return next_player
@@ -121,13 +122,14 @@ class Game():
             await self.send_message("Game Is Not Players Full !",None,None)
             return
         
-        message=await self.phase.handle_action(self,action,player_id)
-        await self.send_message_backage(message,player_id)
+        #message=await self.phase.handle_action(self,action,player_id)
+        #await self.send_message_backage(message,player_id)
+        await self.phase.handle_action(self,action,player_id)
         
         if self.phase.is_complete:
-            next_message=await self.phase.on_next_phase(self,action)
-            #log=f"{log}\n{next_log}"
-            await self.send_message_backage(next_message,player_id)
+            #next_message=await self.phase.on_next_phase(self,action)
+            #await self.send_message_backage(next_message,player_id)
+            await self.phase.on_next_phase(self,action)
     
     def check_player_identity(self,user:Player)->int:
         if self.player_1 is user:

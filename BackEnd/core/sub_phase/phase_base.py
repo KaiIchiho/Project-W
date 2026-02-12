@@ -33,33 +33,35 @@ class Phase:
             raise ValueError("Action Not Found")
         handler=getattr(self,handler_name)
         
-        text=""
+        #text=""
         identity=game.check_player_identity_by_id(player_id)
         if identity!=-1:
-            text=f"Player {identity}'s Action: "
+            #text=f"Player {identity}'s Action: "
+            await game.send_message(None,f"Player {identity}'s Action: ",player_id)
         
-        message=await handler(game,action,player_id)
-        if message.get("room") is not None:
-            print(f"message: {message}")
-            message["room"]=text+message["room"]
+        await handler(game,action,player_id)
+        #message=await handler(game,action,player_id)
+        #if message.get("room") is not None:
+        #    print(f"message: {message}")
+        #    message["room"]=text+message["room"]
         
-        return message
+        #return message
     
     async def on_next_phase(self,game:"Game",action:dict,player_id:str):
         if not game.check_is_action_player_command(player_id):
-            return game.create_message("Not Your Turn",None)
+            await game.send_message("Not Your Turn",None,player_id)
         
         print(f"Log: on_next_phase, Now Phase Is {self.phase_name}")
         if self.next_phase is None:
             print("Log: on_next_phase, Next Phase Is None")
-            return await self.on_next_turn(game,action,player_id)
+            await self.on_next_turn(game,action,player_id)
         else:
             print("Log: on_next_phase, Next Phase Is Not None")
             game.phase=self.next_phase()
-            return game.create_message(None,f"Next Phase : {game.phase.phase_name}")
+            await game.send_message(None,f"Next Phase : {game.phase.phase_name}",player_id)
             
     async def on_next_turn(self,game:"Game",action:dict,player_id:str):
         if not game.check_is_action_player_command(player_id):
-            return game.create_message("Not Your Turn",None)
+            await game.send_message("Not Your Turn",None)
         next_player=await game.start_next_turn()
-        return game.create_message(None,f"Next Is Player {next_player}'s Turn")
+        #await game.send_message(None,f"Next Is Player {next_player}'s Turn")
