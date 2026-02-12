@@ -23,9 +23,9 @@ class Phase:
     phase_name="phase_base"
     next_phase=None
     
-    def on_enter(self,game:"Game"):
+    async def on_enter(self,game:"Game"):
         pass
-    def on_exit(self,game:"Game"):
+    async def on_exit(self,game:"Game"):
         pass
     def handle_action(self,game:"Game",action:dict,player_id:str)->dict:
         handler_name=self.handlers.get(action.get("type"))

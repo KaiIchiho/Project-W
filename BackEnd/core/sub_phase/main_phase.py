@@ -7,10 +7,10 @@ class MainPhase(Phase):
         self.phase_name="Main Phase"
         self.next_phase=ClimaxPhase
         
-    def on_enter(self, game):
+    async def on_enter(self, game):
         return super().on_enter(game)
     
-    def on_exit(self, game):
+    async def on_exit(self, game):
         return super().on_exit(game)
     
     def handle_action(self, game, action,player_id):

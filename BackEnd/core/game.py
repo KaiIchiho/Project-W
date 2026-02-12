@@ -83,7 +83,7 @@ class Game():
         self.current_turn=1
         self.set_first_player(self.player_1)
         await self.send_message(None,"Start Game",player_id)
-        self.__in_start_phase()
+        await self.__in_start_phase()
     
     def create_message(self,self_text:str,room_text:str)->dict:
         message={}
@@ -99,9 +99,9 @@ class Game():
         if self.ws_send_message is not None:
             await self.ws_send_message(message,player_id)
     
-    def __in_start_phase(self):
+    async def __in_start_phase(self):
         self.phase=self.first_phase
-        self.phase.on_enter(self)
+        await self.phase.on_enter(self)
     
     def start_next_turn(self)->int:
         next_player=0
