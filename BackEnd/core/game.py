@@ -99,7 +99,6 @@ class Game():
     
     def __in_start_phase(self):
         self.phase=self.first_phase
-        self.phase
     
     def start_next_turn(self)->int:
         next_player=0
@@ -110,6 +109,7 @@ class Game():
             self.action_player=self.player_1
             next_player=1
         self.current_turn+=1
+        self.__in_start_phase()
         
         return next_player
     
