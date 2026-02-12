@@ -1,12 +1,13 @@
 from models.player import Player
 from core.attack_step import AttackStep
 from typing import Callable,Optional,Awaitable
+from core.sub_phase.phase_base import Phase
 from core.sub_phase.stand_phase import StandPhase
 
 class Game():
     ws_send_message:Callable[[dict,str],Awaitable[None]]=None
     
-    FLOW_LOGS:list[str]=[]
+    phase:Optional[Phase]=None
 
     def __init__(self,
                  player_1:Optional[Player]=None,
@@ -24,7 +25,7 @@ class Game():
         self.current_attack_step:AttackStep
         
         self.first_phase=StandPhase()
-        self.phase=self.first_phase
+        
         self.ws_send_message=ws_send_message
     
     def set_player_1(self,player_1:Player):
@@ -82,6 +83,7 @@ class Game():
         self.current_turn=1
         self.set_first_player(self.player_1)
         await self.send_message(None,"Start Game",player_id)
+        self.__in_start_phase()
     
     def create_message(self,self_text:str,room_text:str)->dict:
         message={}
@@ -99,6 +101,7 @@ class Game():
     
     def __in_start_phase(self):
         self.phase=self.first_phase
+        self.phase.on_enter(self)
     
     def start_next_turn(self)->int:
         next_player=0
