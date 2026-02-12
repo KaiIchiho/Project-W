@@ -38,8 +38,8 @@ def get_game_by_room_id(room_id:str)->Game:
     return global_registration.room_game.get(room_id)
 
 async def receive_command_json(room_id:str,command_json:dict,user_id:str):
-    type=command_json.get("type")
-    print(f"Log: Command Type Is {type}")
+    action=command_json.get("action")
+    print(f"Log: Command Type Is {action}")
     game=get_game_by_room_id(room_id)
     if game is None:
         return #"Error !"

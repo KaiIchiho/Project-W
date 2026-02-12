@@ -43,7 +43,7 @@ class Phase:
             await game.send_message_backage(message,player_id)
 
     async def handle_action(self,game:"Game",action:dict,player_id:str)->dict:
-        handler_name=self.handlers.get(action.get("type"))
+        handler_name=self.handlers.get(action.get("action"))
         if not handler_name:
             raise ValueError("Action Not Found")
         handler=getattr(self,handler_name)
