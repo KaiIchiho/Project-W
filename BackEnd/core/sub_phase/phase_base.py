@@ -42,7 +42,7 @@ class Phase:
                 message["room"]=room_message_text+message["room"]
             await game.send_message_backage(message,player_id)
 
-    async def handle_action(self,game:"Game",action:dict,player_id:str)->dict:
+    async def handle_action(self,game:"Game",action:dict,player_id:str):
         handler_name=self.handlers.get(action.get("action"))
         if not handler_name:
             raise ValueError("Action Not Found")
@@ -52,7 +52,7 @@ class Phase:
         
         await self.send_message_list(game,messages,player_id)
     
-    async def on_next_phase(self,game:"Game",action:dict,player_id:str):
+    async def on_next_phase(self,game:"Game",action:dict,player_id:str)->list[dict]:
         messages=[]
         if not game.check_is_turn_player_command(player_id):
             message=game.create_message("Not Your Turn",None)
@@ -73,7 +73,7 @@ class Phase:
         
         return messages
     
-    async def on_next_turn(self,game:"Game",action:dict,player_id:str):
+    async def on_next_turn(self,game:"Game",action:dict,player_id:str)->list[dict]:
         messages=[]
         if not game.check_is_turn_player_command(player_id):
             message=game.create_message("Not Your Turn",None)

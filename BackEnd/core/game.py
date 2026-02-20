@@ -1,13 +1,15 @@
 from models.player import Player
-from core.attack_step import AttackStep
+#from BackEnd.core._attack_step import AttackStep
 from typing import Callable,Optional,Awaitable
 from core.sub_phase.phase_base import Phase
 from core.sub_phase.stand_phase import StandPhase
+from core.attack_step.attack_step_base import AttackStep
 
 class Game():
     ws_send_message:Callable[[dict,str],Awaitable[None]]=None
     
     phase:Optional[Phase]=None
+    attack_step:Optional[AttackStep]=None
 
     def __init__(self,
                  player_1:Optional[Player]=None,
@@ -22,7 +24,7 @@ class Game():
         
         self.turn_player=turn_player
         self.current_turn=0
-        self.current_attack_step:AttackStep
+        #self.current_attack_step:AttackStep
         
         self.first_phase=StandPhase()
         
