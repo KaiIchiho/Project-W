@@ -22,8 +22,8 @@ class Player(GameObject):
             if self.hand[i] is None:
                 self.hand[i]=self.playmat.deck.draw()
         
-    def play_command(self):
-        print(f"{self.name} Play Command")
+    #def play_command(self):
+    #    print(f"{self.name} Play Command")
         
     def init_hand(self):
         self.__organize_hand()
