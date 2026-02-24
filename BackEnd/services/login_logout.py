@@ -11,7 +11,7 @@ def login(req: LoginRequest):
     print(f"Player Create Successed , UserID={user_id}, UserName={user_name}")
     return LoginResponse(ok=True, user_id=user_id,user_name=user_name)
 
-def logout(req:LogoutRequest):
+async def logout(req:LogoutRequest):
     user_id=req.user_id
     
     #player
@@ -29,7 +29,7 @@ def logout(req:LogoutRequest):
     #websocket    
     connection=connections.get(user_id)
     if connection:
-        connection.websocket.close(code=1000)
+        await connection.websocket.close(code=1000)
         connections.pop(user_id)
     
     return LogoutResponse(ok=True)
