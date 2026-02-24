@@ -45,12 +45,12 @@ def eixt_room(req:ExitRoomRequest):
 def exit_room_by_id(user_id:str)->ExitRoomResponse:
     room_id=player_room.get(user_id)
     if room_id is None:
-        return ExitRoomResponse(ok=False,detail="player is not in any room",user_id=req.user_id)
+        return ExitRoomResponse(ok=False,detail="player is not in any room",user_id=user_id)
     
     room=rooms.get(room_id)
     if room is None:
-        return ExitRoomResponse(ok=False,detail="room is None",user_id=req.user_id)
+        return ExitRoomResponse(ok=False,detail="room is None",user_id=user_id)
     result=room.exit_by_id(user_id)
     if result==True:
         player_room.pop(user_id)
-    return ExitRoomResponse(ok=result,detail="exit result",user_id=req.user_id)    
+    return ExitRoomResponse(ok=result,detail="exit result",user_id=user_id)    
