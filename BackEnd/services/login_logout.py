@@ -1,7 +1,7 @@
 from schemas.login_logout import LoginRequest,LoginResponse,LogoutRequest,LogoutResponse
 from schemas.global_registration import players,connections,player_room,rooms
 from models.player import Player
-from connection import Connection
+from services.connection import Connection
 
 def login(req: LoginRequest):
     user_id=req.user_id
