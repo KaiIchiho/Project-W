@@ -40,14 +40,17 @@ def enter_room(req:EnterRoomRequest):
     return EnterRoomResponse(ok=result,user_id=req.user_id,room_id=req.room_id)
     
 def eixt_room(req:ExitRoomRequest):
-    room_id=player_room.get(req.user_id)
+    return exit_room_by_id(req.user_id)
+
+def exit_room_by_id(user_id:str)->ExitRoomResponse:
+    room_id=player_room.get(user_id)
     if room_id is None:
         return ExitRoomResponse(ok=False,detail="player is not in any room",user_id=req.user_id)
     
     room=rooms.get(room_id)
     if room is None:
         return ExitRoomResponse(ok=False,detail="room is None",user_id=req.user_id)
-    result=room.exit_by_id(req.user_id)
+    result=room.exit_by_id(user_id)
     if result==True:
-        player_room.pop(req.user_id)
-    return ExitRoomResponse(ok=result,detail="exit result",user_id=req.user_id)
+        player_room.pop(user_id)
+    return ExitRoomResponse(ok=result,detail="exit result",user_id=req.user_id)    
