@@ -22,6 +22,7 @@ async def websocket(ws:WebSocket):
         while True:
             msg=await ws.receive()
             
+            #Room Check
             room_id=player_room.get(user_id)
             if room_id is None:
                 continue

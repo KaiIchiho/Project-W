@@ -1,6 +1,7 @@
 from schemas.login_logout import LoginRequest,LoginResponse,LogoutRequest,LogoutResponse
-from schemas.global_registration import players
+from schemas.global_registration import players,connections,player_room,rooms
 from models.player import Player
+from connection import Connection
 
 def login(req: LoginRequest):
     user_id=req.user_id
@@ -12,5 +13,23 @@ def login(req: LoginRequest):
 
 def logout(req:LogoutRequest):
     user_id=req.user_id
-    players.pop(user_id)
+    
+    #player
+    player=players.get(user_id)
+    if player:
+        players.pop(user_id)
+    
+    #room
+    room_id=player_room.get(user_id)
+    if room_id:
+        room=rooms.get(room_id)
+        if room:
+            room.exit_by_id(user_id)
+    
+    #websocket    
+    connection=connections.get(user_id)
+    if connection:
+        connection.websocket.close(code=1000)
+        connections.pop(user_id)
+    
     return LogoutResponse(ok=True)
