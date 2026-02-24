@@ -89,6 +89,7 @@ async function logout(){
     });
     const res_data=await res.json();
     if(res_data.ok===true){
-        ws.close();
+        //ws.close();
+        console.log("response is OK");
     }
 }
