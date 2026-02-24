@@ -19,13 +19,6 @@ async def logout(req:LogoutRequest):
     if player:
         players.pop(user_id)
     
-    #room
-    room_id=player_room.get(user_id)
-    if room_id:
-        room=rooms.get(room_id)
-        if room:
-            room.exit_by_id(user_id)
-    
     #websocket    
     connection=connections.get(user_id)
     if connection:
