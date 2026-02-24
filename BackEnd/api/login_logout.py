@@ -9,5 +9,5 @@ def login_endpoint(req: LoginRequest):
     return login_logout.login(req)
 
 @router.post("/logout",response_model=LogoutResponse)
-def logout_endpoint(req:LogoutRequest):
-    return login_logout.logout(req)
+async def logout_endpoint(req:LogoutRequest):
+    return await login_logout.logout(req)
