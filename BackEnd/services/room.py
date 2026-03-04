@@ -54,6 +54,9 @@ def exit_room_by_id(user_id:str)->ExitRoomResponse:
     if result==True:
         player_room.pop(user_id,None)
         print("Exit Room.")
-        room_game.pop(room_id,None)
-        print("Game End.")
+        game=room_game.get(room_id)
+        if game:
+            game.forced_game_end()
+            room_game.pop(room_id,None)
+            print("Game End.")
     return ExitRoomResponse(ok=result,detail="exit result",user_id=user_id)    
