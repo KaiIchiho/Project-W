@@ -15,6 +15,9 @@ def login(req: LoginRequest):
 async def logout(req:LogoutRequest):
     user_id=req.user_id
     
+    return await logout_by_id(user_id)
+
+async def logout_by_id(user_id:str):
     #player
     player=players.get(user_id)
     if player:

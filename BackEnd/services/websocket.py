@@ -5,7 +5,7 @@ from core.room import Room
 from models.player import Player
 from services.connection import Connection
 from schemas.global_registration import connections,connected_clients,rooms,player_room
-from services import game_flow
+from services import game_flow,login_logout
 
 async def websocket(ws:WebSocket):
     await ws.accept()
@@ -43,9 +43,11 @@ async def websocket(ws:WebSocket):
             
     except WebSocketDisconnect:
         # Remove ws From Connected Clients List
-        connected_clients.remove(ws)
-        connections.pop(user_id)
+        #connected_clients.remove(ws)
+        #connections.pop(user_id)
         print("Client disconnected. Total:", len(connected_clients))
+    finally:
+        login_logout.logout_by_id(user_id)
         
 async def read_wsmsg_type(msg)->int:
     if "bytes" in msg:
