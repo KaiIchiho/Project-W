@@ -17,5 +17,5 @@ def enter_room_endpoint(req:EnterRoomRequest):
     return room.enter_room(req)
     
 @router.post("/exit_room",response_model=ExitRoomResponse)
-def eixt_room_endpoint(req:ExitRoomRequest):
-    return room.eixt_room(req)
+async def eixt_room_endpoint(req:ExitRoomRequest):
+    return await room.eixt_room(req)
