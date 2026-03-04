@@ -47,6 +47,7 @@ async def websocket(ws:WebSocket):
         #connections.pop(user_id)
         print("Client disconnected. Total:", len(connected_clients))
     finally:
+        print("Log: WebSocket Finally.")
         login_logout.logout_by_id(user_id)
         
 async def read_wsmsg_type(msg)->int:
