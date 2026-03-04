@@ -39,10 +39,10 @@ def enter_room(req:EnterRoomRequest):
         player_room[req.user_id]=req.room_id
     return EnterRoomResponse(ok=result,user_id=req.user_id,room_id=req.room_id)
     
-def eixt_room(req:ExitRoomRequest):
-    return exit_room_by_id(req.user_id)
+async def eixt_room(req:ExitRoomRequest):
+    return await exit_room_by_id(req.user_id)
 
-def exit_room_by_id(user_id:str)->ExitRoomResponse:
+async def exit_room_by_id(user_id:str)->ExitRoomResponse:
     room_id=player_room.get(user_id)
     if room_id is None:
         return ExitRoomResponse(ok=False,detail="player is not in any room",user_id=user_id)
@@ -56,7 +56,7 @@ def exit_room_by_id(user_id:str)->ExitRoomResponse:
         print("Exit Room.")
         game=room_game.get(room_id)
         if game:
-            game.forced_game_end()
+            await game.forced_game_end()
             room_game.pop(room_id,None)
             print("Game End.")
     return ExitRoomResponse(ok=result,detail="exit result",user_id=user_id)    
