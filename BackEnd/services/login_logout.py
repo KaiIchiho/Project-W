@@ -25,7 +25,7 @@ async def logout_by_id(user_id:str):
         players.pop(user_id)
     
     #room
-    exit_room_by_id(user_id)
+    await exit_room_by_id(user_id)
     
     #websocket    
     connection=connections.get(user_id)

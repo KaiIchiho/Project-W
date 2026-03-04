@@ -184,6 +184,13 @@ class Game():
             print(f"Check is Action Player False")
             return False
         
-    def forced_game_end(self):
-        if self.ws_send_message:
-            self.ws_send_message(self.create_message(None,"Game End"),None)
+    async def forced_game_end(self):
+        if not self.ws_send_message:
+            return
+        
+        player_id=""
+        if self.player_1:
+            player_id=self.player_1.player_id
+        elif self.player_2:
+            player_id=self.player_2.player_id
+        await self.ws_send_message(self.create_message(None,"Game End"),player_id)
