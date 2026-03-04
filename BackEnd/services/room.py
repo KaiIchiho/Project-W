@@ -1,5 +1,5 @@
 from schemas.room import ExitRoomRequest,ExitRoomResponse,EnterRoomRequest,EnterRoomResponse,CreateRoomRequest,CreateRoomResponse
-from schemas.global_registration import players,rooms,player_room
+from schemas.global_registration import players,rooms,player_room,room_game
 from core.room import Room
 
 def get_room_id_list():
@@ -54,4 +54,6 @@ def exit_room_by_id(user_id:str)->ExitRoomResponse:
     if result==True:
         player_room.pop(user_id)
         print("Exit Room.")
+        room_game.pop(room_id)
+        print("Game End.")
     return ExitRoomResponse(ok=result,detail="exit result",user_id=user_id)    
