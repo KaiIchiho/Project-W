@@ -183,3 +183,7 @@ class Game():
         else:
             print(f"Check is Action Player False")
             return False
+        
+    def forced_game_end(self):
+        if self.ws_send_message:
+            self.ws_send_message(self.create_message(None,"Game End"),None)
