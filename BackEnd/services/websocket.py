@@ -48,7 +48,7 @@ async def websocket(ws:WebSocket):
         print("Client disconnected. Total:", len(connected_clients))
     finally:
         print("Log: WebSocket Finally.")
-        login_logout.logout_by_id(user_id)
+        await login_logout.logout_by_id(user_id)
         
 async def read_wsmsg_type(msg)->int:
     if "bytes" in msg:
