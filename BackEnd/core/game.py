@@ -185,6 +185,7 @@ class Game():
             return False
         
     async def forced_game_end(self):
+        print("Log: forced game end.")
         if not self.ws_send_message:
             return
         
