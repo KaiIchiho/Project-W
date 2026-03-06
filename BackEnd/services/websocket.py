@@ -25,7 +25,7 @@ async def websocket(ws:WebSocket):
             msg=await asyncio.wait_for(ws.receive(),timeout=30)
             print(f"Log: WebSocket message is {msg}")
             if msg["type"]=="websocket.receive":
-                deta=msg["text"]
+                deta=msg.get("text")
                 if deta=="ping":
                     continue
             
