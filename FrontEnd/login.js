@@ -17,6 +17,7 @@ function createWebSocket(){
         setComponentHidden("logout_menu",false);
         setComponentHidden("enter_room_menu",false);
         setComponentHidden("exit_room_menu",true);
+        setComponentHidden("message_block",true);
         setComponentHidden("has_login_block",false);
         console.log("WebSocket Connect");
     }
