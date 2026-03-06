@@ -27,6 +27,7 @@ async def websocket(ws:WebSocket):
         while True:
             #msg=await ws.receive()
             try:
+                print("Log: Wait For WebSocket Receive.")
                 msg=await asyncio.wait_for(ws.receive(),timeout=1)
             except asyncio.TimeoutError:
                 msg=None
