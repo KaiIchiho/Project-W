@@ -1,12 +1,15 @@
 from fastapi import WebSocket,WebSocketDisconnect
 from starlette.websockets import WebSocketState
 import asyncio
+import time
 import json
 from core.room import Room
 from models.player import Player
 from services.connection import Connection
 from schemas.global_registration import connections,connected_clients,rooms,player_room
 from services import game_flow,login_logout
+
+IDLE_TIMEOUT=30
 
 async def websocket(ws:WebSocket):
     await ws.accept()
@@ -19,17 +22,25 @@ async def websocket(ws:WebSocket):
     connections[user_id]=Connection(user_id,ws)
     print(f"WebSocket bound to user: {user_id}")
     
+    last_active=time.time()
     try:
         while True:
             #msg=await ws.receive()
-            msg=await asyncio.wait_for(ws.receive(),timeout=30)
-            print(f"Log: WebSocket message is {msg}")
-            if msg["type"]=="websocket.disconnect":
+            try:
+                msg=await asyncio.wait_for(ws.receive(),timeout=1)
+            except asyncio.TimeoutError:
+                msg=None
+            if msg:    
+                print(f"Log: WebSocket message is {msg}")
+                if msg["type"]=="websocket.disconnect":
+                    break
+                if msg["type"]=="websocket.receive":
+                    deta=msg.get("text")
+                    if deta!="ping":
+                        last_active=time.time()
+            if last_active-time.time()>IDLE_TIMEOUT:
+                print("Log: WebSocket Timeout.")
                 break
-            if msg["type"]=="websocket.receive":
-                deta=msg.get("text")
-                if deta=="ping":
-                    continue
             
             #Room Check
             room_id=player_room.get(user_id)
@@ -49,13 +60,8 @@ async def websocket(ws:WebSocket):
                 await receive_text(ws,room,msg["text"])
             elif msg_type==2:
                 await receive_json(ws,user_id,room,json.loads(msg["text"]))
-    except asyncio.TimeoutError:
-        print("Log: WebSocket Timeout.")
     except WebSocketDisconnect:
-        # Remove ws From Connected Clients List
-        #connected_clients.remove(ws)
-        #connections.pop(user_id)
-        print("Client disconnected. Total:", len(connected_clients))
+        print("Client disconnected.")
     finally:
         print("Log: WebSocket Finally.")
         await login_logout.logout_by_id(user_id)
