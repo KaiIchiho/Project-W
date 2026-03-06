@@ -30,6 +30,7 @@ async def websocket(ws:WebSocket):
                 print("Log: Wait For WebSocket Receive.")
                 msg=await asyncio.wait_for(ws.receive(),timeout=1)
             except asyncio.TimeoutError:
+                print("Error: WebSocket Receive TimeoutError.")
                 msg=None
             if msg:    
                 print(f"Log: WebSocket message is {msg}")
@@ -39,6 +40,9 @@ async def websocket(ws:WebSocket):
                     deta=msg.get("text")
                     if deta!="ping":
                         last_active=time.time()
+            print(f"Last Active:{last_active}.")
+            print(f"time.time():{time.time()}.")
+            print(f"IDLE_TIMEOUT:{IDLE_TIMEOUT}.")
             if last_active-time.time()>IDLE_TIMEOUT:
                 print("Log: WebSocket Timeout.")
                 break
