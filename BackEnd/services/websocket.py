@@ -47,7 +47,8 @@ async def websocket(ws:WebSocket):
                 await receive_text(ws,room,msg["text"])
             elif msg_type==2:
                 await receive_json(ws,user_id,room,json.loads(msg["text"]))
-            
+    except asyncio.TimeoutError:
+        print("Log: WebSocket Timeout.")
     except WebSocketDisconnect:
         # Remove ws From Connected Clients List
         #connected_clients.remove(ws)
