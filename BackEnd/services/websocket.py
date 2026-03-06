@@ -41,6 +41,8 @@ async def websocket(ws:WebSocket):
             if last_active-time.time()>IDLE_TIMEOUT:
                 print("Log: WebSocket Timeout.")
                 break
+            if msg is None:
+                continue
             
             #Room Check
             room_id=player_room.get(user_id)
