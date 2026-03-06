@@ -1,5 +1,6 @@
 from fastapi import WebSocket,WebSocketDisconnect
 from starlette.websockets import WebSocketState
+import asyncio
 import json
 from core.room import Room
 from models.player import Player
@@ -20,7 +21,13 @@ async def websocket(ws:WebSocket):
     
     try:
         while True:
-            msg=await ws.receive()
+            #msg=await ws.receive()
+            msg=await asyncio.wait_for(ws.receive(),timeout=30)
+            print(f"Log: WebSocket message is {msg}")
+            if msg["type"]=="websocket.receive":
+                deta=msg["text"]
+                if deta=="ping":
+                    continue
             
             #Room Check
             room_id=player_room.get(user_id)
@@ -34,7 +41,7 @@ async def websocket(ws:WebSocket):
                 print("Client Is Not In Room As Player")
                 continue
             print("Client Is In Room As Player")
-            
+             
             msg_type=await read_wsmsg_type(msg)
             if msg_type==1:
                 await receive_text(ws,room,msg["text"])
