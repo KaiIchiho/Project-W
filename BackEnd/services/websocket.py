@@ -43,7 +43,7 @@ async def websocket(ws:WebSocket):
             print(f"Last Active:{last_active}.")
             print(f"time.time():{time.time()}.")
             print(f"IDLE_TIMEOUT:{IDLE_TIMEOUT}.")
-            if last_active-time.time()>IDLE_TIMEOUT:
+            if time.time()-last_active>IDLE_TIMEOUT:
                 print("Log: WebSocket Timeout.")
                 break
             if msg is None:
