@@ -33,16 +33,18 @@ class Game():
     def set_player_1(self,player_1:Player):
         if player_1 is not None:
             if player_1 is self.player_2:
-                raise ValueError("2 Player Are the Same")
+                raise ValueError("2 Player Are the Same.")
         self.player_1=player_1
     
     def set_player_2(self,player_2:Player):
         if player_2 is not None:
             if player_2 is self.player_1:
-                raise ValueError("2 Player Are the Same")
+                raise ValueError("2 Player Are the Same.")
         self.player_2=player_2
     
     def set_first_player(self,player:Player):
+        if player is not self.player_1 and player is not self.player_2:
+            raise ValueError("Player is not in Game.")
         self.turn_player=player
         
     async def set_player_to_none(self,player:Player,callback:Optional[Callable[[str],Awaitable[None]]]=None)->int:
