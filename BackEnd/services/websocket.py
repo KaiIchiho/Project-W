@@ -116,6 +116,12 @@ async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
     else:
         await game_flow.receive_command_json(room.room_id,json,user_id)
 
+def create_message(self,self_text:str,room_text:str)->dict:
+    message={}
+    message["self"]=self_text
+    message["room"]=room_text
+    return message
+
 async def send_message(message:dict,user_id:str):
     if user_id is None:
         return
@@ -153,3 +159,4 @@ async def send_message_by_player(player:Player,message:str):
         await ws.send_text(message)
     
 game_flow.ws_send_handler=send_message
+game_flow.create_message_handler=create_message

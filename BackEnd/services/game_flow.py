@@ -4,6 +4,7 @@ from schemas import global_registration
 from typing import Callable,Awaitable
 
 ws_send_handler:Callable[[dict,str],Awaitable[None]]
+create_message_handler:Callable[[str,str],dict]
 
 async def standby(user_id:str)->int:
     player=global_registration.players.get(user_id)
@@ -31,6 +32,7 @@ def create_game_instance(room:Room)->Game:
         game=Game()
         # delegate
         game.ws_send_message=ws_send_handler
+        game.create_message=create_message_handler
         global_registration.room_game[room_id]=game
     return game
     

@@ -7,6 +7,7 @@ from core.sub_phase.stand_phase import StandPhase
 
 class Game():
     ws_send_message:Callable[[dict,str],Awaitable[None]]=None
+    create_message:Callable[[str,str],dict]=None
     
     phase:Optional[Phase]=None
     #attack_step:Optional[AttackStep]=None
@@ -89,15 +90,16 @@ class Game():
         await self.send_message(None,"Start Game",player_id)
         await self.__in_start_phase()
     
-    def create_message(self,self_text:str,room_text:str)->dict:
-        message={}
-        message["self"]=self_text
-        message["room"]=room_text
-        return message
+    #def create_message(self,self_text:str,room_text:str)->dict:
+    #    message={}
+    #    message["self"]=self_text
+    #    message["room"]=room_text
+    #    return message
     
     async def send_message(self,self_text:str,room_text:str,player_id:str):
-        message=self.create_message(self_text,room_text)
-        await self.send_message_backage(message,player_id)
+        if self.create_message:
+            message=self.create_message(self_text,room_text)
+            await self.send_message_backage(message,player_id)
     
     async def send_message_backage(self,message:dict,player_id:str):
         if self.ws_send_message is not None:
@@ -196,4 +198,6 @@ class Game():
             player_id=self.player_1.player_id
         elif self.player_2:
             player_id=self.player_2.player_id
-        await self.ws_send_message(self.create_message(None,"Game End"),player_id)
+        
+        if self.create_message:
+            await self.ws_send_message(self.create_message(None,"Game End"),player_id)
