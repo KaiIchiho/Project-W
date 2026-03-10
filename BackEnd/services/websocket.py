@@ -8,8 +8,7 @@ from models.player import Player
 from services.connection import Connection
 from schemas.global_registration import connections,connected_clients,rooms,player_room
 from services import game_flow,login_logout
-
-IDLE_TIMEOUT=30
+from config.setting import WS_TIMEOUT
 
 async def websocket(ws:WebSocket):
     await ws.accept()
@@ -26,6 +25,7 @@ async def websocket(ws:WebSocket):
     try:
         while True:
             #msg=await ws.receive()
+            #Timeout
             try:
                 print("Log: Wait For WebSocket Receive.")
                 msg=await asyncio.wait_for(ws.receive(),timeout=1)
@@ -40,10 +40,10 @@ async def websocket(ws:WebSocket):
                     deta=msg.get("text")
                     if deta!="ping":
                         last_active=time.time()
-            if time.time()-last_active>IDLE_TIMEOUT:
+            if time.time()-last_active>WS_TIMEOUT:
                 print("Log: WebSocket Timeout.")
                 #break
-                message={"room":f"{user_id} Timeout.","self":""}
+                message=create_message(None,f"{user_id} Timeout.")
                 await send_message(message,user_id)
                 last_active=time.time()
             if msg is None:
@@ -61,7 +61,8 @@ async def websocket(ws:WebSocket):
                 print("Client Is Not In Room As Player")
                 continue
             print("Client Is In Room As Player")
-             
+            
+            #Process Message
             msg_type=await read_wsmsg_type(msg)
             if msg_type==1:
                 await receive_text(ws,room,msg["text"])
@@ -97,10 +98,10 @@ async def receive_text(ws:websocket,room:Room,text:str):
             continue
         if connect.websocket is ws:
             continue
-        try:
-            await connect.websocket.send_text(f"From Server -\n {text}")
-        except WebSocketDisconnect:
-            connections.pop(uid)
+        #try:
+        await connect.websocket.send_text(f"From Server -\n {text}")
+        #except WebSocketDisconnect:
+        #    connections.pop(uid)
             
     await ws.send_text(f"From Server -\n (yourself){text}")
     #asyncio.create_task(ws.send_text(f"(yourself){text}"))
@@ -116,7 +117,7 @@ async def receive_json(ws:websocket,user_id:str,room:Room,json:dict):
     else:
         await game_flow.receive_command_json(room.room_id,json,user_id)
 
-def create_message(self,self_text:str,room_text:str)->dict:
+def create_message(self_text:str,room_text:str)->dict:
     message={}
     message["self"]=self_text
     message["room"]=room_text
