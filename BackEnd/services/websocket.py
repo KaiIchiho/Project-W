@@ -44,7 +44,7 @@ async def websocket(ws:WebSocket):
                 print("Log: WebSocket Timeout.")
                 #break
                 message={"room":f"{user_id} Timeout.","self":""}
-                send_message(message,user_id)
+                await send_message(message,user_id)
                 last_active=time.time()
             if msg is None:
                 continue
