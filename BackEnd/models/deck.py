@@ -8,11 +8,11 @@ class Deck(GameObject):
     on_deck_empty:Optional[Callable[[],None]]=None
     
     def __init__(self, 
-                 object_id,
+                 ori_owner_id:int,
                  name:str,
                  cards:list[Card]
                  ):
-        super().__init__(object_id)
+        super().__init__(ori_owner_id)
         self.name=name
         if len(cards)!=self.MAX_CARDS_SIZE:
             raise ValueError(

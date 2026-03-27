@@ -1,3 +1,3 @@
 class GameObject:
-    def __init__(self,object_id:str):
-        self.id=object_id
+    def __init__(self,ori_owner_id:int):
+        self.ori_owner_id=ori_owner_id

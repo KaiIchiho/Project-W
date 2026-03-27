@@ -7,10 +7,10 @@ from services.connection import Connection
 # Connected Clients List
 connected_clients:list[WebSocket]=[]
 
-players:dict[str,Player]={}
-connections:dict[str,Connection]={}
+players:dict[int,Player]={}
+connections:dict[int,Connection]={}
 #test_room:Room=Room("test_room_01")
-rooms:dict[str,Room]={}
-player_room:dict[str,str]={}
+rooms:dict[int,Room]={}
+user_room:dict[int,int]={}
 
-room_game:dict[str,Game]={}
+room_game:dict[int,Game]={}
