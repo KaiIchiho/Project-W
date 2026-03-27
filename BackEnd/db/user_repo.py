@@ -26,8 +26,5 @@ def check_name_and_pw(user_name,password)->int:
     
     return result
 
-# def check_password(input,pwd_hash,schemes:str="scrypt",deprecated="auto")->bool:
-#     pwd_content=CryptContext(schemes=[schemes],deprecated=deprecated)
-#     return pwd_content.verify(input,pwd_hash)
 def check_password(input,pwd_hash)->bool:
     return check_password_hash(pwd_hash,input)

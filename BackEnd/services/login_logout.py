@@ -14,19 +14,17 @@ def login(req: LoginRequest):
     if user_id is None:
         return LoginResponse(
             success=False, user_id=-1,user_name=user_name,
-            log=f"{user_name} がログインできませんでした")
+            log=f"{user_name} はログインできませんでした")
     
     player=Player(user_id,user_name)
     players[user_id]=player
-    print(f"Player Create Successed , UserID={user_id}, UserName={user_name}")
+    print(f"Log: Login Successed, UserID={user_id}, UserName={user_name}")
     return LoginResponse(
         success=True, user_id=user_id,user_name=user_name,
-        log=f"{user_name} がログインしました")
+        log=f"{user_name} はログインしました")
 
 async def logout(req:LogoutRequest):
-    user_id=req.user_id
-    
-    return await logout_by_id(user_id)
+    return await logout_by_id(req.user_id)
 
 async def logout_by_id(user_id:int):
     print("Log: logout by id.")
@@ -48,4 +46,4 @@ async def logout_by_id(user_id:int):
     
     return LogoutResponse(
         success=True,
-        log=f"{user_name} がログアウト成功しました")
+        log=f"{user_name} はログアウト成功しました")

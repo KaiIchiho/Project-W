@@ -99,8 +99,8 @@ async function logout(){
         body:JSON.stringify({user_id:user_id})
     });
     const res_data=await res.json();
-    if(res_data.ok===true){
+    if(res_data.success===true){
         //ws.close();
-        console.log("response is OK");
+        console.log(res_data.log);
     }
 }
