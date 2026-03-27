@@ -15,7 +15,7 @@ def check_name_and_pw(user_name,password)->int:
         return result
     for user_data in user_list:
         print(
-            f"user id: {user_data.get("id")}, name: {user_data.get("name")}, password: {user_data.get("password")}")
+            f"user id: {user_data.get('id')}, name: {user_data.get('name')}, password: {user_data.get('password')}")
         
         name=user_data.get("name")
         pw=user_data.get("password")
