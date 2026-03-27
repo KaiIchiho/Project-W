@@ -6,11 +6,13 @@ from typing import Optional,Callable
 class Playmat(GameObject):
     on_stage_card_stand_changed:Callable[[int,bool],None]
     
+    deck:Optional[Deck]=None
+    
     def __init__(self, 
-                 object_id,
-                 deck:Deck,
+                 ori_owner_id:int,
+                 deck:Deck=None
                  ):
-        super().__init__(object_id)
+        super().__init__(ori_owner_id)
         self.deck=deck
         self.waiting_room:list[Card]=[]
         
@@ -18,7 +20,7 @@ class Playmat(GameObject):
         self.stage_stand:list[bool]=[True]*5
         
         self.clock:list[Optional[Card]]=[None]*6
-        self.level:list[Optional[Card]]=[None]*3
+        self.level:list[Optional[Card]]=[None]*4
         self.memory:list[Optional[Card]]=[]
         self.climax:Card=None
         self.stock:list[Optional[Card]]=[]

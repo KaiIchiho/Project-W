@@ -4,37 +4,44 @@ from models.playmat import Playmat
 from typing import Optional
 
 class Player(GameObject):
+    
+    playmat:Optional[Playmat]=None
+    
     def __init__(self,
-                 object_id,
-                 player_id:str,
+                 player_id:int,
                  name:str,
-                 playmat:Playmat
+                 playmat:Playmat=None
                  ):
-        super().__init__(object_id)
+        super().__init__(player_id)
         self.player_id=player_id
         self.name=name
         self.playmat=playmat
-        self.hand:list[Optional[Card]]=[None]*7
+        #self.hand:list[Optional[Card]]=[None]*7
+        self.hand:list[Card]
         
     def draw(self):
         print(f"{self.name} Draw")
-        for i in range(len(self.hand)):
-            if self.hand[i] is None:
-                self.hand[i]=self.playmat.deck.draw()
+        #for i in range(len(self.hand)):
+        #    if self.hand[i] is None:
+        #        self.hand[i]=self.playmat.deck.draw()
+        self.hand.append(self.playmat.deck.draw())
         
     #def play_command(self):
     #    print(f"{self.name} Play Command")
         
     def init_hand(self):
-        self.__organize_hand()
-        for i in range(5):
-            if self.hand[i] is None:
-                self.draw()
+        #self.__organize_hand()
+        now_hand_lenth=len(self.hand)
+        if now_hand_lenth>=5:
+            return
+        for i in range(now_hand_lenth,5):
+            #if self.hand[i] is None:
+            self.draw()
                 
-    def __organize_hand(self):
-        cards=[card for card in self.hand if card is not None]
-        nones=[None]*(len(self.hand)-len(cards))
-        self.hand=cards+nones
+    #def __organize_hand(self):
+    #    cards=[card for card in self.hand if card is not None]
+    #    nones=[None]*(len(self.hand)-len(cards))
+    #    self.hand=cards+nones
         
     def manage_hand(self,selected_card:list[Card]):
         if not selected_card:

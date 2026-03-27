@@ -2,12 +2,12 @@ from models.player import Player
 from typing import Optional
 
 class Room():
-    room_id:str=""
     player_1:Optional[Player]=None
     player_2:Optional[Player]=None
     viewer:Optional[Player]=None
-    def __init__(self,room_id:str):
+    def __init__(self,room_id:int,room_name:str):
         self.room_id=room_id
+        self.room_name=room_name
     
     def set_players(self,player_1,player_2):
         self.player_1=player_1
@@ -76,8 +76,8 @@ class Room():
                 is_in_room=True
         return is_in_room
     
-    def get_all_ids(self)->list[str]:
-        ids:list[str]=[]
+    def get_all_ids(self)->list[int]:
+        ids:list[int]=[]
         if self.player_1 is not None:
             ids.append(self.player_1.player_id)
         if self.player_2 is not None:

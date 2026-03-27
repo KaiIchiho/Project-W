@@ -2,11 +2,16 @@ from core.game import Game
 from core.room import Room
 from schemas import global_registration
 from typing import Callable,Awaitable
+from pydantic import BaseModel
 
-ws_send_handler:Callable[[dict,str],Awaitable[None]]
-create_message_handler:Callable[[str,str],dict]
+ws_send_message_handler:Callable[[dict,str],Awaitable[None]]
+create_message_handler:Callable[[int,str],dict]
 
-async def standby(user_id:str)->int:
+ws_send_data_to_user_handler:Callable[[int,BaseModel],Awaitable[None]]
+ws_send_data_to_room_handler:Callable[[int,BaseModel],Awaitable[None]]
+ws_send_data_to_room_except_target_handler:Callable[[int,int,BaseModel],Awaitable[None]]
+
+async def standby(user_id:int)->int:
     player=global_registration.players.get(user_id)
     room_id=global_registration.player_room.get(user_id)
     if room_id is None:
@@ -29,17 +34,20 @@ def create_game_instance(room:Room)->Game:
     if game is not None:
         print(f"Log: {room_id} Room Has GameInstance")
     else:
-        game=Game()
+        game=Game(room_id)
         # delegate
-        game.ws_send_message=ws_send_handler
+        game.ws_send_message=ws_send_message_handler
         game.create_message=create_message_handler
+        game.ws_send_data_to_user=ws_send_data_to_user_handler
+        game.ws_send_data_to_room=ws_send_data_to_room_handler
+        game.ws_send_data_to_room_except_target=ws_send_data_to_room_except_target_handler
         global_registration.room_game[room_id]=game
     return game
     
-def get_game_by_room_id(room_id:str)->Game:
+def get_game_by_room_id(room_id:int)->Game:
     return global_registration.room_game.get(room_id)
 
-async def receive_command_json(room_id:str,command_json:dict,user_id:str):
+async def receive_command_json(room_id:int,command_json:dict,user_id:int):
     action=command_json.get("action")
     print(f"Log: Command Type Is {action}")
     game=get_game_by_room_id(room_id)
