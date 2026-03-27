@@ -116,19 +116,19 @@ def enter_room(req:EnterRoomRequest)->EnterRoomResponse:
 async def eixt_room(req:ExitRoomRequest):
     return await exit_room_by_id(req.user_id)
 
-async def exit_room_by_id(user_id:str)->ExitRoomResponse:
+async def exit_room_by_id(user_id:int)->ExitRoomResponse:
     # Check If User ID is Valid
     player=players.get(user_id)
     if player is None:
         return ExitRoomResponse(
-            success=False,room_id=room_id,user_id=user_id,
+            success=False,room_id=-1,user_id=user_id,
             log=f"{user_id}のユーザーが存在しません")
     
     # Check If User is In Room And Get Room ID
     room_id=user_room.get(user_id)
     if room_id is None:
         return ExitRoomResponse(
-            success=False,room_id=room_id,user_id=user_id,
+            success=False,room_id=-1,user_id=user_id,
             log=f"{user_id} のユーザーは在室ではありません")
     
     # Check If Room ID is Valid
