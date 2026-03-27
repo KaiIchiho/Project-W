@@ -13,7 +13,7 @@ def login(req: LoginRequest):
     user_id=user_repo.check_name_and_pw(user_name,password)
     if user_id is None:
         return LoginResponse(
-            success=False, user_id=user_id,user_name=user_name,
+            success=False, user_id=-1,user_name=user_name,
             log=f"{user_name} がログインできませんでした")
     
     player=Player(user_id,user_name)
