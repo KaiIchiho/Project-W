@@ -1,5 +1,6 @@
 from db import crud
 from config.setting_database import USER_TABLE
+from passlib.context import CryptContext
 
 def read_all_users()->list[dict]:
     return crud.read_all_data_by_table(USER_TABLE)
@@ -19,8 +20,13 @@ def check_name_and_pw(user_name,password)->int:
         
         name=user_data.get("name")
         pw=user_data.get("password")
-        if name==user_name and pw==password:
+        if name==user_name and check_password(password,pw):
             result=user_data.get("id")
             break
     
     return result
+
+def check_password(input,pwd_hash,schemes:str="scrypt",deprecated="auto")->bool:
+    pwd_content=CryptContext(schemes=[schemes],deprecated=deprecated)
+    return pwd_content.verify(input,pwd_hash)
+    
