@@ -82,6 +82,10 @@ async function login(){
         name_input.value="";
         pw_input.value="";
         createWebSocket();
+        console.log(res_data.log)
+    }
+    else{
+        console.error(res_data.log)
     }
 }
 async function logout(){
