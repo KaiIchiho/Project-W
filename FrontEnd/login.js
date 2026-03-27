@@ -54,24 +54,28 @@ function sendMessage(){
 }
 
 async function login(){
-    const id_input=document.getElementById("user_id");
     const name_input=document.getElementById("user_name");
+    const pw_input=document.getElementById("password");
 
-    login_id=id_input.value;
     login_name=name_input.value;
-    if(login_id=="" || login_name==""){
-        console.log("User ID Or Name Should Not Be None.");
+    password=pw_input.value;
+
+    if(login_name=="" || password==""){
+        console.log("User Name Or Password Should Not Be None.");
         return;
     }
-    console.log("input Id: "+login_id,"input name: "+login_name);
+    console.log("input name: "+login_name, "input Password: "+login_id);
 
     const res=await fetch("/api/login",{
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({user_id:login_id,user_name:login_name})
+        body:JSON.stringify({
+            user_name:login_name,
+            password:password
+        })
     });
     const res_data=await res.json();
-    if(res_data.ok===true){
+    if(res_data.success===true){
         user_id=res_data.user_id;
         user_name=res_data.user_name;
 
