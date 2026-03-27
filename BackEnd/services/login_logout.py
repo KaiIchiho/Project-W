@@ -46,4 +46,4 @@ async def logout_by_id(user_id:int):
     
     return LogoutResponse(
         success=True,
-        log=f"{user_name} はログアウト成功しました")
+        log=f"{user_name} はログアウトしました")
