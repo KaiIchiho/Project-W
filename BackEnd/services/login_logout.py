@@ -1,7 +1,7 @@
 from schemas.login_logout import LoginRequest,LoginResponse,LogoutRequest,LogoutResponse
-from schemas.global_registration import players,connections,player_room,rooms
+from schemas.global_registration import players,connections
 from models.player import Player
-from services.connection import Connection
+# from services.connection import Connection
 from services.room import exit_room_by_id
 from db import user_repo
 
