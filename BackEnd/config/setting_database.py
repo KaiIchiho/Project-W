@@ -1,5 +1,5 @@
 #HOST='127.0.0.1'
-HOST="localhost"
+HOST="wssim-db.c76cg4ksyw72.ap-northeast-1.rds.amazonaws.com"
 PORT=3306
 USER='wssim_admin'
 PASSWORD='wssim_sim_db'
