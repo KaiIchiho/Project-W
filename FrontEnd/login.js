@@ -79,8 +79,8 @@ async function login(){
         user_id=res_data.user_id;
         user_name=res_data.user_name;
 
-        id_input.value="";
         name_input.value="";
+        pw_input.value="";
         createWebSocket();
     }
 }
