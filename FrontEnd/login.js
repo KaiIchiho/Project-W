@@ -64,7 +64,7 @@ async function login(){
         console.log("User Name Or Password Should Not Be None.");
         return;
     }
-    console.log("input name: "+login_name, "input Password: "+login_id);
+    console.log("input name: "+login_name, "input Password: "+password);
 
     const res=await fetch("/api/login",{
         method:"POST",

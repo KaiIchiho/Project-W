@@ -4,10 +4,11 @@ from config import setting_database
 pool=None
 
 def init_pool():
+    print("Log: DataBase Connection Pool Initializion")
     global pool
     pool=mariadb.ConnectionPool(
         pool_name="db_connection_pool",
-        pool_size=5,
+        pool_size=setting_database.POOL_SIZE,
         user=setting_database.USER,
         password=setting_database.PASSWORD,
         host=setting_database.HOST,
