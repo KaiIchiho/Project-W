@@ -1,6 +1,6 @@
 from db import crud
 from config.setting_database import USER_TABLE
-from passlib.context import CryptContext
+from werkzeug.security import check_password_hash
 
 def read_all_users()->list[dict]:
     return crud.read_all_data_by_table(USER_TABLE)
@@ -26,7 +26,8 @@ def check_name_and_pw(user_name,password)->int:
     
     return result
 
-def check_password(input,pwd_hash,schemes:str="scrypt",deprecated="auto")->bool:
-    pwd_content=CryptContext(schemes=[schemes],deprecated=deprecated)
-    return pwd_content.verify(input,pwd_hash)
-    
+# def check_password(input,pwd_hash,schemes:str="scrypt",deprecated="auto")->bool:
+#     pwd_content=CryptContext(schemes=[schemes],deprecated=deprecated)
+#     return pwd_content.verify(input,pwd_hash)
+def check_password(input,pwd_hash)->bool:
+    return check_password_hash(pwd_hash,input)
