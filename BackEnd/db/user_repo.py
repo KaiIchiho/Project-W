@@ -14,6 +14,9 @@ def check_name_and_pw(user_name,password)->int:
     if not user_list or not len(user_list):
         return result
     for user_data in user_list:
+        print(
+            f"user id: {user_data.get("id")}, name: {user_data.get("name")}, password: {user_data.get("password")}")
+        
         name=user_data.get("name")
         pw=user_data.get("password")
         if name==user_name and pw==password:
