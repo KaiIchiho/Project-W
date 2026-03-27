@@ -7,7 +7,7 @@ import json
 from core.room import Room
 from models.player import Player
 from services.connection import Connection
-from schemas.global_registration import connections,connected_clients,rooms,player_room
+from schemas.global_registration import connections,connected_clients,rooms,user_room
 from services import game_flow,login_logout
 from config.setting import WS_TIMEOUT
 
@@ -56,7 +56,7 @@ async def websocket(ws:WebSocket):
                 continue
             
             #Room Check
-            room_id=player_room.get(user_id)
+            room_id=user_room.get(user_id)
             if room_id is None:
                 continue
             room=rooms.get(room_id)
@@ -147,7 +147,7 @@ async def send_message(message:dict,user_id:int):
         if self_ws.application_state == WebSocketState.CONNECTED:
             await self_ws.send_text(present_text+to_self)
     
-    room_id=player_room.get(user_id)
+    room_id=user_room.get(user_id)
     if room_id is None:
         return
     room=rooms.get(room_id)
