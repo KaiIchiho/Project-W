@@ -1,8 +1,17 @@
 from fastapi import FastAPI,APIRouter
 from api.router import api_router
 from services.startup import on_startup
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 
 app=FastAPI()
+
+# テスト用のフロントエンド
+app.mount("/static", StaticFiles(directory="testclient"), name="static")
+@app.get("/")
+async def get():
+    with open("testclient/test-frontend.html") as f:
+        return HTMLResponse(f.read())
 
 # サーバー起動時点で呼び出す
 @app.on_event("startup")
