@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from schemas.base import ResponseBase
 
 class ReadDeckRequest(BaseModel):
-    pass
+    deck_id:int
 
 class ReadDeckResponse(ResponseBase):
     pass

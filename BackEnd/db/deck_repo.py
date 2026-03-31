@@ -1,26 +1,23 @@
 from db import crud
-from config.setting_database import DECK_TABLE,DECK_CARDS_TABLE,CARD_TABLE
+from config.setting_database import DECK_TABLE,DECK_CARDS_TABLE
 
 # Deck
 def read_all_deck()->list[dict]:
     return crud.read_all_data_by_table(DECK_CARDS_TABLE)
 
-def test_read_all_deck():
-    deck_list=read_all_deck()
-    for deck in deck_list:
-        print(deck)
-
-# Card
-def read_all_card():
-    return crud.read_all_data_by_table(CARD_TABLE)
-
-def test_read_all_card():
-    card_list=read_all_card()
-    for card in card_list:
+def test_read_all_deck(deck_id:int):
+    deck_cards=read_cards_info_by_deck_id(deck_id)
+    for card in deck_cards:
         print(card)
 
-def read_card_info(card_id:int)->list[dict]:
-    result=crud.read_data_by_id(CARD_TABLE,card_id)
-    if result:
-        print(f"ID: {card_id}, Card Info: ",result)
-    return result
+def read_cards_info_by_deck_id(deck_id:int):
+    result=crud.read_data_by_value(DECK_CARDS_TABLE,"deck_id",deck_id)
+
+def process_deck_cards_info(deck_cards_info:list[dict]):
+    card_list=[]
+    for deck_card in deck_cards_info:
+        card_id=deck_card.get("card_id")
+        quantity=deck_card.get("quantity")
+        if card_id is None or quantity is None:
+            continue
+        card_list.extend([card_id]*quantity)

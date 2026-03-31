@@ -4,7 +4,7 @@ async function test_deck() {
         {
             method:"POST",
             headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({})
+            body:JSON.stringify({deck_id:170})
         }
     )
 }

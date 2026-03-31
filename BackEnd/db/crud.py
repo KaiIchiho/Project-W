@@ -1,6 +1,7 @@
 from db import connection_pool
 from contextlib import contextmanager
 from config import setting_database
+import re
 
 def read_data(sql:str,params=None):
     try:
@@ -52,13 +53,24 @@ def read_all_data_by_table(table:str)->list[dict]:
     sql=f"SELECT * FROM {table}"
     return read_data(sql)
 
-def read_data_by_id(table:str,id)->dict:
+def read_data_by_value(table:str,field:str,value)->list[dict]:
     if not _check_table_name(table):
         raise ValueError(f"Invalid table: {table}")
-    
-    sql=f"SELECT 1 FROM {table} WHERE id = ?"
-    result=read_data(sql,(id,))
+    if not re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", field):
+        raise ValueError("Invalid field name")
+    sql=f"SELECT * FROM {table} WHERE {field} = ?"
+    result=read_data(sql,(value,))
+    if not result:
+        return []
     return result
+
+def read_data_by_id(table:str,id)->dict:
+    # if not _check_table_name(table):
+    #     raise ValueError(f"Invalid table: {table}")
+    
+    # sql=f"SELECT * FROM {table} WHERE id = ?"
+    # result=read_data(sql,(id,))
+    return read_data_by_value(table,"id",id)
 
 def check_is_id_exist_by_table(table:str,id)->bool:
     result=read_data_by_id(table,id)
