@@ -6,8 +6,8 @@ def deck_list(req:DeckListRequest)->DeckListResponse:
     deck_info_list=[]
     for deck in deck_list:
         print(deck)
-        deck_id=deck.get("deck_id")
-        deck_name=deck.get("deck_name")
+        deck_id=deck.get("id")
+        deck_name=deck.get("name")
         if deck_id is None:
             deck_id=-1
         if deck_name is None:
