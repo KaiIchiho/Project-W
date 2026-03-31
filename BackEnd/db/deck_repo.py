@@ -23,3 +23,4 @@ def process_deck_cards_info(deck_cards_info:list[dict]):
         if card_id is None or quantity is None:
             continue
         card_list.extend([card_id]*quantity)
+    return card_list
