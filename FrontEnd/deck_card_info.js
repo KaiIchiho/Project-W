@@ -3,7 +3,7 @@ async function test_deck() {
         "api/test_deck",
         {
             method:"POST",
-            header:{"Content-Type":"application/json"},
+            headers:{"Content-Type":"application/json"},
             body:JSON.stringify({})
         }
     )
