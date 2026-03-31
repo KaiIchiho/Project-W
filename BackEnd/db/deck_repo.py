@@ -7,8 +7,9 @@ def read_all_deck()->list[dict]:
 
 def test_read_all_deck(deck_id:int):
     deck_cards=read_cards_info_by_deck_id(deck_id)
-    for card in deck_cards:
-        print(card)
+    result=process_deck_cards_info(deck_cards)
+    for data in result:
+        print(data)
 
 def read_cards_info_by_deck_id(deck_id:int):
     result=crud.read_data_by_value(DECK_CARDS_TABLE,"deck_id",deck_id)
