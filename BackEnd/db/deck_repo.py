@@ -3,13 +3,7 @@ from config.setting_database import DECK_TABLE,DECK_CARDS_TABLE
 
 # Deck
 def read_all_deck()->list[dict]:
-    return crud.read_all_data_by_table(DECK_CARDS_TABLE)
-
-def test_read_all_deck(deck_id:int):
-    deck_cards=read_cards_info_by_deck_id(deck_id)
-    result=process_deck_cards_info(deck_cards)
-    for data in result:
-        print(data)
+    return crud.read_all_data_by_table(DECK_TABLE)
 
 def read_cards_info_by_deck_id(deck_id:int):
     result=crud.read_data_by_value(DECK_CARDS_TABLE,"deck_id",deck_id)

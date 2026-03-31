@@ -1,14 +1,22 @@
 from pydantic import BaseModel
 from schemas.base import ResponseBase
 
-class ReadDeckRequest(BaseModel):
+class DeckInfo(BaseModel):
     deck_id:int
-
-class ReadDeckResponse(ResponseBase):
+    deck_name:str
+class DeckListRequest(BaseModel):
     pass
+class DeckListResponse(BaseModel):
+    deck_list:list[DeckInfo]
 
-class ReadCardRequest(BaseModel):
-    pass
+# class ReadDeckRequest(BaseModel):
+#     deck_id:int
 
-class ReadCardResponse(ResponseBase):
-    pass
+# class ReadDeckResponse(ResponseBase):
+#     pass
+
+# class ReadCardRequest(BaseModel):
+#     pass
+
+# class ReadCardResponse(ResponseBase):
+#     pass

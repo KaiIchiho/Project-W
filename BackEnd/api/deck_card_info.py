@@ -1,13 +1,9 @@
 from fastapi import APIRouter
-from schemas.deck_card_info import ReadDeckRequest,ReadDeckResponse
+from schemas.deck_card_info import DeckListRequest,DeckListResponse
 from services import deck_card_info
 
 router=APIRouter()
 
-@router.post("/test_deck",response_model=ReadDeckResponse)
-def test_deck(req:ReadDeckRequest):
-    return deck_card_info.read_deck(req)
-
-@router.post("/test_card",response_model=ReadDeckResponse)
-def test_deck(req:ReadDeckRequest):
-    return deck_card_info.read_deck(req)
+@router.post("/deck_list",response_model=DeckListResponse)
+def deck_list(req:DeckListRequest):
+    return deck_card_info.deck_list(req)
