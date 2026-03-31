@@ -5,6 +5,7 @@ def deck_list(req:DeckListRequest)->DeckListResponse:
     deck_list=deck_repo.read_all_deck()
     deck_info_list=[]
     for deck in deck_list:
+        print(deck)
         deck_id=deck.get("deck_id")
         deck_name=deck.get("deck_name")
         if deck_id is None:
