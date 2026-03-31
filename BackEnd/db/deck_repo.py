@@ -12,6 +12,7 @@ def test_read_all_deck(deck_id:int):
 
 def read_cards_info_by_deck_id(deck_id:int):
     result=crud.read_data_by_value(DECK_CARDS_TABLE,"deck_id",deck_id)
+    return result
 
 def process_deck_cards_info(deck_cards_info:list[dict]):
     card_list=[]
