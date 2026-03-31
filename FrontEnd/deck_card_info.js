@@ -1,4 +1,4 @@
-async function test_deck(params) {
+async function test_deck() {
     const res=await fetch(
         "api/test_deck",
         {
