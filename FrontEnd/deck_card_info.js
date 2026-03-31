@@ -8,3 +8,14 @@ async function test_deck() {
         }
     )
 }
+
+async function test_card() {
+    const res=await fetch(
+        "api/test_card",
+        {
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({})
+        }
+    )
+}

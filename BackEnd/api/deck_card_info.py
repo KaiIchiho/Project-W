@@ -7,3 +7,7 @@ router=APIRouter()
 @router.post("/test_deck",response_model=ReadDeckResponse)
 def test_deck(req:ReadDeckRequest):
     return deck_card_info.read_deck(req)
+
+@router.post("/test_card",response_model=ReadDeckResponse)
+def test_deck(req:ReadDeckRequest):
+    return deck_card_info.read_deck(req)

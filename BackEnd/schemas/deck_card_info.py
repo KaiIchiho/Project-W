@@ -6,3 +6,9 @@ class ReadDeckRequest(BaseModel):
 
 class ReadDeckResponse(ResponseBase):
     pass
+
+class ReadCardRequest(BaseModel):
+    pass
+
+class ReadCardResponse(ResponseBase):
+    pass
