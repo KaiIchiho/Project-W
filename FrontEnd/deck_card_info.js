@@ -1,6 +1,6 @@
 async function deck_list() {
     const res=await fetch(
-        "api/test_deck",
+        "api/deck_list",
         {
             method:"POST",
             headers:{"Content-Type":"application/json"},
