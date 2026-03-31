@@ -3,6 +3,6 @@ from db import deck_repo
 
 def read_deck(req:ReadDeckRequest)->ReadDeckResponse:
     deck_repo.test_read_all_deck()
-    return ReadDeckRequest(
+    return ReadDeckResponse(
         success=True,
         log="test_read_all_deck")
