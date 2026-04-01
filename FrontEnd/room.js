@@ -64,6 +64,7 @@ async function getAllRoomIDs() {
 // }
 
 async function enterRoom(isPlayer){
+    console.error("Enter Room Start");
     const room_id_select=document.getElementById("room_id_select");
     room_id_str=room_id_select.value
     let room_id = +room_id_str;
@@ -78,7 +79,6 @@ async function enterRoom(isPlayer){
     }
     sendJson(data)
     
-    console.error("Enter Room Complete");
 
     // const res=await fetch("/api/enter_room",{
     //    method:"POST",

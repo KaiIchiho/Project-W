@@ -60,6 +60,7 @@ function isDict(obj) {
 }
 
 function sendJson(data){
+    console.log("sendJson")
     if(!isDict(data)){
         console.error("Data Not Dict");
         return;
