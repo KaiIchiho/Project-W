@@ -57,41 +57,60 @@ def _create_room_instance(room_id:int,room_name:str)->bool:
     rooms[room_id]=Room(room_id,room_name)
     return True
 
-def enter_room(req:EnterRoomRequest)->EnterRoomResponse:
-    user_id=req.user.user_id
+def enter_room(user_id:int,req:EnterRoomRequest)->EnterRoomResponse:
     room_id=req.room_id
-    is_player=req.user.user_is_player
+    is_player=req.user_is_player
     
     # Check If User ID is Valid
     print(f"Enter Room, RoomID: {room_id}, UserID: {user_id}, IsPlayer: {is_player}")
     player=players.get(user_id)
     if player is None:
         return EnterRoomResponse(
-            success=False,room_id=room_id,user_id=user_id,
+            event=req.event,
+            room_id=room_id,
+            user_id=user_id,
+            success=False,
+            user_is_player=req.user_is_player,
             log=f"{user_id}のユーザーが存在しません")
     
     # Check If User is In Room
     if user_room.get(user_id) is not None:
         return EnterRoomResponse(
-            success=False,room_id=req.room_id,user_id=user_id,
+            event=req.event,
+            room_id=room_id,
+            user_id=user_id,
+            success=False,
+            user_is_player=req.user_is_player,
             log=f"{user_id}のユーザーは既に在室中です")
 
     # Check If Room ID is Valid
     room=rooms.get(room_id)
     if room is None:
         return EnterRoomResponse(
-            success=False,room_id=room_id,user_id=user_id,
+            event=req.event,
+            room_id=room_id,
+            user_id=user_id,
+            success=False,
+            user_is_player=req.user_is_player,
             log=f"{room_id}のルームが存在しません")
     # Check If User is In Target Room
     if room.check_user_in_room(user_id)==True:
         return EnterRoomResponse(
-            success=False,room_id=room_id,user_id=user_id,
-            log=f"")
+            event=req.event,
+            room_id=room_id,
+            user_id=user_id,
+            success=False,
+            user_is_player=req.user_is_player,
+            log=f"{user_name} が既にルーム{room_name}に在室です")
     # Check If Room's ID is Correct
     if room.room_id != room_id:
         return EnterRoomResponse(
-            success=False,room_id=room_id,user_id=user_id,
-            log="")
+            event=req.event,
+            room_id=room_id,
+            user_id=user_id,
+            success=False,
+            user_is_player=req.user_is_player,
+            log=f"ルームID{room_id}は間違っています")
     
     # Enter Room
     result=None
@@ -111,31 +130,45 @@ def enter_room(req:EnterRoomRequest)->EnterRoomResponse:
         log=f"{user_name} がルーム{room_name}に入室できませんでした"
         
     return EnterRoomResponse(
-        success=result,room_id=room_id,user_id=user_id,log=log)
+            event=req.event,
+            room_id=room_id,
+            user_id=user_id,
+            success=result,
+            user_is_player=req.user_is_player,
+            log=log)
     
 async def eixt_room(req:ExitRoomRequest):
-    return await exit_room_by_id(req.user_id)
+    return await exit_room_by_id(req.user_id,req.event)
 
-async def exit_room_by_id(user_id:int)->ExitRoomResponse:
+async def exit_room_by_id(user_id:int,event:str="")->ExitRoomResponse:
     # Check If User ID is Valid
     player=players.get(user_id)
     if player is None:
         return ExitRoomResponse(
-            success=False,room_id=-1,user_id=user_id,
+            event=event,
+            room_id=-1,
+            user_id=user_id,
+            success=False,
             log=f"{user_id}のユーザーが存在しません")
     
     # Check If User is In Room And Get Room ID
     room_id=user_room.get(user_id)
     if room_id is None:
         return ExitRoomResponse(
-            success=False,room_id=-1,user_id=user_id,
+            event=event,
+            room_id=-1,
+            user_id=user_id,
+            success=False,
             log=f"{user_id} のユーザーは在室ではありません")
     
     # Check If Room ID is Valid
     room=rooms.get(room_id)
     if room is None:
         return ExitRoomResponse(
-            success=False,room_id=room_id,user_id=user_id,
+            event=event,
+            room_id=room_id,
+            user_id=user_id,
+            success=False,
             log=f"在室中の {room_id} のルームが存在しません")
     
     # Result
@@ -156,5 +189,8 @@ async def exit_room_by_id(user_id:int)->ExitRoomResponse:
         log=f"{user_name} がルーム{room_name}を退室できませんでした"        
     
     return ExitRoomResponse(
-        success=result,room_id=room_id,user_id=user_id,
+        event=event,
+        room_id=room_id,
+        user_id=user_id,
+        success=result,
         log=log)

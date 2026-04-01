@@ -2,6 +2,9 @@ from core.game import Game
 from core.room import Room
 from schemas import global_registration
 from typing import Callable,Awaitable
+from services import room
+from schemas.room import EnterRoomRequest,ExitRoomRequest
+from schemas.game_flow import StandbyRequest,StandbyResponse
 from pydantic import BaseModel
 
 ws_send_message_handler:Callable[[dict,str],Awaitable[None]]
@@ -10,6 +13,51 @@ create_message_handler:Callable[[int,str],dict]
 ws_send_data_to_user_handler:Callable[[int,BaseModel],Awaitable[None]]
 ws_send_data_to_room_handler:Callable[[int,BaseModel],Awaitable[None]]
 ws_send_data_to_room_except_target_handler:Callable[[int,int,BaseModel],Awaitable[None]]
+
+outgame_handlers={
+        "enter_room":"handle_enter_room",
+        "exit_room":"handle_exit_room",
+        "standby":"handle_standby"
+        }
+def parse_model(data: dict, model_cls):
+    try:
+        return model_cls.model_validate(data)
+    except Exception as e:
+        print("Model Parse Failed:", e)
+        return None
+
+async def handle_outgame_event(data:dict,user_id:int):
+    handler_name=outgame_handlers.get(data.get("event"))
+    if not handler_name:
+        raise ValueError("Action Not Found")
+    handler=globals().get(handler_name)
+    
+    await handler(data,user_id)
+    
+async def handle_standby(data:dict,user_id:int):
+    req=parse_model(data,StandbyRequest)
+    if not req:
+        raise ValueError("StandbyRequest Parse Failed")
+    result=standby(user_id)
+    if result!=-1:
+        StandbyResponse(
+            event=data.get("event"),
+            success=True,
+            log=f"")
+async def handle_enter_room(data:dict,user_id:int):
+    req=parse_model(data,EnterRoomRequest)
+    if not req:
+        raise ValueError("EnterRoomRequest Parse Failed")
+    res=room.enter_room(user_id,req)
+    if ws_send_data_to_room_handler:
+        await ws_send_data_to_room_handler(data.get("room_id"),res)
+async def handle_exit_room(data:dict,user_id:int):
+    req=parse_model(data,ExitRoomRequest)
+    if not req:
+        raise ValueError("ExitRoomRequest Parse Failed")
+    res=room.eixt_room(req)
+    if ws_send_data_to_room_handler:
+        await ws_send_data_to_room_handler(res.room_id,res)
 
 async def standby(user_id:int)->int:
     player=global_registration.players.get(user_id)
@@ -22,13 +70,11 @@ async def standby(user_id:int)->int:
         raise ValueError(f"{room_id} Room Not Found")
         #return -1
     
-    game=create_game_instance(room)
+    game=_create_game_instance(room)
     result=await game.set_player_to_none(player,game.start_game)
-    #if result==-1:
-    #    print(f"Warning: Game Instance is Players Full !")
     return result
     
-def create_game_instance(room:Room)->Game:
+def _create_game_instance(room:Room)->Game:
     room_id=room.room_id
     game=get_game_by_room_id(room_id)
     if game is not None:

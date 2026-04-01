@@ -12,10 +12,10 @@ def get_room_id_list_endpoint():
 # def create_room_endpoint(req:CreateRoomRequest):
 #     return room.create_room(req)
 
-@router.post("/enter_room",response_model=EnterRoomResponse)
-def enter_room_endpoint(req:EnterRoomRequest):
-    return room.enter_room(req)
+# @router.post("/enter_room",response_model=EnterRoomResponse)
+# def enter_room_endpoint(req:EnterRoomRequest):
+#     return room.enter_room(req)
     
-@router.post("/exit_room",response_model=ExitRoomResponse)
-async def eixt_room_endpoint(req:ExitRoomRequest):
-    return await room.eixt_room(req)
+# @router.post("/exit_room",response_model=ExitRoomResponse)
+# async def eixt_room_endpoint(req:ExitRoomRequest):
+#     return await room.eixt_room(req)

@@ -1,39 +1,27 @@
 from pydantic import BaseModel
 from schemas.object import UserData
-from schemas.base import ResponseBase
+from schemas.base import ResponseBase,WSCommonRequestBase,WSCommonResponseBase
 
-class CreateRoomRequest(BaseModel):
-    # room_id:str
-    room_id:int
-    room_name:str
+# class CreateRoomRequest(BaseModel):
+#     room_id:int
+#     room_name:str
     
-class CreateRoomResponse(ResponseBase):
-    # ok:bool
-    # room_id:str
-    room_id:int
-    room_name:str
+# class CreateRoomResponse(ResponseBase):
+#     room_id:int
+#     room_name:str
     
-class EnterRoomRequest(BaseModel):
-    # room_id:str
-    # user_id:str
-    # as_player:bool
+class EnterRoomRequest(WSCommonRequestBase):
     room_id:int
-    user:UserData
+    user_is_player:bool
     
-class EnterRoomResponse(ResponseBase):
-    # ok:bool
-    # room_id:str
-    # user_id:str
+class EnterRoomResponse(WSCommonResponseBase):
     room_id:int
     user_id:int
-    # log:str
+    user_is_player:bool
     
-class ExitRoomRequest(BaseModel):
-    # room_id:str
+class ExitRoomRequest(WSCommonRequestBase):
     user_id:int
     
-class ExitRoomResponse(ResponseBase):
-    # ok:bool
-    # detail:str
+class ExitRoomResponse(WSCommonResponseBase):
     room_id:int
     user_id:int

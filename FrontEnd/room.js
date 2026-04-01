@@ -40,80 +40,154 @@ async function getAllRoomIDs() {
     return room_id_list;
 }
 
-async function createRoom() {
-    const input_room_id=document.getElementById("input_room_id");
-    room_id=input_room_id.value;
-    if(room_id==""){
-        console.log("Room ID Should Not Be None.");
-        return;
-    }
+// async function createRoom() {
+//     const input_room_id=document.getElementById("input_room_id");
+//     room_id=input_room_id.value;
+//     if(room_id==""){
+//         console.log("Room ID Should Not Be None.");
+//         return;
+//     }
 
-    const res=await fetch("/api/create_room",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({room_id:room_id})
-    });
-    const res_data=await res.json();
-    if(res.ok){
-        input_room_id.value="";
-        console.log("Room Create Success.");
-    }
-    else{
-        console.error("Room Create Failed.");
-    }
-}
+//     const res=await fetch("/api/create_room",{
+//         method:"POST",
+//         headers:{"Content-Type":"application/json"},
+//         body:JSON.stringify({room_id:room_id})
+//     });
+//     const res_data=await res.json();
+//     if(res.ok){
+//         input_room_id.value="";
+//         console.log("Room Create Success.");
+//     }
+//     else{
+//         console.error("Room Create Failed.");
+//     }
+// }
 
 async function enterRoom(isPlayer){
     const room_id_select=document.getElementById("room_id_select");
-    room_id=room_id_select.value
+    room_id_str=room_id_select.value
+    let room_id = +room_id_id;
+    if(room_id===NaN){
+        console.error("Room ID Not Intiager");
+        return;
+    }
+    data={
+        event:"enter_room",
+        room_id:room_id,
+        user_is_player:isPlayer
+    }
+    sendJson(data)
+    return
 
-    const res=await fetch("/api/enter_room",{
-       method:"POST",
-       headers:{"Content-Type":"application/json"},
-       body:JSON.stringify({room_id:room_id,user_id:user_id,as_player:isPlayer})
-    });
+    // const res=await fetch("/api/enter_room",{
+    //    method:"POST",
+    //    headers:{"Content-Type":"application/json"},
+    //    body:JSON.stringify({room_id:room_id,user_id:user_id,as_player:isPlayer})
+    // });
 
-    const res_data=await res.json();
-    if(res_data.ok){
+    // const res_data=await res.json();
+    // if(res_data.ok){
+    //     setComponentHidden("enter_room_menu",true);
+    //     setComponentHidden("exit_room_menu",false);
+
+    //     const room_info=document.getElementById("room_info");
+    //     let as_player;
+    //     if(isPlayer)as_player="Player";
+    //     else as_player="Viewer";
+    //     room_info.textContent="Room ID: "+room_id+", As "+as_player;
+    //     current_room_id=room_id;
+
+    //     console.log("Enter Room "+room_id+" Success");
+    //     setComponentHidden("message_block",false);
+    // }
+    // else{
+    //     console.error("Cannot Enter Room "+room_id);
+    // }
+}
+
+function handleEnterRoom(data){
+    if(data.success===undefined||
+        data.user_is_player===undefined||
+        data.room_id===undefined||
+        data.log===undefined
+    )
+    {
+        return;
+    }
+    if(data.success){
         setComponentHidden("enter_room_menu",true);
         setComponentHidden("exit_room_menu",false);
 
         const room_info=document.getElementById("room_info");
         let as_player;
-        if(isPlayer)as_player="Player";
+        if(data.user_is_player)as_player="Player";
         else as_player="Viewer";
         room_info.textContent="Room ID: "+room_id+", As "+as_player;
-        current_room_id=room_id;
+        current_room_id=data.room_id;
 
-        console.log("Enter Room "+room_id+" Success");
+        // console.log("Enter Room "+room_id+" Success");
+        console.log(data.log)
         setComponentHidden("message_block",false);
+        
     }
     else{
-        console.error("Cannot Enter Room "+room_id);
+        // console.error("Cannot Enter Room "+room_id);
+        console.error(data.log)
     }
 }
 
 async function exitRoom() {
     console.log("Exit Room ID: "+current_room_id+"User ID: "+user_id);
-    const res=await fetch("/api/exit_room",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({room_id:current_room_id,user_id:user_id})
-    });
-    const res_data=await res.json();
 
-    if(res_data.ok){
+    data={
+        event:"exit_room",
+        user_id:user_id
+    }
+    sendJson(data)
+    // const res=await fetch("/api/exit_room",{
+    //     method:"POST",
+    //     headers:{"Content-Type":"application/json"},
+    //     body:JSON.stringify({room_id:current_room_id,user_id:user_id})
+    // });
+    // const res_data=await res.json();
+
+    // if(res_data.ok){
+    //     document.getElementById("log").innerHTML="";
+
+    //     setComponentHidden("enter_room_menu",false);
+    //     setComponentHidden("exit_room_menu",true);
+    //     current_room_id="";
+        
+    //     console.log("Exit Room Success");
+    //     setComponentHidden("message_block",true);
+    // }
+    // else{
+    //     console.error("Cannot Exit Room");
+    // }
+}
+
+function handleExitRoom(data){
+    if(data.success===undefined||
+        data.room_id===undefined||
+        data.log===undefined
+    )
+    {
+        return;
+    }
+    if(data.success){
         document.getElementById("log").innerHTML="";
 
         setComponentHidden("enter_room_menu",false);
         setComponentHidden("exit_room_menu",true);
         current_room_id="";
         
-        console.log("Exit Room Success");
+        // console.log("Exit Room Success");
+        console.log(data.log)
         setComponentHidden("message_block",true);
     }
     else{
-        console.error("Cannot Exit Room");
+        // console.error("Cannot Enter Room "+room_id);
+        console.error(data.log)
     }
 }
 
