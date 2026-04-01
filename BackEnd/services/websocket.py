@@ -57,17 +57,17 @@ async def websocket(ws:WebSocket):
                 continue
             
             #Room Check
-            room_id=user_room.get(user_id)
-            if room_id is None:
-                continue
-            room=rooms.get(room_id)
-            if room is None:
-                continue
-            is_client_in_room=room.check_player_in_room(user_id)
-            if is_client_in_room==False:
-                print("Client Is Not In Room As Player")
-                continue
-            print("Client Is In Room As Player")
+            # room_id=user_room.get(user_id)
+            # if room_id is None:
+            #     continue
+            # room=rooms.get(room_id)
+            # if room is None:
+            #     continue
+            # is_client_in_room=room.check_player_in_room(user_id)
+            # if is_client_in_room==False:
+            #     print("Client Is Not In Room As Player")
+            #     continue
+            # print("Client Is In Room As Player")
             
             #Process Message
             msg_type=await read_wsmsg_type(msg)
