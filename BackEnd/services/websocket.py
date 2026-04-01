@@ -72,9 +72,10 @@ async def websocket(ws:WebSocket):
             #Process Message
             msg_type=await read_wsmsg_type(msg)
             if msg_type==1:
-                await receive_text(ws,room,msg["text"])
+                pass
+                # await receive_text(ws,msg["text"])
             elif msg_type==2:
-                await receive_json(ws,user_id,room,json.loads(msg["text"]))
+                await receive_json(ws,user_id,json.loads(msg["text"]))
     except WebSocketDisconnect:
         print("Client disconnected.")
     finally:
@@ -117,7 +118,7 @@ async def receive_text(ws:websocket,room:Room,text:str):
             
     await ws.send_text(f"From Server -\n (yourself){text}")
     
-async def receive_json(ws:websocket,user_id:int,room:Room,json:dict):
+async def receive_json(ws:websocket,user_id:int,json:dict):
     # command=json.get("type")
     # if command is None:
     #     print("Error: JSON Command Is None !")
