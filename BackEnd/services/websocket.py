@@ -132,8 +132,8 @@ async def receive_json(ws:websocket,user_id:int,json:dict):
     if json.get("event") is None:
         # await game_flow.standby(user_id)
         await game_flow.handle_outgame_event(json,user_id)
-    else:
-        await game_flow.receive_command_json(room.room_id,json,user_id)
+    # else:
+        # await game_flow.receive_command_json(room.room_id,json,user_id)
 
 def create_message(self_text:str,room_text:str)->dict:
     message={}
