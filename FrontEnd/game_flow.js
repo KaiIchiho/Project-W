@@ -4,7 +4,7 @@ function standby(){
         return
     }
     ws.send(JSON.stringify({
-        type:"standby"
+        event:"standby"
     }));
 }
 

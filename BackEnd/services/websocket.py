@@ -117,12 +117,17 @@ async def receive_text(ws:websocket,room:Room,text:str):
     await ws.send_text(f"From Server -\n (yourself){text}")
     
 async def receive_json(ws:websocket,user_id:int,room:Room,json:dict):
-    command=json.get("type")
-    if command is None:
-        print("Error: JSON Command Is None !")
-        return
+    # command=json.get("type")
+    # if command is None:
+    #     print("Error: JSON Command Is None !")
+    #     return
     
-    if command=="standby":
+    # if command=="standby":
+    #     await game_flow.standby(user_id)
+    # else:
+    #     await game_flow.receive_command_json(room.room_id,json,user_id)
+    print(json)
+    if json.get("event") is None:
         await game_flow.standby(user_id)
     else:
         await game_flow.receive_command_json(room.room_id,json,user_id)

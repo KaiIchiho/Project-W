@@ -9,14 +9,9 @@ class DeckListRequest(BaseModel):
 class DeckListResponse(BaseModel):
     deck_list:list[DeckInfo]
 
-# class ReadDeckRequest(BaseModel):
-#     deck_id:int
+class SelectDeckResquest(BaseModel):
+    select_deck:int
+class SelectDeckResponse(ResponseBase):
+    pass
 
-# class ReadDeckResponse(ResponseBase):
-#     pass
-
-# class ReadCardRequest(BaseModel):
-#     pass
-
-# class ReadCardResponse(ResponseBase):
-#     pass
+#class CardInfoResponse(BaseModel):
