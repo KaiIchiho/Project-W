@@ -126,9 +126,10 @@ async def receive_json(ws:websocket,user_id:int,room:Room,json:dict):
     #     await game_flow.standby(user_id)
     # else:
     #     await game_flow.receive_command_json(room.room_id,json,user_id)
-    print(json)
+    print("Received JSON: ",json)
     if json.get("event") is None:
-        await game_flow.standby(user_id)
+        # await game_flow.standby(user_id)
+        await game_flow.handle_outgame_event(json)
     else:
         await game_flow.receive_command_json(room.room_id,json,user_id)
 
