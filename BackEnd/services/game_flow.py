@@ -27,6 +27,7 @@ def parse_model(data: dict, model_cls):
         return None
 
 async def handle_outgame_event(data:dict,user_id:int):
+    print("handle_outgame_event")
     handler_name=outgame_handlers.get(data.get("event"))
     if not handler_name:
         raise ValueError("Action Not Found")
@@ -45,6 +46,7 @@ async def handle_standby(data:dict,user_id:int):
             success=True,
             log=f"")
 async def handle_enter_room(data:dict,user_id:int):
+    print("handle_enter_room")
     req=parse_model(data,EnterRoomRequest)
     if not req:
         raise ValueError("EnterRoomRequest Parse Failed")
