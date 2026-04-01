@@ -66,7 +66,7 @@ async function getAllRoomIDs() {
 async function enterRoom(isPlayer){
     const room_id_select=document.getElementById("room_id_select");
     room_id_str=room_id_select.value
-    let room_id = +room_id_id;
+    let room_id = +room_id_str;
     if(room_id===NaN){
         console.error("Room ID Not Intiager");
         return;
