@@ -65,6 +65,7 @@ async def handle_exit_room(data:dict,user_id:int):
     if ws_send_data_to_room_handler:
         print(f"handle_exit_room ID: {res.room_id}")
         await ws_send_data_to_room_handler(res.room_id,res)
+        await ws_send_data_to_user_handler(user_id,res)
 
 async def standby(user_id:int)->int:
     player=global_registration.players.get(user_id)
