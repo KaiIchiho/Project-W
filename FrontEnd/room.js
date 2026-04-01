@@ -107,6 +107,7 @@ async function enterRoom(isPlayer){
 }
 
 function handleEnterRoom(data){
+    console.log("Handle Enter Room")
     if(data.success===undefined||
         data.user_is_player===undefined||
         data.room_id===undefined||

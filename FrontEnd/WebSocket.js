@@ -105,6 +105,7 @@ function handleWsJson(data){
         console.error("[handleWsJson] Data Not Dict");
         return;
     }
+    console.log("Handle Ws Json")
     if(data.event!==undefined){
         eve=data.event
         if(event_method_dict.eve!==undefined){
