@@ -70,6 +70,8 @@ function sendJson(data){
         console.error("WebSocket not open:",ws.readyState);
         return;
     }
+    
+    console.log("Start WS Send Json")
     ws.send(JSON.stringify(data))
 }
 

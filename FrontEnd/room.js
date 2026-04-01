@@ -64,7 +64,7 @@ async function getAllRoomIDs() {
 // }
 
 async function enterRoom(isPlayer){
-    console.error("Enter Room Start");
+    console.log("Enter Room Start");
     const room_id_select=document.getElementById("room_id_select");
     room_id_str=room_id_select.value
     let room_id = +room_id_str;
