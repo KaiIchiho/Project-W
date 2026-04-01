@@ -43,8 +43,9 @@ async def websocket(ws:WebSocket):
                 if msg["type"]=="websocket.disconnect":
                     break
                 if msg["type"]=="websocket.receive":
-                    deta=msg.get("text")
-                    if deta!="ping":
+                    data=msg.get("text")
+                    print(f"Log: WebSocket Data is {data}")
+                    if data!="ping":
                         last_active=time.time()
             if time.time()-last_active>WS_TIMEOUT:
                 print("Log: WebSocket Timeout.")
