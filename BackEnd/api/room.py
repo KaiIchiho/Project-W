@@ -8,9 +8,9 @@ router=APIRouter()
 def get_room_id_list_endpoint():
     return room.get_room_id_list()
     
-@router.post("/create_room",response_model=CreateRoomResponse)
-def create_room_endpoint(req:CreateRoomRequest):
-    return room.create_room(req)
+# @router.post("/create_room",response_model=CreateRoomResponse)
+# def create_room_endpoint(req:CreateRoomRequest):
+#     return room.create_room(req)
 
 @router.post("/enter_room",response_model=EnterRoomResponse)
 def enter_room_endpoint(req:EnterRoomRequest):

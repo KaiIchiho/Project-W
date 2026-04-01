@@ -23,33 +23,33 @@ def get_room_id_list():
     room_id_list=list(rooms.keys())
     return room_id_list
     
-def create_room(req:CreateRoomRequest):
-    room_id=req.room_id
-    room_name=req.room_name
+# def create_room(req:CreateRoomRequest):
+#     room_id=req.room_id
+#     room_name=req.room_name
     
-    # Instance
-    result=_create_room_instance(room_id,room_name)
-    if not result:
-        return CreateRoomResponse(
-            success=result,room_id=req.room_id,room_name=room_name,
-            log=f"{room_id} のルーム作成が成功できませんでした")
+#     # Instance
+#     result=_create_room_instance(room_id,room_name)
+#     if not result:
+#         return CreateRoomResponse(
+#             success=result,room_id=req.room_id,room_name=room_name,
+#             log=f"{room_id} のルーム作成が成功できませんでした")
     
-    # Dont Use DB
-    if not USE_DB:
-        return CreateRoomResponse(
-            success=result,room_id=req.room_id,room_name=room_name,
-            log=f"{room_id} のルーム作成が成功しました")
+#     # Dont Use DB
+#     if not USE_DB:
+#         return CreateRoomResponse(
+#             success=result,room_id=req.room_id,room_name=room_name,
+#             log=f"{room_id} のルーム作成が成功しました")
     
-    # DB
-    result=room_repo.insert_room_data(req.room_id,req.room_name)
-    if not result:
-        rooms.pop(req.room_id)
-        return CreateRoomResponse(
-            success=result,room_id=req.room_id,room_name=room_name,
-            log=f"{room_id} のルーム作成が成功できませんでした")
-    return CreateRoomResponse(
-        success=result,room_id=req.room_id,room_name=room_name,
-        log=f"{room_id} のルーム作成が成功しました")
+#     # DB
+#     result=room_repo.insert_room_data(req.room_id,req.room_name)
+#     if not result:
+#         rooms.pop(req.room_id)
+#         return CreateRoomResponse(
+#             success=result,room_id=req.room_id,room_name=room_name,
+#             log=f"{room_id} のルーム作成が成功できませんでした")
+#     return CreateRoomResponse(
+#         success=result,room_id=req.room_id,room_name=room_name,
+#         log=f"{room_id} のルーム作成が成功しました")
 
 def _create_room_instance(room_id:int,room_name:str)->bool:
     if rooms.get(room_id) is not None:
