@@ -58,7 +58,12 @@ async def handle_exit_room(data:dict,user_id:int):
     if not req:
         raise ValueError("ExitRoomRequest Parse Failed")
     res=await room.eixt_room(req)
+    if res is not None:
+        print("handle_exit_room Not None")
+    else:
+        print("handle_exit_room Is None")        
     if ws_send_data_to_room_handler:
+        print(f"handle_exit_room ID: {res.room_id}")
         await ws_send_data_to_room_handler(res.room_id,res)
 
 async def standby(user_id:int)->int:
