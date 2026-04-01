@@ -57,7 +57,7 @@ async def handle_exit_room(data:dict,user_id:int):
     req=parse_model(data,ExitRoomRequest)
     if not req:
         raise ValueError("ExitRoomRequest Parse Failed")
-    res=room.eixt_room(req)
+    res=await room.eixt_room(req)
     if ws_send_data_to_room_handler:
         await ws_send_data_to_room_handler(res.room_id,res)
 
