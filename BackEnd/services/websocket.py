@@ -191,7 +191,7 @@ async def send_data_to_room(room_id:int,data:BaseModel):
     room=rooms.get(room_id)
     if not room:
         return
-    user_ids:list[int]=None
+    user_ids:list[int]=[]
     if room.player_1 and room.player_1.player_id is not None:
         user_ids.append(room.player_1.player_id)
     if room.player_2 and room.player_2.player_id is not None:
