@@ -55,6 +55,10 @@ function sendMessage(){
     input.value="";
 }
 
+function isDict(obj) {
+    return obj !== null && typeof obj === 'object' && !Array.isArray(obj);
+}
+
 function sendJson(data){
     if(!isDict(data)){
         console.error("Data Not Dict");
