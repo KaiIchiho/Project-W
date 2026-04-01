@@ -108,8 +108,10 @@ function handleWsJson(data){
     console.log("Handle Ws Json")
     if(data.event!==undefined){
         eve=data.event
+        console.log("event: ",eve)
         if(event_method_dict.eve!==undefined){
             const method=event_method_dict.eve
+            console.log("method: ",method)
             window[method](data);
         }
     }
