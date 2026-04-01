@@ -185,7 +185,7 @@ async def send_data_to_user(target_user_id:int,data:BaseModel):
     if not ws:
         return
     if ws.application_state == WebSocketState.CONNECTED:
-        ws.send_json(data.dict())
+        await ws.send_json(data.dict())
 
 async def send_data_to_room(room_id:int,data:BaseModel):
     room=rooms.get(room_id)
