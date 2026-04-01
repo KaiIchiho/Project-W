@@ -33,10 +33,10 @@ async def websocket(ws:WebSocket):
             #msg=await ws.receive()
             #Timeout
             try:
-                print("Log: Wait For WebSocket Receive.")
+                # print("Log: Wait For WebSocket Receive.")
                 msg=await asyncio.wait_for(ws.receive(),timeout=1)
             except asyncio.TimeoutError:
-                print("Error: WebSocket Receive TimeoutError.")
+                # print("Error: WebSocket Receive TimeoutError.")
                 msg=None
             if msg:    
                 print(f"Log: WebSocket message is {msg}")
