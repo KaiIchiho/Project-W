@@ -192,11 +192,11 @@ async def send_data_to_room(room_id:int,data:BaseModel):
     if not room:
         return
     user_ids:list[int]=None
-    if room.player_1:
+    if room.player_1 and room.player_1.player_id is not None:
         user_ids.append(room.player_1.player_id)
-    if room.player_2:
+    if room.player_2 and room.player_2.player_id is not None:
         user_ids.append(room.player_2.player_id)
-    if room.viewer:
+    if room.viewer and room.viewer.player_id is not None:
         user_ids.append(room.viewer.player_id)
     for user_id in user_ids:
         await send_data_to_user(user_id,data)
