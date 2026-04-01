@@ -77,7 +77,8 @@ async function enterRoom(isPlayer){
         user_is_player:isPlayer
     }
     sendJson(data)
-    return
+    
+    console.error("Enter Room Complete");
 
     // const res=await fetch("/api/enter_room",{
     //    method:"POST",
