@@ -2,6 +2,7 @@ from core.game import Game
 from core.room import Room
 from schemas import global_registration
 from typing import Callable,Awaitable
+from schemas.game_flow import StandbyResponse
 from pydantic import BaseModel
 # from typing import Optional
 import importlib
@@ -32,20 +33,41 @@ async def handle_outgame_event(data:dict,user_id:int):
     print("handler:", handler)
     await handler(data,user_id)
   
-async def standby(user_id:int)->int:
+async def standby(user_id:int,event:str)->StandbyResponse:
     player=global_registration.players.get(user_id)
     room_id=global_registration.player_room.get(user_id)
-    if room_id is None:
-        raise ValueError(f"{user_id} User Is Not In Room")
-        #return -1
-    room=global_registration.rooms.get(room_id)
-    if room is None:
-        raise ValueError(f"{room_id} Room Not Found")
-        #return -1
+    success=False
+    log=""
+    if room_id is not None:
+        room=global_registration.rooms.get(room_id)
+        if room is not None:    
+            game=_create_game_instance(room)
+            
+            is_standby=game.check_player_identity_by_id(user_id)
+            
+            if not is_standby:
+                result=await game.set_player_to_none(player,game.start_game)
+                if result!=-1:
+                    success=True
+                    log=f"{user_id}が対戦開始の準備が整えました"
+                else:
+                    success=False
+                    log=f"{user_id}が対戦開始の準備が失敗しました"
+            else:
+                result=await game.cancel_set_player(user_id)
+                if result!=-1:
+                    success=True
+                    log=f"{user_id}が対戦開始の準備が取り消しました"
+                else:
+                    success=False
+                    log=f"{user_id}が対戦開始の準備が取り消し失敗しました"
+    res=StandbyResponse(
+        event=event,
+        success=success,
+        log=log
+    )
+    return res
     
-    game=_create_game_instance(room)
-    result=await game.set_player_to_none(player,game.start_game)
-    return result
     
 def _create_game_instance(room:Room)->Game:
     room_id=room.room_id

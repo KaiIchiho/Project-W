@@ -14,19 +14,15 @@ async def handle_standby(data:dict,user_id:int):
     req=parse_model(data,StandbyRequest)
     if not req:
         raise ValueError("StandbyRequest Parse Failed")
-    result=game_flow.standby(user_id)
-    success=False
-    log=""
-    if result!=-1:
-        success=True
-        log=f"{user_id}が対戦開始の準備が整えました"
-    else:
-        success=False
-        log=f"{user_id}が対戦開始の準備が取り消しました"
-    res=StandbyResponse(
-        event=data.get("event"),
-        success=success,
-        log=log)
+    # result=game_flow.standby(user_id)
+    # success=False
+    # log=""
+    
+    # res=StandbyResponse(
+    #     event=data.get("event"),
+    #     success=success,
+    #     log=log)
+    res=game_flow.standby(user_id,data.get("event"))
     room_id=room.check_user_room(user_id)
     if game_flow.ws_send_data_to_room_handler:
         await game_flow.ws_send_data_to_room_handler(room_id,res)

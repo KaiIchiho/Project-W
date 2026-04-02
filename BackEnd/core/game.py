@@ -18,6 +18,7 @@ class Game():
     phase:Optional[Phase]=None
     #attack_step:Optional[AttackStep]=None
     
+    _is_in_progress=False
     
     def __init__(self,
                  room_id:int,
@@ -107,10 +108,24 @@ class Game():
                 None,
                 player.player_id)
             return -1
-        
+    
+    async def cancel_set_player(self,player_id:int)->int:
+        result=-1
+        if self.player_1 and self.player_1.player_id==player_id:
+            self.player_1=None
+            result=1
+        elif self.player_2 and self.player_2.player_id==player_id:
+            self.player_2=None
+            result=2
+        return result
+    
+    def get_is_in_progress(self)->bool:
+        return self._is_in_progress
+    
     async def start_game(self,player_id:int):
         if self.check_is_full_players()==False:
             return
+        self._is_in_progress=True
         self.current_turn=1
         await self.set_first_player(self.player_1)
         await self.send_message(None,"Start Game",player_id)
@@ -183,6 +198,8 @@ class Game():
     
     def check_player_identity_by_id(self,player_id:int)->int:
         player=self.check_command_player(player_id)
+        if player is None:
+            return -1
         return self.check_player_identity(player)
     
     def check_turn_player_identity(self)->int:
