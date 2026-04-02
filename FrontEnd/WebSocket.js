@@ -97,11 +97,9 @@ function handleWsMessage(event){
         try{
             const json_data=JSON.parse(data)
             handleWsJson(json_data)
-            console.log("Handle Data:")
-            console.log(data)
-            if(data.log!==undefined){
+            if(json_data.log!==undefined){
                 console.log("Data Has Log")
-                receiveText(data.log)
+                receiveText(json_data.log)
             }
             else{
                 console.error("Data No Log")
