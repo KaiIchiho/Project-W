@@ -198,10 +198,10 @@ class Game():
     
     def check_player_identity_by_id(self,player_id:int)->int:
         # player=None
-        if self.player_1.player_id==player_id:
+        if self.player_1 and self.player_1.player_id==player_id:
             # player=self.player_1
             return 1
-        elif self.player_2.player_id==player_id:
+        elif self.player_2 and self.player_2.player_id==player_id:
             # player=self.player_2
             return 2
         else:
