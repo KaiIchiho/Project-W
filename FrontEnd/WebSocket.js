@@ -97,6 +97,8 @@ function handleWsMessage(event){
         try{
             const json_data=JSON.parse(data)
             handleWsJson(json_data)
+            console.log("Handle Data:")
+            console.log(data)
             if(data.log!==undefined){
                 console.log("Data Has Log")
                 receiveText(data.log)
