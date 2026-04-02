@@ -35,7 +35,7 @@ async def handle_outgame_event(data:dict,user_id:int):
   
 async def standby(user_id:int,event:str)->StandbyResponse:
     player=global_registration.players.get(user_id)
-    room_id=global_registration.player_room.get(user_id)
+    room_id=global_registration.user_room.get(user_id)
     success=False
     log=""
     if room_id is not None:
