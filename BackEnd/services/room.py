@@ -147,9 +147,11 @@ async def eixt_room(req:ExitRoomRequest):
     return await exit_room_by_id(req.user_id,req.event)
 
 async def exit_room_by_id(user_id:int,event:str="")->ExitRoomResponse:
+    print("Log: exit_room_by_id")
     # Check If User ID is Valid
     player=players.get(user_id)
     if player is None:
+        print("Error: Player Is None")
         return ExitRoomResponse(
             event=event,
             room_id=-1,
@@ -160,6 +162,7 @@ async def exit_room_by_id(user_id:int,event:str="")->ExitRoomResponse:
     # Check If User is In Room And Get Room ID
     room_id=user_room.get(user_id)
     if room_id is None:
+        print("Error: Room ID Is None")
         return ExitRoomResponse(
             event=event,
             room_id=-1,
@@ -170,6 +173,7 @@ async def exit_room_by_id(user_id:int,event:str="")->ExitRoomResponse:
     # Check If Room ID is Valid
     room=rooms.get(room_id)
     if room is None:
+        print("Error: Room Is None")
         return ExitRoomResponse(
             event=event,
             room_id=room_id,
