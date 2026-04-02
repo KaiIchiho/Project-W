@@ -197,11 +197,20 @@ class Game():
             return -1
     
     def check_player_identity_by_id(self,player_id:int)->int:
-        player=self.check_command_player(player_id)
-        if player is None:
-            print("Error: checked player is None")
+        # player=None
+        if self.player_1.player_id==player_id:
+            # player=self.player_1
+            return 1
+        elif self.player_2.player_id==player_id:
+            # player=self.player_2
+            return 2
+        else:
             return -1
-        return self.check_player_identity(player)
+        # player=self.check_command_player(player_id)
+        # if player is None:
+        #     print("Error: checked player is None")
+        #     return -1
+        # return self.check_player_identity(player)
     
     def check_turn_player_identity(self)->int:
         return self.check_player_identity(self.turn_player)
