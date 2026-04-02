@@ -128,7 +128,7 @@ function handleEnterRoom(data){
         current_room_id=data.room_id;
 
         // console.log("Enter Room "+room_id+" Success");
-        console.log(data.log)
+        console.log("handleEnterRoom Data: ",data.log)
         setComponentHidden("message_block",false);
         
     }
@@ -184,7 +184,7 @@ function handleExitRoom(data){
         current_room_id="";
         
         // console.log("Exit Room Success");
-        console.log(data.log)
+        console.log("handleExitRoom Data: ",data.log)
         setComponentHidden("message_block",true);
     }
     else{
