@@ -15,7 +15,7 @@ outgame_event_handler:Callable[[dict,int],Awaitable[None]]
 
 async def outgame_event(data:dict,user_id:int):
     if outgame_event_handler:
-        outgame_event_handler(dict,int)
+        await outgame_event_handler(dict,int)
     
 async def standby(user_id:int)->int:
     player=global_registration.players.get(user_id)
