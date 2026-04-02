@@ -28,15 +28,15 @@ async def logout(req:LogoutRequest):
 
 async def logout_by_id(user_id:int):
     print("Log: logout by id: ",user_id)
+    #room
+    await exit_room_by_id(user_id)
+    
     #player
     player=players.get(user_id)
     user_name=None
     if player:
         user_name=player.name
         players.pop(user_id)
-    
-    #room
-    await exit_room_by_id(user_id)
     
     #websocket    
     connection=connections.get(user_id)
