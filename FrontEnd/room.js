@@ -194,6 +194,8 @@ function handleExitRoom(data){
 }
 
 function setComponentHidden(id,isHidden){
+    console.log("setComponentHidden",id)
+    console.log("Is Hidden",isHidden)
     component=document.getElementById(id);
     if(isHidden){
         component.style.display="none";
