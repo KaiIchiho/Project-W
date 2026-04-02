@@ -11,21 +11,11 @@ ws_send_data_to_user_handler:Callable[[int,BaseModel],Awaitable[None]]
 ws_send_data_to_room_handler:Callable[[int,BaseModel],Awaitable[None]]
 ws_send_data_to_room_except_target_handler:Callable[[int,int,BaseModel],Awaitable[None]]
 
-outgame_handlers={
-        "enter_room":"handle_enter_room",
-        "exit_room":"handle_exit_room",
-        "standby":"handle_standby",
-        "deck_list":"handle_deck_list",
-        }
+outgame_event_handler:Callable[[dict,int],Awaitable[None]]
 
-async def handle_outgame_event(data:dict,user_id:int):
-    print("handle_outgame_event")
-    handler_name=outgame_handlers.get(data.get("event"))
-    if not handler_name:
-        raise ValueError("Action Not Found")
-    handler=globals().get(handler_name)
-    
-    await handler(data,user_id)
+async def outgame_event(data:dict,user_id:int):
+    if outgame_event_handler:
+        outgame_event_handler(dict,int)
     
 async def standby(user_id:int)->int:
     player=global_registration.players.get(user_id)
