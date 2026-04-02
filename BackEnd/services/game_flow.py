@@ -3,7 +3,8 @@ from core.room import Room
 from schemas import global_registration
 from typing import Callable,Awaitable
 from pydantic import BaseModel
-from typing import Optional
+# from typing import Optional
+import importlib
 
 ws_send_message_handler:Callable[[dict,str],Awaitable[None]]
 create_message_handler:Callable[[int,str],dict]
@@ -12,13 +13,30 @@ ws_send_data_to_user_handler:Callable[[int,BaseModel],Awaitable[None]]
 ws_send_data_to_room_handler:Callable[[int,BaseModel],Awaitable[None]]
 ws_send_data_to_room_except_target_handler:Callable[[int,int,BaseModel],Awaitable[None]]
 
-outgame_event_handler: Optional[Callable[[dict, int], Awaitable[None]]] = None
+# outgame_event_handler: Optional[Callable[[dict, int], Awaitable[None]]] = None
+outgame_handlers={
+        "enter_room":"handle_enter_room",
+        "exit_room":"handle_exit_room",
+        "standby":"handle_standby",
+        "deck_list":"handle_deck_list",
+        }
 
-async def outgame_event(data:dict,user_id:int):
-    if outgame_event_handler:
-        await outgame_event_handler(data,user_id)
-    else:
-        print("Error: outgame_event_handler Is None")
+async def handle_outgame_event(data:dict,user_id:int):
+    print("handle_outgame_event")
+    handler_name=outgame_handlers.get(data.get("event"))
+    if not handler_name:
+        raise ValueError("Action Not Found")
+    module = importlib.import_module("services.outgame_handle")
+    handler = getattr(module, handler_name, None)
+    # handler=globals().get(handler_name)
+    print("event:", handler_name)
+    print("handler:", handler)
+    await handler(data,user_id)
+# async def outgame_event(data:dict,user_id:int):
+#     if outgame_event_handler:
+#         await outgame_event_handler(data,user_id)
+#     else:
+#         print("Error: outgame_event_handler Is None")
     
 async def standby(user_id:int)->int:
     player=global_registration.players.get(user_id)

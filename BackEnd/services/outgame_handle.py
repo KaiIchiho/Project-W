@@ -3,23 +3,8 @@ from services import room
 from schemas.room import EnterRoomRequest,ExitRoomRequest
 from schemas.game_flow import StandbyRequest,StandbyResponse
 
-outgame_handlers={
-        "enter_room":"handle_enter_room",
-        "exit_room":"handle_exit_room",
-        "standby":"handle_standby",
-        "deck_list":"handle_deck_list",
-        }
 
-async def handle_outgame_event(data:dict,user_id:int):
-    print("handle_outgame_event")
-    handler_name=outgame_handlers.get(data.get("event"))
-    if not handler_name:
-        raise ValueError("Action Not Found")
-    handler=globals().get(handler_name)
-    print("event:", handler_name)
-    print("handler:", handler)
-    await handler(data,user_id)
-game_flow.outgame_event_handler=handle_outgame_event
+# game_flow.outgame_event_handler=handle_outgame_event
 
 
 def parse_model(data: dict, model_cls):
