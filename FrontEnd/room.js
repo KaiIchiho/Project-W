@@ -121,12 +121,14 @@ function handleEnterRoom(data){
         setComponentHidden("exit_room_menu",false);
 
         const room_info=document.getElementById("room_info");
+        console.log("1");
         let as_player;
         if(data.user_is_player)as_player="Player";
         else as_player="Viewer";
+        console.log("2");
         room_info.textContent="Room ID: "+room_id+", As "+as_player;
         current_room_id=data.room_id;
-
+        console.log("3");
         // console.log("Enter Room "+room_id+" Success");
         console.log("handleEnterRoom Data: ",data.log)
         setComponentHidden("message_block",false);
