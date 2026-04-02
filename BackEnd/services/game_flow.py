@@ -45,6 +45,7 @@ async def standby(user_id:int,event:str)->StandbyResponse:
             
             is_standby=game.check_player_identity_by_id(user_id)
             
+            print("Log: is_standby-", is_standby)
             if is_standby==-1:
                 result=await game.set_player_to_none(player,game.start_game)
                 if result!=-1:
