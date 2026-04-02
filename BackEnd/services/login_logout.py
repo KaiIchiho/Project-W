@@ -41,7 +41,11 @@ async def logout_by_id(user_id:int):
     #websocket    
     connection=connections.get(user_id)
     if connection:
-        await connection.websocket.close(code=1000)
+        # await connection.websocket.close(code=1000)
+        try:
+            await connection.websocket.close(code=1000)
+        except RuntimeError:
+            pass
         connections.pop(user_id)
     
     return LogoutResponse(
