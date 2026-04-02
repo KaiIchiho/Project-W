@@ -194,6 +194,7 @@ async def exit_room_by_id(user_id:int,event:str="")->ExitRoomResponse:
     else:
         log=f"{user_name} がルーム{room_name}を退室できませんでした"        
     
+    print(log)
     return ExitRoomResponse(
         event=event,
         room_id=room_id,
