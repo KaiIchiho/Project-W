@@ -48,8 +48,11 @@ function receiveText(text){
     if(typeof text!=="string"){
         return
     }
+    console.log("receiveText")
     const log=document.getElementById("log");
-    log.innerHTML+="<p>"+text+"</p>";
+    const p = document.createElement("p");
+    p.textContent = text;
+    log.appendChild(p);
     console.log("Server back : ",text);
 }
 
@@ -93,10 +96,13 @@ function handleWsMessage(event){
     if(typeof data==="string"){
         try{
             const json_data=JSON.parse(data)
-            console.log(json_data)
             handleWsJson(json_data)
             if(data.log!==undefined){
+                console.log("Data Has Log")
                 receiveText(data.log)
+            }
+            else{
+                console.error("Data No Log")
             }
         }catch(e){
             // console.error("Parse JSON Failed:",e);
