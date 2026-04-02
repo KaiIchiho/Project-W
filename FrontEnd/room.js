@@ -126,6 +126,7 @@ function handleEnterRoom(data){
         if(data.user_is_player)as_player="Player";
         else as_player="Viewer";
         console.log("2");
+        console.log("Room ID: "+room_id+", As "+as_player);
         room_info.textContent="Room ID: "+room_id+", As "+as_player;
         current_room_id=data.room_id;
         console.log("3");
