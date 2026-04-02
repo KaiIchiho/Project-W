@@ -199,6 +199,7 @@ class Game():
     def check_player_identity_by_id(self,player_id:int)->int:
         player=self.check_command_player(player_id)
         if player is None:
+            print("Error: checked player is None")
             return -1
         return self.check_player_identity(player)
     
