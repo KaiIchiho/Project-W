@@ -111,6 +111,8 @@ class Game():
     
     async def cancel_set_player(self,player_id:int)->int:
         result=-1
+        if self._is_in_progress:
+            return result
         if self.player_1 and self.player_1.player_id==player_id:
             self.player_1=None
             result=1
