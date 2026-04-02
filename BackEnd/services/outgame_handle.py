@@ -22,7 +22,7 @@ async def handle_standby(data:dict,user_id:int):
     #     event=data.get("event"),
     #     success=success,
     #     log=log)
-    res=game_flow.standby(user_id,data.get("event"))
+    res=await game_flow.standby(user_id,data.get("event"))
     room_id=room.check_user_room(user_id)
     if game_flow.ws_send_data_to_room_handler:
         await game_flow.ws_send_data_to_room_handler(room_id,res)
