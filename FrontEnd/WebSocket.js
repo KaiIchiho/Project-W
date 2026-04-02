@@ -44,6 +44,15 @@ function createWebSocket(){
     }
 }
 
+function receiveText(text){
+    if(typeof text!=="string"){
+        return
+    }
+    const log=document.getElementById("log");
+    log.innerHTML+="<p>"+text+"</p>";
+    console.log("Server back : ",text);
+}
+
 function sendMessage(){
     if(ws.readyState!==WebSocket.OPEN){
         console.error("WebSocket not open:",ws.readyState);
@@ -86,11 +95,12 @@ function handleWsMessage(event){
             const json_data=JSON.parse(data)
             console.log(json_data)
             handleWsJson(json_data)
+            if(data.log!==undefined){
+                receiveText(data.log)
+            }
         }catch(e){
             // console.error("Parse JSON Failed:",e);
-            const log=document.getElementById("log");
-            log.innerHTML+="<p>"+data+"</p>";
-            console.log("Server back : ",data);
+            receiveText(data)
         }
     }
 }
@@ -98,6 +108,7 @@ function handleWsMessage(event){
 event_method_dict={
     "enter_room":"handleEnterRoom",
     "exit_room":"handleExitRoom",
+    "standby":"handleStandby",
 }
 
 function handleWsJson(data){

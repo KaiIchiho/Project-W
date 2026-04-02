@@ -121,19 +121,13 @@ function handleEnterRoom(data){
         setComponentHidden("exit_room_menu",false);
 
         const room_info=document.getElementById("room_info");
-        console.log("1");
         let as_player;
         if(data.user_is_player)as_player="Player";
         else as_player="Viewer";
-        console.log("2");
-        console.log("Room ID: "+data.room_id+", As "+as_player);
         room_info.textContent="Room ID: "+data.room_id+", As "+as_player;
         current_room_id=data.room_id;
-        console.log("3");
-        // console.log("Enter Room "+room_id+" Success");
-        console.log("handleEnterRoom Data: ",data.log)
+
         setComponentHidden("message_block",false);
-        
     }
     else{
         // console.error("Cannot Enter Room "+room_id);
@@ -186,7 +180,6 @@ function handleExitRoom(data){
         setComponentHidden("exit_room_menu",true);
         current_room_id="";
         
-        // console.log("Exit Room Success");
         console.log("handleExitRoom Data: ",data.log)
         setComponentHidden("message_block",true);
     }

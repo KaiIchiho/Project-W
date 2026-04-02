@@ -8,6 +8,23 @@ function standby(){
     }));
 }
 
+function handleStandby(data){
+    if(data.success===undefined||
+        data.log===undefined
+    )
+    {
+        return
+    }
+
+    if(data.success){
+        console.log(data.log)
+
+    }
+    else{
+        console.error(data.log)
+    }
+}
+
 function next_phase(){
     if(ws.readyState!==WebSocket.OPEN){
         console.error("WebSocket not open:",ws.readyState);

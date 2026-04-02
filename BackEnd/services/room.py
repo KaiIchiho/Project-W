@@ -57,6 +57,12 @@ def _create_room_instance(room_id:int,room_name:str)->bool:
     rooms[room_id]=Room(room_id,room_name)
     return True
 
+def check_user_room(user_id:int):
+    room_id=user_room.get(user_id)
+    if room_id is None:
+        room_id=-1
+    return room_id
+
 def enter_room(user_id:int,req:EnterRoomRequest)->EnterRoomResponse:
     room_id=req.room_id
     is_player=req.user_is_player
