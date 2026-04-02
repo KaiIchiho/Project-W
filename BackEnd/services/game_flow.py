@@ -3,6 +3,7 @@ from core.room import Room
 from schemas import global_registration
 from typing import Callable,Awaitable
 from pydantic import BaseModel
+from typing import Optional
 
 ws_send_message_handler:Callable[[dict,str],Awaitable[None]]
 create_message_handler:Callable[[int,str],dict]
@@ -11,7 +12,7 @@ ws_send_data_to_user_handler:Callable[[int,BaseModel],Awaitable[None]]
 ws_send_data_to_room_handler:Callable[[int,BaseModel],Awaitable[None]]
 ws_send_data_to_room_except_target_handler:Callable[[int,int,BaseModel],Awaitable[None]]
 
-outgame_event_handler:Callable[[dict,int],Awaitable[None]]
+outgame_event_handler: Optional[Callable[[dict, int], Awaitable[None]]] = None
 
 async def outgame_event(data:dict,user_id:int):
     if outgame_event_handler:
