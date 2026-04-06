@@ -139,4 +139,8 @@ function handleWsJson(data){
         console.log("Common Data")
         console.log(data)
     }
+    else{
+        console.error("Error Data")
+        console.error(data)
+    }
 }
