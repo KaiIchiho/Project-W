@@ -57,7 +57,7 @@ async def standby(user_id:int,event:str):
                     success=False
                     log=f"{user_name}が対戦開始の準備が失敗しました"
             else:
-                result=game.cancel_set_player(user_name)
+                result=game.cancel_set_player(user_id)
                 if result!=-1:
                     success=True
                     log=f"{user_name}が対戦開始の準備が取り消しました"
