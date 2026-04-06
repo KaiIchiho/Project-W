@@ -17,7 +17,7 @@ class Player(GameObject):
         self.name=name
         self.playmat=playmat
         #self.hand:list[Optional[Card]]=[None]*7
-        self.hand:list[Card]
+        self.hand:list[Card]=[]
         
     def draw(self):
         print(f"{self.name} Draw")
