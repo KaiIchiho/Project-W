@@ -134,10 +134,11 @@ class Game():
         await self.send_message(None,"Start Game",player_id)
         await self.__in_start_phase()
         
+        log="ゲーム開始"
         common=self.get_common_data(
             "game_start",
             True,
-            -1,
+            log,
             player_id)
         data=game_flow.StartGameResponse(
             common=common
@@ -295,14 +296,18 @@ class Game():
         self,
         event:str,
         success:bool,
-        turn_player_user_id:int,
+        log:str,
         event_user_id:int
     )->common.CommonData:
         player_1=self.get_player_data(self.player_1)
         player_2=self.get_player_data(self.player_2)
+        turn_player_user_id=-1
+        if self.turn_player:
+            turn_player_user_id=self.turn_player.player_id
         return common.CommonData(
             event=event,
             success=success,
+            log=log,
             turn_player_user_id=turn_player_user_id,
             event_user_id=event_user_id,
             player_1=player_1,
