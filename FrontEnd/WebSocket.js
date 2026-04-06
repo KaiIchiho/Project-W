@@ -85,8 +85,6 @@ function sendJson(data){
 }
 
 function handleWsMessage(event){
-    console.log("Method: handleWsMessage")
-    console.log("type:", typeof event.data, event.data)
     const data=event.data
     if(data==null){
         console.warn("Null Data.");
@@ -95,8 +93,6 @@ function handleWsMessage(event){
     if(typeof data==="string"){
         try{
             const json_data=JSON.parse(data)
-            console.log("handleWsMessage Data")
-            console.log(json_data)
             handleWsJson(json_data)
             if(json_data.log!==undefined){
                 console.log("Data Has Log")
@@ -129,19 +125,28 @@ function handleWsJson(data){
         console.log("Data")
         console.log(data)
         eve=data.event
-        console.log("event: ",eve)
-        if(eve in event_method_dict){
-            const method=event_method_dict[eve]
-            console.log("method: ",method)
-            window[method](data);
-        }
+        handleWSDataByEvent(data,eve)
     }
     else if(data.common!==undefined){
         console.log("Common Data")
         console.log(data)
+        common_data=data.common;
+        if(common_data.event!==undefined){
+            eve=common_data.event
+            handleWSDataByEvent(data,eve)
+        }
     }
     else{
         console.error("Error Data")
         console.error(data)
+    }
+}
+
+function handleWSDataByEvent(data,event){
+    console.log("event: ",event);
+    if(event in event_method_dict){
+        const method=event_method_dict[event];
+        console.log("method: ",method);
+        window[method](data);
     }
 }
