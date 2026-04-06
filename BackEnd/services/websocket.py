@@ -185,6 +185,7 @@ async def send_data_to_user(target_user_id:int,data:BaseModel):
     if not ws:
         return
     if ws.application_state == WebSocketState.CONNECTED:
+        print(f"Log: Send Data: {data}")
         print(f"Log: Send Data to {target_user_id}")
         await ws.send_json(data.dict())
 
