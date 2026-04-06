@@ -159,8 +159,11 @@ class Game():
             await self.ws_send_data_to_user(player_id,data)
     
     async def send_data_to_room(self,data:BaseModel):
+        print("Log: send_data_to_room")
         if self.ws_send_data_to_room:
             await self.ws_send_data_to_room(self.room_id,data)
+        else:
+            print("Error: No ws_send_data_to_room")
     
     async def send_data_to_room_except_target(self,player_id:int,data:BaseModel):
         if self.ws_send_data_to_room_except_target:
