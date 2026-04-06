@@ -125,6 +125,8 @@ function handleWsJson(data){
     }
     console.log("Handle Ws Json")
     if(data.event!==undefined){
+        console.log("Data")
+        console.log(data)
         eve=data.event
         console.log("event: ",eve)
         if(eve in event_method_dict){
@@ -132,5 +134,9 @@ function handleWsJson(data){
             console.log("method: ",method)
             window[method](data);
         }
+    }
+    else if(data.common!==undefined){
+        console.log("Common Data")
+        console.log(data)
     }
 }
