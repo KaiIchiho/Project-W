@@ -33,21 +33,21 @@ async def handle_outgame_event(data:dict,user_id:int):
     print("handler:", handler)
     await handler(data,user_id)
   
-async def standby(user_id:int,event:str)->StandbyResponse:
+async def standby(user_id:int,event:str):
     player=global_registration.players.get(user_id)
     room_id=global_registration.user_room.get(user_id)
     success=False
     log=""
+    game=None
     if room_id is not None:
         room=global_registration.rooms.get(room_id)
         if room is not None:    
             game=_create_game_instance(room)
             
-            is_standby=game.check_player_identity_by_id(user_id)
+            has_standby=game.check_player_identity_by_id(user_id)
             
-            print("Log: is_standby-", is_standby)
-            if is_standby==-1:
-                result=await game.set_player_to_none(player,game.start_game)
+            if has_standby==-1:
+                result=await game.set_player_to_none(player)
                 if result!=-1:
                     success=True
                     log=f"{user_id}が対戦開始の準備が整えました"
@@ -55,7 +55,7 @@ async def standby(user_id:int,event:str)->StandbyResponse:
                     success=False
                     log=f"{user_id}が対戦開始の準備が失敗しました"
             else:
-                result=await game.cancel_set_player(user_id)
+                result=game.cancel_set_player(user_id)
                 if result!=-1:
                     success=True
                     log=f"{user_id}が対戦開始の準備が取り消しました"
@@ -67,7 +67,7 @@ async def standby(user_id:int,event:str)->StandbyResponse:
         success=success,
         log=log
     )
-    return res
+    return res,game
     
     
 def _create_game_instance(room:Room)->Game:
@@ -96,3 +96,6 @@ async def receive_command_json(room_id:int,command_json:dict,user_id:int):
     if game is None:
         return #"Error !"
     await game.handle_action(command_json,user_id)
+    
+async def start_game(game:Game,player_id:int):
+    await game.start_game(player_id)

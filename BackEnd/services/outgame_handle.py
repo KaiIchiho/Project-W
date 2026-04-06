@@ -14,18 +14,12 @@ async def handle_standby(data:dict,user_id:int):
     req=parse_model(data,StandbyRequest)
     if not req:
         raise ValueError("StandbyRequest Parse Failed")
-    # result=game_flow.standby(user_id)
-    # success=False
-    # log=""
-    
-    # res=StandbyResponse(
-    #     event=data.get("event"),
-    #     success=success,
-    #     log=log)
-    res=await game_flow.standby(user_id,data.get("event"))
+    res,game=await game_flow.standby(user_id,data.get("event"))
     room_id=room.check_user_room(user_id)
     if game_flow.ws_send_data_to_room_handler:
         await game_flow.ws_send_data_to_room_handler(room_id,res)
+    
+    await game_flow.start_game(game,user_id)
     
 async def handle_enter_room(data:dict,user_id:int):
     print("handle_enter_room")

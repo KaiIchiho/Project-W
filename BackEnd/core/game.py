@@ -76,41 +76,25 @@ class Game():
                 first_turn_player=player.player_id))
         
     async def set_player_to_none(
-        self,player:Player,callback:Optional[Callable[[int],Awaitable[None]]]=None)->int:
+        self,player:Player
+        # ,callback:Optional[Callable[[int],Awaitable[None]]]=None
+    )->int:
         if player is None:
             raise ValueError("None Player !")
         elif player is self.player_1 or player is self.player_2:
             raise ValueError("2 Player Are the Same")
         
+        result=-1
         if self.player_1 is None:
             self.player_1=player
-            #if self.ws_send_message is not None:
-            await self.send_message(
-                "Standby Succeeded !",
-                "Player 1 Standby",
-                player.player_id)
-            if callback is not None:
-                await callback(player.player_id)
-            return 1
+            result=1
         elif self.player_2 is None:
             self.player_2=player
-            #if self.ws_send_message is not None:
-            await self.send_message(
-                "Standby Succeeded !",
-                "Player 2 Standby",
-                player.player_id)
-            if callback is not None:
-                await callback(player.player_id)
-            return 2
-        else:
-            #if self.ws_send_message is not None:
-            await self.send_message(
-                "Standby Failed !",
-                None,
-                player.player_id)
-            return -1
+            result=2
+        
+        return result
     
-    async def cancel_set_player(self,player_id:int)->int:
+    def cancel_set_player(self,player_id:int)->int:
         result=-1
         if self._is_in_progress:
             return result
