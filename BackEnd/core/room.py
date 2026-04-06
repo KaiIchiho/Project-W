@@ -62,10 +62,10 @@ class Room():
     def check_player_in_room(self,id)->bool:
         is_in_room=False
         if self.player_1 is not None:
-            if self.player_1.id==id:
+            if self.player_1.player_id==id:
                 is_in_room=True
         if self.player_2 is not None:
-            if self.player_2.id==id:
+            if self.player_2.player_id==id:
                 is_in_room=True
         return is_in_room
         
