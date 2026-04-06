@@ -85,6 +85,7 @@ function sendJson(data){
 }
 
 function handleWsMessage(event){
+    console.log("type:", typeof event.data, event.data)
     const data=event.data
     if(data==null){
         console.warn("Null Data.");
