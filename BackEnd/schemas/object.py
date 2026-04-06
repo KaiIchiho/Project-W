@@ -93,7 +93,7 @@ class PlayerData(ObjectBaseData):
     
     
 def build_object_data(type:str,**kwargs)->ObjectBaseData:
-    cls=register.get(type)
+    cls=registry.get(type)
     if not cls:
         raise ValueError(f"Unknown object type: {type}")
     return cls(type=type,**kwargs)
