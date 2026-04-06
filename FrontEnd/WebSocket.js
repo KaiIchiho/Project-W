@@ -23,9 +23,6 @@ function createWebSocket(){
         console.log("WebSocket Connect");
     }
     ws.onmessage=(event)=>{
-        // const log=document.getElementById("log");
-        // log.innerHTML+="<p>"+event.data+"</p>";
-        // console.log("Server back : ",event.data);
         handleWsMessage(event)
     }
     ws.onerror = (err) => {
@@ -89,8 +86,6 @@ function sendJson(data){
 
 function handleWsMessage(event){
     const data=event.data
-    console.log("handleWsMessage Data")
-    console.log(data)
     if(data==null){
         console.warn("Null Data.");
         return;
@@ -98,6 +93,8 @@ function handleWsMessage(event){
     if(typeof data==="string"){
         try{
             const json_data=JSON.parse(data)
+            console.log("handleWsMessage Data")
+            console.log(json_data)
             handleWsJson(json_data)
             if(json_data.log!==undefined){
                 console.log("Data Has Log")
