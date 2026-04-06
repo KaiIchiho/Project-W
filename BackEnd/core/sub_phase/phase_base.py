@@ -23,10 +23,16 @@ class Phase:
     phase_name="phase_base"
     next_phase=None
     
+    def __init_subclass__(cls, **kwargs):
+        super.__init_subclass__(**kwargs)
+        cls.handlers=cls.handlers.copy()
+    
     async def on_enter(self,game:"Game"):
         await game.send_message(None,f"Enter {self.phase_name}",game.turn_player.player_id)
+        return self.phase_name
     async def on_exit(self,game:"Game"):
         await game.send_message(None,f"Exit {self.phase_name}",game.turn_player.player_id)
+        return self.phase_name
     
     async def send_message_list(self,game:"Game",message_list:list[dict],default_player_id:int):
         for message in message_list:

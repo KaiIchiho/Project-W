@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Literal
 from schemas.register import register
+from pydantic import Field
 
 registry={}
 
@@ -10,61 +11,78 @@ class ObjectBaseData(BaseModel):
 @register("user",registry)
 class UserData(ObjectBaseData):
     type:Literal["user"]
-    user_id:int
-    user_is_player:bool
-
-@register("memory",registry)
-class MemoryData(ObjectBaseData):
-    type:Literal["memory"]
-    card_num:int
-    card_id_list:list[int]
-
-@register("cx",registry)
-class CXData(ObjectBaseData):
-    type:Literal["cx"]
-    card_id:int
-
-@register("stock",registry)
-class StockData(ObjectBaseData):
-    type:Literal["stock"]
-    card_num:int
-    card_id_list:list[int]
-
-@register("level",registry)
-class LevelData(ObjectBaseData):
-    type:Literal["level"]
-    card_num:int
-    card_id_list:list[int]
-
-@register("clock",registry)
-class ClockData(ObjectBaseData):
-    type:Literal["clock"]
-    card_num:int
-    card_id_list:list[int]
-
-@register("hand",registry)
-class HandData(ObjectBaseData):
-    type:Literal["hand"]
-    card_num:int
-    card_id_list:list[int]
-
-@register("waiting_room",registry)
-class WaitingRoomData(ObjectBaseData):
-    type:Literal["waiting_room"]
-    card_num:int
-    card_id_list:list[int]
+    user_id:int=-1
+    user_is_player:bool=False
 
 @register("deck",registry)
 class DeckData(ObjectBaseData):
     type:Literal["deck"]
-    card_num:int
-    card_id_list:list[int]
+    card_num:int=-1
+    cards:list[int]=Field(default_factory=list)
+
+@register("stage",registry)
+class StageData(ObjectBaseData):
+    type:Literal["stage"]
+    card_num:int=-1
+    cards:list[int]=Field(default_factory=list)
+    markers:list[list[int]]=Field(default_factory=list)
+
+@register("waiting_room",registry)
+class WaitingRoomData(ObjectBaseData):
+    type:Literal["waiting_room"]
+    card_num:int=-1
+    char_card_num:int=-1
+    event_card_num:int=-1
+    cx_card_num:int=-1
+    cards:list[int]=Field(default_factory=list)
+
+@register("hand",registry)
+class HandData(ObjectBaseData):
+    type:Literal["hand"]
+    card_num:int=-1
+    cards:list[int]=Field(default_factory=list)
+
+@register("clock",registry)
+class ClockData(ObjectBaseData):
+    type:Literal["clock"]
+    card_num:int=-1
+    cards:list[int]=Field(default_factory=list)
+    card_colors:list[str]=Field(default_factory=list)
+
+@register("level",registry)
+class LevelData(ObjectBaseData):
+    type:Literal["level"]
+    card_num:int=-1
+    cards:list[int]=Field(default_factory=list)
+    card_colors:list[str]=Field(default_factory=list)
+
+@register("stock",registry)
+class StockData(ObjectBaseData):
+    type:Literal["stock"]
+    card_num:int=-1
+    cx_card_num:int=-1
+    cards:list[int]=Field(default_factory=list)
+    
+    # [{index:1,tirgger:"xxx"},]
+    cx_trigger:list[dict]=Field(default_factory=list)
+
+@register("cx",registry)
+class CXData(ObjectBaseData):
+    type:Literal["cx"]
+    card_id:int=-1
+
+@register("memory",registry)
+class MemoryData(ObjectBaseData):
+    type:Literal["memory"]
+    card_num:int=-1
+    cards:list[int]=Field(default_factory=list)
 
 @register("player",registry)
 class PlayerData(ObjectBaseData):
     type:Literal["player"]
-    user_id:int
+    user_id:int=-1
     deck:DeckData
+    stage:StageData
     waiting_room:WaitingRoomData
     hand:HandData
     clock:ClockData

@@ -2,10 +2,11 @@ from models.player import Player
 #from BackEnd.core._attack_step import AttackStep
 from typing import Callable,Optional,Awaitable
 from core.sub_phase.phase_base import Phase
-from core.sub_phase.stand_phase import StandPhase
+from core.sub_phase.standby_phase import StandbyPhase
 #from core.attack_step.attack_step_base import AttackStep
 from pydantic import BaseModel
 from schemas import object,preparation,common
+from schemas import game_flow
 
 class Game():
     ws_send_message:Callable[[dict,str],Awaitable[None]]=None
@@ -37,7 +38,7 @@ class Game():
         self.current_turn=0
         #self.current_attack_step:AttackStep
         
-        self.first_phase=StandPhase()
+        self.first_phase=StandbyPhase()
     
     async def _send_data_to_user(self,user_id:int,data:BaseModel):
         if self.ws_send_data_to_user:
@@ -128,10 +129,20 @@ class Game():
         if self.check_is_full_players()==False:
             return
         self._is_in_progress=True
-        self.current_turn=1
+        # self.current_turn=1
         await self.set_first_player(self.player_1)
         await self.send_message(None,"Start Game",player_id)
         await self.__in_start_phase()
+        
+        common=self.get_common_data(
+            "start_game",
+            True,
+            -1,
+            player_id)
+        data=game_flow.StartGameResponse(
+            common=common
+        )
+        await self.send_data_to_room(data)
     
     async def send_message(self,self_text:str,room_text:str,player_id:int):
         if self.create_message:
@@ -141,6 +152,18 @@ class Game():
     async def send_message_backage(self,message:dict,player_id:int):
         if self.ws_send_message is not None:
             await self.ws_send_message(message,player_id)
+    
+    async def send_data_to_player(self,player_id:int,data:BaseModel):
+        if self.ws_send_data_to_user:
+            await self.ws_send_data_to_user(player_id,data)
+    
+    async def send_data_to_room(self,data:BaseModel):
+        if self.ws_send_data_to_room:
+            await self.ws_send_data_to_room(self.room_id,data)
+    
+    async def send_data_to_room_except_target(self,player_id:int,data:BaseModel):
+        if self.ws_send_data_to_room_except_target:
+            await self.ws_send_data_to_room_except_target(self.room_id,player_id,data)
     
     async def __in_start_phase(self):
         self.phase=self.first_phase
@@ -252,6 +275,8 @@ class Game():
             return False
         
     async def forced_game_end(self):
+        self._is_in_progress=False
+        
         print("Log: forced game end.")
         if not self.ws_send_message:
             return
@@ -271,7 +296,8 @@ class Game():
         event:str,
         success:bool,
         turn_player_user_id:int,
-        event_user_id: int)->common.CommonData:
+        event_user_id:int
+    )->common.CommonData:
         player_1=self.get_player_data(self.player_1)
         player_2=self.get_player_data(self.player_2)
         return common.CommonData(
@@ -283,10 +309,11 @@ class Game():
             player_2=player_2)
     
     def get_player_data(self,player:Player)->object.PlayerData:
-        user_id=None
+        user_id=-1
         if player:
             user_id=player.player_id
         deck=self.get_deck_data(player)
+        stage=self.get_stage_data(player)
         waiting_room=self.get_waiting_room_data(player)
         hand=self.get_hand_data(player)
         clock=self.get_clock_data(player)
@@ -298,6 +325,7 @@ class Game():
             "player",
             user_id=user_id,
             deck=deck,
+            stage=stage,
             waiting_room=waiting_room,
             hand=hand,
             clock=clock,
@@ -309,110 +337,153 @@ class Game():
     def get_deck_data(self,player:Player)->object.DeckData:
         # player=self.check_command_player(player_id)
         if not player:
-            return None
+            return object.DeckData()
         if not player.playmat:
-            return None
+            return object.DeckData()
         if not player.playmat.deck:
-            return None
-        card_id_list:list[int]=None
+            return object.DeckData()
+        cards:list[int]=[]
         for card in player.playmat.deck.cards:
-            card_id_list.append(card.card_id)
+            if card is None:
+                continue
+            cards.append(card.card_id)
         
         return object.build_object_data(
-            "deck",card_num=len(card_id_list),card_id_list=card_id_list)
+            "deck",
+            card_num=len(cards),
+            cards=cards)
+    
+    def get_stage_data(self,player:Player)->object.StageData:
+        if not player:
+            return object.StageData()
+        if not player.playmat:
+            return object.StageData()
+        cards=[]
+        for card in player.playmat.stage:
+            if card is not None:
+                cards.append(card.card_id)
+        markers=[]
+        for marker in player.playmat.markers:
+            if marker is not None:
+                markers.append(marker)
+        return object.build_object_data(
+            "stage",
+            card_num=len(cards),
+            cards=cards,
+            markers=markers
+        )
     
     def get_waiting_room_data(self,player:Player)->object.WaitingRoomData:
         # player=self.check_command_player(player_id)
         if not player:
-            return None
+            return object.WaitingRoomData()
         if not player.playmat:
-            return None
-        card_id_list:list[int]=None
+            return object.WaitingRoomData()
+        cards:list[int]=[]
         for card in player.playmat.waiting_room:
-            card_id_list.append(card.card_id)
+            if card is None:
+                continue
+            cards.append(card.card_id)
         
         return object.build_object_data(
             "waiting_room",
-            card_num=len(card_id_list),card_id_list=card_id_list)
+            card_num=len(cards),
+            cards=cards)
     
     def get_hand_data(self,player:Player)->object.HandData:
         # player=self.check_command_player(player_id)
         if not player:
-            return None
-        card_id_list:list[int]=None
+            return object.HandData()
+        cards:list[int]=[]
         for card in player.hand:
-            card_id_list.append(card.card_id)
+            if card is None:
+                continue
+            cards.append(card.card_id)
         
         return object.build_object_data(
             "hand",
-            card_num=len(card_id_list),card_id_list=card_id_list)
+            card_num=len(cards),
+            cards=cards)
 
     
     def get_clock_data(self,player:Player)->object.ClockData:
         # player=self.check_command_player(player_id)
         if not player:
-            return None
+            return object.ClockData()
         if not player.playmat:
-            return None
-        card_id_list:list[int]=None
+            return object.ClockData()
+        cards:list[int]=[]
         for card in player.playmat.clock:
-            card_id_list.append(card.card_id)
+            if card is None:
+                continue
+            cards.append(card.card_id)
         
         return object.build_object_data(
             "clock",
-            card_num=len(card_id_list),card_id_list=card_id_list)
+            card_num=len(cards),
+            cards=cards)
     
     def get_level_data(self,player:Player)->object.LevelData:
         # player=self.check_command_player(player_id)
         if not player:
-            return None
+            return object.LevelData()
         if not player.playmat:
-            return None
-        card_id_list:list[int]=None
+            return object.LevelData()
+        cards:list[int]=[]
         for card in player.playmat.level:
-            card_id_list.append(card.card_id)
+            if card is None:
+                continue
+            cards.append(card.card_id)
         
         return object.build_object_data(
             "level",
-            card_num=len(card_id_list),card_id_list=card_id_list)
+            card_num=len(cards),
+            cards=cards)
     
     def get_stock_data(self,player:Player)->object.StockData:
         # player=self.check_command_player(player_id)
         if not player:
-            return None
+            return object.StockData()
         if not player.playmat:
-            return None
-        card_id_list:list[int]=None
+            return object.StockData()
+        cards:list[int]=[]
         for card in player.playmat.stock:
-            card_id_list.append(card.card_id)
+            if card is None:
+                continue
+            cards.append(card.card_id)
         
         return object.build_object_data(
             "stock",
-            card_num=len(card_id_list),card_id_list=card_id_list)
+            card_num=len(cards),
+            cards=cards)
     
     def get_cx_data(self,player:Player)->object.CXData:
         # player=self.check_command_player(player_id)
         if not player:
-            return None
+            return object.CXData()
         if not player.playmat:
-            return None
-        card_id:int=None
+            return object.CXData()
+        card_id:int=-1
         if player.playmat.climax:
             card_id=player.playmat.climax.card_id
         
         return object.build_object_data(
-            "cx",card_id=card_id)
+            "cx",
+            card_id=card_id)
     
     def get_memory_data(self,player:Player)->object.MemoryData:
         # player=self.check_command_player(player_id)
         if not player:
-            return None
+            return object.MemoryData()
         if not player.playmat:
-            return None
-        card_id_list:list[int]=None
+            return object.MemoryData()
+        cards:list[int]=[]
         for card in player.playmat.memory:
-            card_id_list.append(card.card_id)
+            if card is None:
+                continue
+            cards.append(card.card_id)
         
         return object.build_object_data(
             "memory",
-            card_num=len(card_id_list),card_id_list=card_id_list)
+            card_num=len(cards),
+            cards=cards)
