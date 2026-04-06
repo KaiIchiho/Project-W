@@ -115,6 +115,7 @@ event_method_dict={
     "enter_room":"handleEnterRoom",
     "exit_room":"handleExitRoom",
     "standby":"handleStandby",
+    "game_start":"handleGameStart"
 }
 
 function handleWsJson(data){

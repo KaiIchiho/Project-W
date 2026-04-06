@@ -135,7 +135,7 @@ class Game():
         await self.__in_start_phase()
         
         common=self.get_common_data(
-            "start_game",
+            "game_start",
             True,
             -1,
             player_id)

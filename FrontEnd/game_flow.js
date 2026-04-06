@@ -25,6 +25,15 @@ function handleStandby(data){
     }
 }
 
+function handleGameStart(data){
+    if(data.common===undefined
+    )
+    {
+        return
+    }
+    console.log(data)
+}
+
 function next_phase(){
     if(ws.readyState!==WebSocket.OPEN){
         console.error("WebSocket not open:",ws.readyState);
