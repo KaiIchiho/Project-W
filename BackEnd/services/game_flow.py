@@ -6,6 +6,7 @@ from schemas.game_flow import StandbyResponse
 from pydantic import BaseModel
 # from typing import Optional
 import importlib
+from services.login_logout import get_logedin_user_name
 
 ws_send_message_handler:Callable[[dict,str],Awaitable[None]]
 create_message_handler:Callable[[int,str],dict]
@@ -39,6 +40,7 @@ async def standby(user_id:int,event:str):
     success=False
     log=""
     game=None
+    user_name=get_logedin_user_name(user_id)
     if room_id is not None:
         room=global_registration.rooms.get(room_id)
         if room is not None:    
@@ -50,18 +52,18 @@ async def standby(user_id:int,event:str):
                 result=await game.set_player_to_none(player)
                 if result!=-1:
                     success=True
-                    log=f"{user_id}が対戦開始の準備が整えました"
+                    log=f"{user_name}が対戦開始の準備が整えました"
                 else:
                     success=False
-                    log=f"{user_id}が対戦開始の準備が失敗しました"
+                    log=f"{user_name}が対戦開始の準備が失敗しました"
             else:
-                result=game.cancel_set_player(user_id)
+                result=game.cancel_set_player(user_name)
                 if result!=-1:
                     success=True
-                    log=f"{user_id}が対戦開始の準備が取り消しました"
+                    log=f"{user_name}が対戦開始の準備が取り消しました"
                 else:
                     success=False
-                    log=f"{user_id}が対戦開始の準備が取り消し失敗しました"
+                    log=f"{user_name}が対戦開始の準備が取り消し失敗しました"
     res=StandbyResponse(
         event=event,
         success=success,

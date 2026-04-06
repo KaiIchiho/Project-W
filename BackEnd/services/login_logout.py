@@ -51,3 +51,10 @@ async def logout_by_id(user_id:int):
     return LogoutResponse(
         success=True,
         log=f"{user_name} はログアウトしました")
+    
+def get_logedin_user_name(user_id:int)->str:
+    player=players.get(user_id)
+    if player is None:
+        return ""
+    name=player.name
+    return name
