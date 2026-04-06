@@ -10,5 +10,5 @@ class StandbyRequest(WSCommonRequestBase):
 class StandbyResponse(WSCommonResponseBase):
     pass
 
-class StartGameResponse(WSCommonResponseBase):
+class StartGameResponse(BaseModel):
     common:CommonData
