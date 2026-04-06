@@ -10,26 +10,26 @@ class ObjectBaseData(BaseModel):
 
 @register("user",registry)
 class UserData(ObjectBaseData):
-    type:Literal["user"]
+    type:Literal["user"]="user"
     user_id:int=-1
     user_is_player:bool=False
 
 @register("deck",registry)
 class DeckData(ObjectBaseData):
-    type:Literal["deck"]
+    type:Literal["deck"]="deck"
     card_num:int=-1
     cards:list[int]=Field(default_factory=list)
 
 @register("stage",registry)
 class StageData(ObjectBaseData):
-    type:Literal["stage"]
+    type:Literal["stage"]="stage"
     card_num:int=-1
     cards:list[int]=Field(default_factory=list)
     markers:list[list[int]]=Field(default_factory=list)
 
 @register("waiting_room",registry)
 class WaitingRoomData(ObjectBaseData):
-    type:Literal["waiting_room"]
+    type:Literal["waiting_room"]="waiting_room"
     card_num:int=-1
     char_card_num:int=-1
     event_card_num:int=-1
@@ -38,27 +38,27 @@ class WaitingRoomData(ObjectBaseData):
 
 @register("hand",registry)
 class HandData(ObjectBaseData):
-    type:Literal["hand"]
+    type:Literal["hand"]="hand"
     card_num:int=-1
     cards:list[int]=Field(default_factory=list)
 
 @register("clock",registry)
 class ClockData(ObjectBaseData):
-    type:Literal["clock"]
+    type:Literal["clock"]="clock"
     card_num:int=-1
     cards:list[int]=Field(default_factory=list)
     card_colors:list[str]=Field(default_factory=list)
 
 @register("level",registry)
 class LevelData(ObjectBaseData):
-    type:Literal["level"]
+    type:Literal["level"]="level"
     card_num:int=-1
     cards:list[int]=Field(default_factory=list)
     card_colors:list[str]=Field(default_factory=list)
 
 @register("stock",registry)
 class StockData(ObjectBaseData):
-    type:Literal["stock"]
+    type:Literal["stock"]="stock"
     card_num:int=-1
     cx_card_num:int=-1
     cards:list[int]=Field(default_factory=list)
@@ -68,18 +68,18 @@ class StockData(ObjectBaseData):
 
 @register("cx",registry)
 class CXData(ObjectBaseData):
-    type:Literal["cx"]
+    type:Literal["cx"]="cx"
     card_id:int=-1
 
 @register("memory",registry)
 class MemoryData(ObjectBaseData):
-    type:Literal["memory"]
+    type:Literal["memory"]="memory"
     card_num:int=-1
     cards:list[int]=Field(default_factory=list)
 
 @register("player",registry)
 class PlayerData(ObjectBaseData):
-    type:Literal["player"]
+    type:Literal["player"]="player"
     user_id:int=-1
     deck:DeckData
     stage:StageData
