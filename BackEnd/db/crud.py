@@ -59,12 +59,15 @@ def read_data_by_value(table:str,field:str,value)->list[dict]:
     if not re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", field):
         raise ValueError("Invalid field name")
     sql=f"SELECT * FROM {table} WHERE {field} = %s"
+    print("====== DEBUG ======")
+    print("SQL:", sql)
+    print("PARAM:", value, type(value))
     result=read_data(sql,(value,))
     if not result:
         return []
     return result
 
-def read_data_by_id(table:str,id)->dict:
+def read_data_by_id(table:str,id:int)->dict:
     result=read_data_by_value(table,"id",id)
     print(f"Log: Read {table} by {id}")
     print(result)
