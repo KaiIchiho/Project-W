@@ -14,7 +14,7 @@ async def handle_standby(data:dict,user_id:int):
     req=parse_model(data,StandbyRequest)
     if not req:
         raise ValueError("StandbyRequest Parse Failed")
-    res,game=await game_flow.standby(user_id,data.get("event"))
+    res,game=await game_flow.standby(user_id)
     room_id=room.check_user_room(user_id)
     if game_flow.ws_send_data_to_room_handler:
         await game_flow.ws_send_data_to_room_handler(room_id,res)
