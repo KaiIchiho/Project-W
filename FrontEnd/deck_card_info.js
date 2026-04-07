@@ -15,7 +15,7 @@ async function updateDeckOptions(){
     deck_select.innerHTML = "";
     const default_opt = document.createElement("option");
     default_opt.value="--Deck Name--";
-    default_opt.textContent="--Deck--";
+    default_opt.textContent="--Deck Name--";
     deck_select.appendChild(default_opt);
     
     const deck_names = await getAllDeckNames();
@@ -30,6 +30,9 @@ async function updateDeckOptions(){
 async function getAllDeckNames(){
     let names=[];
     info_list=await deck_list()
+    console.log("getAllDeckNames:")
+    console.log(info_list)
+    
     for(const info of info_list){
         names.push(info.deck_name)
     }
