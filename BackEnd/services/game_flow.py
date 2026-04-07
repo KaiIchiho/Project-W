@@ -41,9 +41,9 @@ async def set_player_deck(user_id:int,deck_id:int):
     success=False
     log=""
     
-    room_id=global_registration.user_room(user_id)
+    room_id=global_registration.user_room.get(user_id)
     if room_id is not None:
-        game=global_registration.room_game(room_id)
+        game=global_registration.room_game.get(room_id)
         if game and game.get_is_in_progress():
             log="ゲーム進行中"
             res=SelectDeckResponse(
