@@ -71,7 +71,7 @@ async function test_card() {
 async function setDeck(){
     console.log("setDeck");
     const deck_select=document.getElementById("deck_select");
-    let select_deck=+room_id_select.value
+    let select_deck=+deck_select.value
     // let room_id = +room_id_str;
     if(select_deck===NaN){
         console.error("Deck ID Not Intiager");
