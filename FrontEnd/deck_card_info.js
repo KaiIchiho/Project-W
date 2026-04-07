@@ -34,6 +34,7 @@ async function getAllDeckNames(){
     console.log(info_list)
     
     for(const info of info_list){
+        console.log(info.deck_name)
         names.push(info.deck_name)
     }
     return names
