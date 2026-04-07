@@ -19,8 +19,10 @@ async function updateDeckOptions(){
     deck_select.appendChild(default_opt);
     
     const deck_list = await getDeckList();
+    console.log(deck_list)
     for (const deck of deck_list) {
         const opt = document.createElement("option");
+        console.log("deck_id: ",deck.deck_id);
         opt.value = deck.deck_id;
         opt.textContent = deck.deck_name;
         deck_select.appendChild(opt);
