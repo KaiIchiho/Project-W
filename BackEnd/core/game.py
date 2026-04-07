@@ -93,6 +93,9 @@ class Game():
             raise ValueError("2 Player Are the Same")
         
         result=-1
+        if not player.check_has_deck():
+            return result
+        
         if self.player_1 is None:
             self.player_1=player
             result=1

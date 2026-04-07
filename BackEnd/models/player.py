@@ -24,6 +24,12 @@ class Player(GameObject):
         self._deck_id=deck_id
         return True
     
+    def check_has_deck(self)->bool:
+        if self._deck_id==-1:
+            return False
+        else:
+            return True
+    
     def draw(self):
         print(f"{self.name} Draw")
         #for i in range(len(self.hand)):
