@@ -70,7 +70,10 @@ def read_data_by_id(table:str,id)->dict:
     
     # sql=f"SELECT * FROM {table} WHERE id = ?"
     # result=read_data(sql,(id,))
-    return read_data_by_value(table,"id",id)
+    result=read_data_by_value(table,"id",id)
+    print("Log: read_data_by_id")
+    print(result)
+    return result
 
 def check_is_id_exist_by_table(table:str,id)->bool:
     result=read_data_by_id(table,id)
