@@ -14,7 +14,7 @@ function handleSelectDeck(data){
     {
         return
     }
-    receiveText(data.log);
+    // receiveText(data.log);
     if(data.success){
         console.log(data.log)
 
@@ -31,7 +31,7 @@ function handleStandby(data){
     {
         return
     }
-    receiveText(data.log);
+    // receiveText(data.log);
     if(data.success){
         console.log(data.log)
 
