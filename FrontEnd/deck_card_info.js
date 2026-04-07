@@ -23,7 +23,7 @@ async function updateDeckOptions(){
         const opt = document.createElement("option");
         opt.value = name;
         opt.textContent = name;
-        room_id_select.appendChild(opt);
+        deck_select.appendChild(opt);
     }
 }
 
