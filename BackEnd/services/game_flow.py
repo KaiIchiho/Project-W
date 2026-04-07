@@ -24,17 +24,17 @@ outgame_handlers={
 
 async def handle_outgame_event(data:dict,user_id:int):
     print("handle_outgame_event")
-    handler_name=outgame_handlers.get(data.get("event"))
-    if not handler_name:
+    event=outgame_handlers.get(data.get("event"))
+    if not event:
         raise ValueError("Action Not Found")
     module = importlib.import_module("services.outgame_handle")
-    handler = getattr(module, handler_name, None)
-    # handler=globals().get(handler_name)
-    print("event:", handler_name)
+    handler = getattr(module, event, None)
+    # handler=globals().get(event)
+    print("event:", event)
     print("handler:", handler)
     await handler(data,user_id)
   
-async def standby(user_id:int,event:str):
+async def standby(user_id:int):
     player=global_registration.players.get(user_id)
     room_id=global_registration.user_room.get(user_id)
     success=False
@@ -65,7 +65,6 @@ async def standby(user_id:int,event:str):
                     success=False
                     log=f"{user_name}が対戦開始の準備が取り消し失敗しました"
     res=StandbyResponse(
-        event=event,
         success=success,
         log=log
     )

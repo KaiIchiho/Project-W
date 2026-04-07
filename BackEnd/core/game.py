@@ -128,11 +128,10 @@ class Game():
         
         log="ゲーム開始"
         common=self.get_common_data(
-            "game_start",
             True,
             log,
             player_id)
-        data=game_flow.StartGameResponse(
+        data=game_flow.GameStartResponse(
             common=common
         )
         await self.send_data_to_room(data)
@@ -202,12 +201,12 @@ class Game():
             success=False
         for i in range(5):
             player.draw()
-        common_data=self.get_common_data(
-            "draw_initial_hand",
-            success,
-            self.turn_player.player_id,
-            player.player_id)
-        self.ws_send_data_to_room(self.room_id,common_data)
+        # common_data=self.get_common_data(
+        #     "draw_initial_hand",
+        #     success,
+        #     self.turn_player.player_id,
+        #     player.player_id)
+        # self.ws_send_data_to_room(self.room_id,common_data)
     
     def check_player_identity(self,user:Player)->int:
         if self.player_1 is user:
@@ -220,18 +219,11 @@ class Game():
     def check_player_identity_by_id(self,player_id:int)->int:
         # player=None
         if self.player_1 and self.player_1.player_id==player_id:
-            # player=self.player_1
             return 1
         elif self.player_2 and self.player_2.player_id==player_id:
-            # player=self.player_2
             return 2
         else:
             return -1
-        # player=self.check_command_player(player_id)
-        # if player is None:
-        #     print("Error: checked player is None")
-        #     return -1
-        # return self.check_player_identity(player)
     
     def check_turn_player_identity(self)->int:
         return self.check_player_identity(self.turn_player)
