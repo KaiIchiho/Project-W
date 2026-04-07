@@ -1,13 +1,13 @@
 from pydantic import BaseModel
-from schemas.base import WSCommonRequestBase,WSCommonResponseBase
+from schemas.base import WSRequestBase,WSResponseBase
 from schemas.common import CommonData
 
-class SelectDeckRequest(WSCommonRequestBase):
+class SelectDeckRequest(WSRequestBase):
     select_deck:int
 
-class StandbyRequest(WSCommonRequestBase):
+class StandbyRequest(WSRequestBase):
     pass
-class StandbyResponse(WSCommonResponseBase):
+class StandbyResponse(WSResponseBase):
     pass
 
 class StartGameResponse(BaseModel):

@@ -4,9 +4,9 @@ class ResponseBase(BaseModel):
     success:bool
     log:str
 
-class WSCommonRequestBase(BaseModel):
-    event:str
+class WSRequestBase(BaseModel):
+    event:str=None
     
-class WSCommonResponseBase(ResponseBase):
-    event:str
+class WSResponseBase(ResponseBase):
+    event:str=None
     # success:bool

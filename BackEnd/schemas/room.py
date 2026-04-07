@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from schemas.object import UserData
-from schemas.base import ResponseBase,WSCommonRequestBase,WSCommonResponseBase
+from schemas.base import ResponseBase,WSRequestBase,WSResponseBase
 
 # class CreateRoomRequest(BaseModel):
 #     room_id:int
@@ -10,18 +10,18 @@ from schemas.base import ResponseBase,WSCommonRequestBase,WSCommonResponseBase
 #     room_id:int
 #     room_name:str
     
-class EnterRoomRequest(WSCommonRequestBase):
+class EnterRoomRequest(WSRequestBase):
     room_id:int
     user_is_player:bool
     
-class EnterRoomResponse(WSCommonResponseBase):
+class EnterRoomResponse(WSResponseBase):
     room_id:int
     user_id:int
     user_is_player:bool
     
-class ExitRoomRequest(WSCommonRequestBase):
+class ExitRoomRequest(WSRequestBase):
     user_id:int
     
-class ExitRoomResponse(WSCommonResponseBase):
+class ExitRoomResponse(WSResponseBase):
     room_id:int
     user_id:int

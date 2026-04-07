@@ -69,10 +69,18 @@ class Game():
             raise ValueError("Player is not in Game.")
         self.turn_player=player
         
+        common=self.get_common_data(
+            # "first_turnplayer",
+            True,
+            f"先攻プレイヤーは{player.name}",
+            player.player_id
+        )
+        
         # Send Data To Client
         await self._send_data_to_room(
             self.room_id,
             preparation.FirstTurnPlayerData(
+                common=common,
                 first_turn_player=player.player_id))
         
     async def set_player_to_none(
@@ -281,7 +289,7 @@ class Game():
     #-------------------------------------------
     def get_common_data(
         self,
-        event:str,
+        # event:str,
         success:bool,
         log:str,
         event_user_id:int
@@ -292,7 +300,7 @@ class Game():
         if self.turn_player:
             turn_player_user_id=self.turn_player.player_id
         return common.CommonData(
-            event=event,
+            # event=event,
             success=success,
             log=log,
             turn_player_user_id=turn_player_user_id,
