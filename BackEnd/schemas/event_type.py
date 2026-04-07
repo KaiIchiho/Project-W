@@ -1,5 +1,6 @@
 ENTER_ROOM="enter_room"
 EXIT_ROOM="exit_room"
+SELECT_DECK="select_deck"
 STANDBY="standby"
 GAME_START="game_start"
 FIRST_TURNPLAYER="first_turnplayer"

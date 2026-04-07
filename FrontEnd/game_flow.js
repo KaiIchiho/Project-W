@@ -8,14 +8,30 @@ function standby(){
     }));
 }
 
-function handleStandby(data){
+function handleSelectDeck(data){
     if(data.success===undefined||
-        data.log===undefined
-    )
+        data.log===undefined)
     {
         return
     }
+    receiveText(data.log);
+    if(data.success){
+        console.log(data.log)
 
+    }
+    else{
+        console.error(data.log)
+    }
+
+}
+
+function handleStandby(data){
+    if(data.success===undefined||
+        data.log===undefined)
+    {
+        return
+    }
+    receiveText(data.log);
     if(data.success){
         console.log(data.log)
 

@@ -111,6 +111,7 @@ function handleWsMessage(event){
 event_method_dict={
     "enter_room":"handleEnterRoom",
     "exit_room":"handleExitRoom",
+    "select_deck":"handleSelectDeck",
     "standby":"handleStandby",
     "game_start":"handleGameStart"
 }

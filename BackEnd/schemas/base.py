@@ -9,4 +9,3 @@ class WSRequestBase(BaseModel):
     
 class WSResponseBase(ResponseBase):
     event:str=None
-    # success:bool

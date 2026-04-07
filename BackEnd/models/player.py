@@ -13,12 +13,17 @@ class Player(GameObject):
                  playmat:Playmat=None
                  ):
         super().__init__(player_id)
+        self._deck_id:int=-1
         self.player_id=player_id
         self.name=name
         self.playmat=playmat
         #self.hand:list[Optional[Card]]=[None]*7
         self.hand:list[Card]=[]
-        
+    
+    def set_deck_id(self,deck_id:int)->bool:
+        self._deck_id=deck_id
+        return True
+    
     def draw(self):
         print(f"{self.name} Draw")
         #for i in range(len(self.hand)):

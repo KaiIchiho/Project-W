@@ -1,7 +1,7 @@
 from services import game_flow
 from services import room
 from schemas.room import EnterRoomRequest,ExitRoomRequest
-from schemas.game_flow import StandbyRequest,StandbyResponse
+from schemas.game_flow import SelectDeckRequest,StandbyRequest
 
 def parse_model(data: dict, model_cls):
     try:
@@ -10,6 +10,15 @@ def parse_model(data: dict, model_cls):
         print("Model Parse Failed:", e)
         return None
     
+async def handle_select_deck(data:dict,user_id:int):
+    req=parse_model(data,SelectDeckRequest)
+    if not req:
+        raise ValueError("StandbyRequest Parse Failed")
+    res=await game_flow.set_player_deck(user_id,req.select_deck)
+    room_id=room.check_user_room(user_id)
+    if game_flow.ws_send_data_to_room_handler:
+        await game_flow.ws_send_data_to_room_handler(room_id,res)
+
 async def handle_standby(data:dict,user_id:int):
     req=parse_model(data,StandbyRequest)
     if not req:

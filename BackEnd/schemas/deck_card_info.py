@@ -9,9 +9,4 @@ class DeckListRequest(BaseModel):
 class DeckListResponse(BaseModel):
     deck_list:list[DeckInfo]
 
-class SelectDeckResquest(BaseModel):
-    select_deck:int
-class SelectDeckResponse(ResponseBase):
-    pass
-
 #class CardInfoResponse(BaseModel):

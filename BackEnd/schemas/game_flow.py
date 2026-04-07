@@ -1,10 +1,14 @@
 from pydantic import BaseModel
-from schemas.base import WSRequestBase,WSResponseBase
+from schemas.base import ResponseBase,WSRequestBase,WSResponseBase
 from schemas.common import WSCommonResponseBase
 from schemas import event_type
 
 class SelectDeckRequest(WSRequestBase):
+    event:str=event_type.SELECT_DECK
     select_deck:int=-1
+class SelectDeckResponse(WSResponseBase):
+    event:str=event_type.SELECT_DECK
+    pass
 
 class StandbyRequest(WSRequestBase):
     event:str=event_type.STANDBY

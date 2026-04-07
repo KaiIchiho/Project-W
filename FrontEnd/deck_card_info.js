@@ -14,33 +14,33 @@ async function updateDeckOptions(){
     console.log("Deck Options Update");
     deck_select.innerHTML = "";
     const default_opt = document.createElement("option");
-    default_opt.value="--Deck Name--";
+    default_opt.value=-1;
     default_opt.textContent="--Deck Name--";
     deck_select.appendChild(default_opt);
     
-    const deck_names = await getAllDeckNames();
-    for (const name of deck_names) {
+    const deck_list = await getDeckList();
+    for (const deck of deck_list) {
         const opt = document.createElement("option");
-        opt.value = name;
-        opt.textContent = name;
+        opt.value = deck.deck_id;
+        opt.textContent = deck.deck_name;
         deck_select.appendChild(opt);
     }
 }
 
-async function getAllDeckNames(){
-    let names=[];
-    info_list=await deck_list()
-    console.log("getAllDeckNames:")
-    console.log(info_list)
+// async function getAllDeckIDs(){
+//     let names=[];
+//     info_list=await deck_list()
+//     console.log("getAllDeckNames:")
+//     console.log(info_list)
     
-    for(const info of info_list){
-        console.log(info.deck_name)
-        names.push(info.deck_name)
-    }
-    return names
-}
+//     for(const info of info_list){
+//         console.log(info.deck_name)
+//         names.push(info.deck_name)
+//     }
+//     return names
+// }
 
-async function deck_list() {
+async function getDeckList() {
     const res=await fetch(
         "api/deck_list",
         {

@@ -2,11 +2,13 @@ from core.game import Game
 from core.room import Room
 from schemas import global_registration
 from typing import Callable,Awaitable
-from schemas.game_flow import StandbyResponse
+from schemas.game_flow import SelectDeckResponse,StandbyResponse
 from pydantic import BaseModel
 # from typing import Optional
 import importlib
 from services.login_logout import get_logedin_user_name
+from schemas import event_type
+from db.deck_repo import read_deck_name_by_id
 
 ws_send_message_handler:Callable[[dict,str],Awaitable[None]]
 create_message_handler:Callable[[int,str],dict]
@@ -16,10 +18,11 @@ ws_send_data_to_room_handler:Callable[[int,BaseModel],Awaitable[None]]
 ws_send_data_to_room_except_target_handler:Callable[[int,int,BaseModel],Awaitable[None]]
 
 outgame_handlers={
-        "enter_room":"handle_enter_room",
-        "exit_room":"handle_exit_room",
-        "standby":"handle_standby",
-        "deck_list":"handle_deck_list",
+        event_type.ENTER_ROOM:"handle_enter_room",
+        event_type.EXIT_ROOM:"handle_exit_room",
+        event_type.SELECT_DECK:"handle_select_deck",
+        event_type.STANDBY:"handle_standby",
+        # event_type.:"handle_deck_list",
         }
 
 async def handle_outgame_event(data:dict,user_id:int):
@@ -34,6 +37,42 @@ async def handle_outgame_event(data:dict,user_id:int):
     print("handler:", handler)
     await handler(data,user_id)
   
+async def set_player_deck(user_id:int,deck_id:int):
+    success=False
+    log=""
+    
+    room_id=global_registration.user_room(user_id)
+    if room_id is not None:
+        game=global_registration.room_game(room_id)
+        if game and game.get_is_in_progress():
+            log="ゲーム進行中"
+            res=SelectDeckResponse(
+                success=success,
+                log=log
+            )
+            return res
+    
+    player=global_registration.players.get(user_id)
+    if player:
+        deck_name=read_deck_name_by_id(deck_id)
+        if deck_name is None:
+            log=f"{deck_id}のデッキが存在しません"
+        else:
+            success=player.set_deck_id(deck_id)
+            user_name=get_logedin_user_name(user_id)
+            if success:
+                log=f"{user_name}は{deck_name}(ID:{deck_id})のデッキを選択しました"
+            else:
+                log=f"{user_name}は{deck_name}(ID:{deck_id})のデッキを選択できませんでした"
+    else:
+        log=f"{user_id}のプレイヤーが存在しません"
+    
+    res=SelectDeckResponse(
+        success=success,
+        log=log
+    )
+    return res
+
 async def standby(user_id:int):
     player=global_registration.players.get(user_id)
     room_id=global_registration.user_room.get(user_id)
@@ -41,7 +80,7 @@ async def standby(user_id:int):
     log=""
     game=None
     user_name=get_logedin_user_name(user_id)
-    if room_id is not None:
+    if player is not None and room_id is not None:
         room=global_registration.rooms.get(room_id)
         if room is not None:    
             game=_create_game_instance(room)
