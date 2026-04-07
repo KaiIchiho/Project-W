@@ -51,6 +51,15 @@ function handleGameStart(data){
     console.log(data)
 }
 
+function handleFirstTurnplayer(data){
+    if(data.common===undefined)
+    {
+        console.error("handleGameStart common Not Found")
+        return
+    }
+    console.log(data)
+}
+
 function next_phase(){
     if(ws.readyState!==WebSocket.OPEN){
         console.error("WebSocket not open:",ws.readyState);

@@ -113,6 +113,7 @@ event_method_dict={
     "exit_room":"handleExitRoom",
     "select_deck":"handleSelectDeck",
     "standby":"handleStandby",
+    "first_turnplayer":"handleFirstTurnplayer",
     "game_start":"handleGameStart"
 }
 
