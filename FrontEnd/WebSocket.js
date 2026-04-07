@@ -137,6 +137,9 @@ function handleWsJson(data){
             eve=common_data.event
             handleWSDataByEvent(data,eve)
         }
+        if(common_data.log!==undefined){
+            receiveText(common_data.log)
+        }
     }
     else{
         console.error("Error Data")
