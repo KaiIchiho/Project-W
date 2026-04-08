@@ -42,21 +42,14 @@ function handleStandby(data){
 }
 
 function handleGameStart(data){
-    console.log("handleGameStart")
-    if(data.common===undefined)
-    {
-        console.error("handleGameStart common Not Found")
-        return
-    }
     console.log(data)
 }
 
 function handleFirstTurnplayer(data){
-    if(data.common===undefined)
-    {
-        console.error("handleGameStart common Not Found")
-        return
-    }
+    console.log(data)
+}
+
+function handleDrawInitialHand(data){
     console.log(data)
 }
 
