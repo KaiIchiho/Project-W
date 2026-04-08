@@ -5,3 +5,6 @@ STANDBY="standby"
 GAME_START="game_start"
 FIRST_TURNPLAYER="first_turnplayer"
 DRAW_INITIAL_HAND="draw_initial_hand"
+
+NEXT_PHASE="next_phase"
+NEXT_TURN="next_turn"

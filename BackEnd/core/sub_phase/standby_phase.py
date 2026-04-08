@@ -1,4 +1,5 @@
 from core.sub_phase.phase_base import Phase
+# from schemas import event_type
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from core.game import Game
@@ -8,9 +9,9 @@ class StandbyPhase(Phase):
         super().__init__()
         self.phase_name="Standby Phase"
         self.next_phase=None
-        self.handlers={
-            "draw_initial_hand":"draw_initial_hand"
-        }
+        # self.handlers={
+        #     event_type.DRAW_INITIAL_HAND:"draw_initial_hand"
+        # }
         
     async def on_enter(self,game:"Game"):
         await super().on_enter(game)
@@ -25,6 +26,6 @@ class StandbyPhase(Phase):
         
     async def draw_initial_hand(self,game:"Game"):
         print("Log: StandbyPhase draw_initial_hand")
-        result=await game.draw_players_initial_hand()
-        print("Log: draw_players_initial_hand ",result)
+        await game.draw_players_initial_hand()
+        # print("Log: draw_players_initial_hand ",result)
         

@@ -15,6 +15,10 @@ class StandbyRequest(WSRequestBase):
 class StandbyResponse(WSResponseBase):
     event:str=event_type.STANDBY
 
+class FirstTurnPlayerResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.FIRST_TURNPLAYER
+    first_turn_player:int=-1
+    
 class GameStartResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.GAME_START
 

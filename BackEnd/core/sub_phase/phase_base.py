@@ -1,14 +1,4 @@
-#from enum import Enum,auto
-
-#class Phase(Enum):
-#    STAND=auto()
-#    DRAW=auto()
-#    CLOCK=auto()
-#    MAIN=auto()
-#    CLIMAX=auto()
-#    ATTACK=auto()
-#    END=auto()
-
+from schemas import event_type
 from services.sub_command.next_turn_command import NextTurnCommand
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
@@ -16,8 +6,8 @@ if TYPE_CHECKING:
 
 class Phase:
     handlers={
-        "next_phase":"on_next_phase",
-        "next_turn":"on_next_turn"
+        event_type.NEXT_PHASE:"on_next_phase",
+        event_type.NEXT_TURN:"on_next_turn"
         }
     is_complete=False
     phase_name="phase_base"
