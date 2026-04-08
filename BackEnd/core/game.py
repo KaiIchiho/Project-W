@@ -126,8 +126,7 @@ class Game():
         self._is_in_progress=True
         # self.current_turn=1
         await self.set_first_player(self.player_1)
-        await self.send_message(None,"Start Game",player_id)
-        await self.__in_start_phase()
+        # await self.send_message(None,"Start Game",player_id)
         
         log="ゲーム開始"
         common=self.get_common_data(
@@ -138,6 +137,8 @@ class Game():
             common=common
         )
         await self.send_data_to_room(data)
+        
+        await self._in_start_phase()
     
     async def send_message(self,self_text:str,room_text:str,player_id:int):
         if self.create_message:
@@ -163,7 +164,7 @@ class Game():
         if self.ws_send_data_to_room_except_target:
             await self.ws_send_data_to_room_except_target(self.room_id,player_id,data)
     
-    async def __in_start_phase(self):
+    async def _in_start_phase(self):
         self.phase=self.first_phase
         await self.phase.on_enter(self)
     
@@ -181,7 +182,7 @@ class Game():
         if player_switch is not None:
             player_switch()
         
-        await self.__in_start_phase()
+        await self._in_start_phase()
         if in_start_phase is not None:
             in_start_phase()
         
