@@ -221,7 +221,7 @@ class Game():
         res=game_flow.DrawInitialHandResponse(
             common=common
         )
-        self.send_data_to_room(res)
+        await self.send_data_to_room(res)
     
     async def draw_initial_hand(self,player:Player)->bool:
         # player=self.check_command_player(player_id)
