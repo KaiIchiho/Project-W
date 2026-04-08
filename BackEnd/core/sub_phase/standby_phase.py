@@ -13,9 +13,16 @@ class StandbyPhase(Phase):
         }
         
     async def on_enter(self,game:"Game"):
-        super().on_enter(game)
-        self.draw_initial_hand(game)
+        await super().on_enter(game)
+        await self.draw_initial_hand(game)
+    
+    def init_playmat(self,game:"Game"):
+        result_1,result_2=game.init_players_playmat()
+        print("Log: init_playmat")
+        print("player 1 Init Playmat: ",result_1)
+        print("player 2 Init Playmat: ",result_2)
         
-    def draw_initial_hand(self,game:"Game"):
-        print("StandbyPhase draw_initial_hand")
+    async def draw_initial_hand(self,game:"Game"):
+        print("Log: StandbyPhase draw_initial_hand")
+        await game.draw_initial_hand()
         

@@ -6,14 +6,14 @@ from typing import Optional,Callable
 class Playmat(GameObject):
     on_stage_card_stand_changed:Callable[[int,bool],None]
     
-    deck:Optional[Deck]=None
+    # deck:Optional[Deck]=None
     
     def __init__(self, 
                  ori_owner_id:int,
-                 deck:Deck=None
+                #  deck:Deck=None
                  ):
         super().__init__(ori_owner_id)
-        self.deck=deck
+        self.deck=None
         self.waiting_room:list[Card]=[]
         
         self.stage:list[Optional[Card]]=[None]*5
@@ -27,7 +27,10 @@ class Playmat(GameObject):
         self.stock:list[Optional[Card]]=[]
         
         self.deck.on_deck_empty=self.reset_deck
-            
+    
+    def set_init_deck(self,init_deck:Deck):
+        self.deck=init_deck
+    
     def reset_deck(self):
         if self.deck is None:
             return

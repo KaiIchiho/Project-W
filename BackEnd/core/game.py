@@ -188,6 +188,13 @@ class Game():
         
         return next_player
         
+    def init_players_playmat(self)->bool:
+        if not self.check_is_full_players():
+            return False
+        result_1=self.player_1.init_playmat()
+        result_2=self.player_2.init_playmat()
+        return result_1,result_2
+    
     async def handle_action(self,action:dict,player_id:int):
         if self.check_is_full_players()==False:
             await self.send_message("Game Is Not Players Full !",None,None)
@@ -205,12 +212,12 @@ class Game():
             success=False
         for i in range(5):
             player.draw()
-        # common_data=self.get_common_data(
-        #     "draw_initial_hand",
-        #     success,
-        #     self.turn_player.player_id,
-        #     player.player_id)
-        # self.ws_send_data_to_room(self.room_id,common_data)
+        common_data=self.get_common_data(
+            "draw_initial_hand",
+            success,
+            self.turn_player.player_id,
+            player.player_id)
+        self.ws_send_data_to_room(self.room_id,common_data)
     
     def check_player_identity(self,user:Player)->int:
         if self.player_1 is user:

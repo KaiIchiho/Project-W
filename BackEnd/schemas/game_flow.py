@@ -17,3 +17,6 @@ class StandbyResponse(WSResponseBase):
 
 class GameStartResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.GAME_START
+
+class DrawInitialHandResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.DRAW_INITIAL_HAND

@@ -1,12 +1,10 @@
 from models.base import GameObject
 from models.card import Card
+from models.deck import Deck
 from models.playmat import Playmat
 from typing import Optional
 
-class Player(GameObject):
-    
-    playmat:Optional[Playmat]=None
-    
+class Player(GameObject):    
     def __init__(self,
                  player_id:int,
                  name:str,
@@ -29,6 +27,14 @@ class Player(GameObject):
             return False
         else:
             return True
+    
+    def init_playmat(self):
+        self.playmat=Playmat(self.ori_owner_id)
+        deck=Deck(self.ori_owner_id)
+        if not deck.init_deck_by_deck_id(self._deck_id):
+            return False
+        self.playmat.set_init_deck(deck)
+        return True
     
     def draw(self):
         print(f"{self.name} Draw")
