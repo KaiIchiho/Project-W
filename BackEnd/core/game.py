@@ -205,19 +205,30 @@ class Game():
         if self.phase.is_complete:
             await self.phase.on_next_phase(self,action)
     
-    async def draw_initial_hand(self,player_id:int):
-        player=self.check_command_player(player_id)
-        success=True
-        if not player:
-            success=False
+    async def draw_players_initial_hand(self)->bool:
+        if not self.check_is_full_players():
+            return False
+        result_1=await self.draw_initial_hand(self.player_1.player_id)
+        result_2=await self.draw_initial_hand(self.player_2.player_id)
+        if result_1 and result_2:
+            return True
+        else:
+            return False
+    
+    async def draw_initial_hand(self,player:Player)->bool:
+        # player=self.check_command_player(player_id)
+        if self.check_player_identity(player)==-1:
+            return False
+        # success=True
         for i in range(5):
             player.draw()
-        common_data=self.get_common_data(
-            "draw_initial_hand",
-            success,
-            self.turn_player.player_id,
-            player.player_id)
-        self.ws_send_data_to_room(self.room_id,common_data)
+        return True
+        # common_data=self.get_common_data(
+        #     "draw_initial_hand",
+        #     success,
+        #     self.turn_player.player_id,
+        #     player.player_id)
+        # self.ws_send_data_to_room(self.room_id,common_data)
     
     def check_player_identity(self,user:Player)->int:
         if self.player_1 is user:
