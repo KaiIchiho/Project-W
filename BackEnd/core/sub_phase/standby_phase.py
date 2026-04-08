@@ -14,6 +14,7 @@ class StandbyPhase(Phase):
         
     async def on_enter(self,game:"Game"):
         await super().on_enter(game)
+        self.init_playmat(game)
         await self.draw_initial_hand(game)
     
     def init_playmat(self,game:"Game"):
