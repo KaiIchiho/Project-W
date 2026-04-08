@@ -25,11 +25,10 @@ class Playmat(GameObject):
         self.memory:list[Optional[Card]]=[]
         self.climax:Card=None
         self.stock:list[Optional[Card]]=[]
-        
-        self.deck.on_deck_empty=self.reset_deck
     
     def set_init_deck(self,init_deck:Deck):
         self.deck=init_deck
+        self.deck.on_deck_empty=self.reset_deck
     
     def reset_deck(self):
         if self.deck is None:
