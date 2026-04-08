@@ -206,8 +206,8 @@ class Game():
         result=False
         log=""
         if self.check_is_full_players():    
-            result_1=await self.draw_initial_hand(self.player_1.player_id)
-            result_2=await self.draw_initial_hand(self.player_2.player_id)
+            result_1=await self.draw_initial_hand(self.player_1)
+            result_2=await self.draw_initial_hand(self.player_2)
             if result_1 and result_2:
                 result=True
                 log="初期手札のドロー（各5枚）が成功しました"
