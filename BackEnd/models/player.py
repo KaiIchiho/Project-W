@@ -34,6 +34,7 @@ class Player(GameObject):
         if not deck.init_deck_by_deck_id(self._deck_id):
             return False
         self.playmat.set_init_deck(deck)
+        self.playmat.deck_shuffle()
         return True
     
     def draw(self):

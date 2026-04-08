@@ -30,6 +30,10 @@ class Playmat(GameObject):
         self.deck=init_deck
         self.deck.on_deck_empty=self.reset_deck
     
+    def deck_shuffle(self):
+        if self.deck:
+            self.deck.shuffle()
+    
     def reset_deck(self):
         if self.deck is None:
             return
