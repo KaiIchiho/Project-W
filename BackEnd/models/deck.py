@@ -19,11 +19,13 @@ class Deck(GameObject):
         self.cards:list[Card]=None
         
     def init_deck_by_deck_id(self,deck_id:int)->bool:
+        print(f"Log: init_deck_by_deck_id, ID: {self._deck_id}")
         self._deck_id=deck_id
         card_info_list=deck_repo.read_cards_info_by_deck_id(self._deck_id)
         if not card_info_list:
             return False
         card_id_list=deck_repo.process_deck_cards_info(card_info_list)
+        print(f"Log:card_id_list, {card_id_list}")
         if not card_id_list:
             return False
         return self.init_deck_by_card_id(card_id_list)
