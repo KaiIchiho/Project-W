@@ -67,6 +67,7 @@ function swapSelectedHandCards(){
         "hand_index":selected_btn_index,
     }
     sendJson(data);
+    selected_btn_index=[]
 }
 
 function handleSwapHandCards(data){
