@@ -87,6 +87,7 @@ function handleSwapHandCards(data){
     let cards=hand.cards;
     const hand_zone=document.getElementById("hand");
     hand_zone.innerHTML = "";
+    buttons=[]
     for(const card of cards){
         console.log(card);
         addHand(card);
