@@ -84,8 +84,10 @@ function handleSwapHandCards(data){
     }
     let hand=player.hand;
     let cards=hand.cards;
+    const hand_zone=document.getElementById("hand");
+    hand_zone.innerHTML = "";
     for(const card of cards){
         console.log(card);
-        // addHand(card);
+        addHand(card);
     }
 }
