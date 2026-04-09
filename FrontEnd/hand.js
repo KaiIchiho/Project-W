@@ -17,7 +17,7 @@ function addHand(card_id){
     buttons.push(btn)
     btn.onclick=()=>{
         let index=buttons.indexOf(btn)
-        if(index!==undefined){
+        if(index!==-1){
             let on_state=selectHandIndex(index);
             switchBtnState(btn,on_state);
             console.log(selected_btn_index)
@@ -48,8 +48,8 @@ function switchBtnState(btn,is_on){
 
 function selectHandIndex(index){
     let i_index=selected_btn_index.indexOf(index);
-    if(i_index!==undefined){
-        selected_btn_index.slice(i_index,1)
+    if(i_index!==-1){
+        selected_btn_index.splice(i_index,1)
         return false
     }
     else{
