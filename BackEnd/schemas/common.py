@@ -1,13 +1,16 @@
 from pydantic import BaseModel,Field
 from schemas.object import PlayerData
-from schemas.base import WSResponseBase
+from schemas.base import WSResponseBase,WSRequestBase
 
 class CommonData(WSResponseBase):
     turn_player_user_id:int
     event_user_id: int
     player_1:PlayerData
     player_2:PlayerData
-    
+
+class ClientCommonData(WSRequestBase):
+    pass
+
 class WSCommonResponseBase(BaseModel):
     _DEFAULT_EVENT:str="default_event"
     common:CommonData=Field(
