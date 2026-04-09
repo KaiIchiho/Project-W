@@ -11,7 +11,7 @@ from schemas.global_registration import connections,connected_clients,rooms,user
 from services import game_flow,login_logout
 from config.setting import WS_TIMEOUT
 from services.parse_model import parse_model
-from schemas.common import WSRequestBase,WSCommonResponseBase
+from schemas.common import WSRequestBase,WSCommonRequestBase
 
 async def websocket(ws:WebSocket):
     await ws.accept()
@@ -138,7 +138,7 @@ async def receive_json(user_id:int,json:dict):
         # await game_flow.standby(user_id)
         await game_flow.handle_outgame_event(json,user_id)
     # elif json.get("client_common") is not None:
-    elif parse_model(json,WSCommonResponseBase):
+    elif parse_model(json,WSCommonRequestBase):
         await game_flow.receive_ingame_command(json,user_id)
 
 def create_message(self_text:str,room_text:str)->dict:
