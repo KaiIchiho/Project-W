@@ -234,12 +234,16 @@ class Game():
         success=False
         log=""
         player:Player=self.check_command_player(player_id)
+        indentity=self.check_player_identity(player)
         if player:
-            success=player.swap_hand_cards(hand_index_list)
-            if success:
-                log=f"{player.name}は手札の入れ替えが成功しました"
+            if indentity==2 and not self.player_1.get_is_swap_hand():
+                log="先攻プレイヤーはまだ手札の入れ替えが完成していません"
             else:
-                log=f"{player.name}は手札の入れ替えが失敗しました"
+                success=player.swap_hand_cards(hand_index_list)
+                if success:
+                    log=f"{player.name}は手札の入れ替えが成功しました"
+                else:
+                    log=f"{player.name}は手札の入れ替えが失敗しました"
         else:
             log=f"{player_id}のプレイヤーはゲーム内に存在しません"
         

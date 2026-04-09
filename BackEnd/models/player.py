@@ -17,6 +17,8 @@ class Player(GameObject):
         self.playmat=playmat
         #self.hand:list[Optional[Card]]=[None]*7
         self.hand:list[Card]=[]
+        
+        self.is_swap_hand:bool=False
     
     def set_deck_id(self,deck_id:int)->bool:
         self._deck_id=deck_id
@@ -61,6 +63,8 @@ class Player(GameObject):
     #    self.hand=cards+nones
         
     def swap_hand_cards(self,hand_index_list:list[int])->bool:
+        if self._is_swap_hand:
+            return False
         if not hand_index_list:
             return True
         
@@ -78,13 +82,12 @@ class Player(GameObject):
                 self.hand.remove(waiting_card)
         
         self._set_cards_to_waiting_room(waiting_cards)
-        return self.init_hand()
-        
-        # for i in len(self.hand):
-        #     if self.hand[i] in selected_card:
-        #         self.playmat.set_card_to_memory(self.hand[i])
-        #         self.hand[i]=None
-        # self.int_hand()
+        self.init_hand()
+        self._is_swap_hand=True
+        return True
+    
+    def get_is_swap_hand(self)->bool:
+        return self.is_swap_hand
     
     def all_stage_stand(self):
         self.playmat.all_stage_stand()
