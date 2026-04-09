@@ -53,7 +53,7 @@ function selectHandIndex(index){
         return false
     }
     else{
-        selected_btns.push(index)
+        selected_btn_index.push(index)
         return true
     }
 }
