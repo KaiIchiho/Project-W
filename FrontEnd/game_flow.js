@@ -58,7 +58,7 @@ function handleDrawInitialHand(data){
     if(player1.user_id==user_id){
         player=player1;
     }
-    else is(player2.user_id==user_id){
+    else if(player2.user_id==user_id){
         player=player2;
     }
     let hand=player.hand;
