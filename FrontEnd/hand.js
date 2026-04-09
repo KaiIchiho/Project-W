@@ -59,5 +59,33 @@ function selectHandIndex(index){
 }
 
 function swapSelectedHandCards(){
-    
+    console.log("swapSelectedHandCards");
+    data={
+        client_common:{
+            event:"swap_hand_cards"
+        },
+        "hand_index":selected_btn_index,
+    }
+    sendJson(data);
+}
+
+function handleSwapHandCards(data){
+    console.log("New Hand");
+    // console.log(data)
+    let common=data.common;
+    let player1=common.player_1;
+    let player2=common.player_2;
+    let player;
+    if(player1.user_id==user_id){
+        player=player1;
+    }
+    else if(player2.user_id==user_id){
+        player=player2;
+    }
+    let hand=player.hand;
+    let cards=hand.cards;
+    for(const card of cards){
+        console.log(card);
+        // addHand(card);
+    }
 }

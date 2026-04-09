@@ -49,7 +49,7 @@ function handleFirstTurnplayer(data){
 }
 
 function handleDrawInitialHand(data){
-    console.log(data);
+    // console.log(data);
     let common=data.common;
     let player1=common.player_1;
     let player2=common.player_2;
