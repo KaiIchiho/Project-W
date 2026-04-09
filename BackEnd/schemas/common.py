@@ -11,6 +11,9 @@ class CommonData(WSResponseBase):
 class ClientCommonData(WSRequestBase):
     pass
 
+class WSCommonRequestBase(BaseModel):
+    client_common:ClientCommonData
+
 class WSCommonResponseBase(BaseModel):
     _DEFAULT_EVENT:str="default_event"
     common:CommonData=Field(

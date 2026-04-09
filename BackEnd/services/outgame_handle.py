@@ -1,15 +1,8 @@
-from services import game_flow
-from services import room
+from services import game_flow,room
+from services.parse_model import parse_model
 from schemas.room import EnterRoomRequest,ExitRoomRequest
 from schemas.game_flow import SelectDeckRequest,StandbyRequest
 
-def parse_model(data: dict, model_cls):
-    try:
-        return model_cls.model_validate(data)
-    except Exception as e:
-        print("Model Parse Failed:", e)
-        return None
-    
 async def handle_select_deck(data:dict,user_id:int):
     req=parse_model(data,SelectDeckRequest)
     if not req:

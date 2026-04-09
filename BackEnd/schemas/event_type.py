@@ -1,3 +1,5 @@
+from schemas import game_flow
+
 ENTER_ROOM="enter_room"
 EXIT_ROOM="exit_room"
 SELECT_DECK="select_deck"
@@ -9,3 +11,7 @@ SWAP_HAND_CARDS="swap_hand_cards"
 
 NEXT_PHASE="next_phase"
 NEXT_TURN="next_turn"
+
+event_req={
+    SWAP_HAND_CARDS:game_flow.SwapHandCardsRequest
+}

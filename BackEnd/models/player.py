@@ -47,31 +47,50 @@ class Player(GameObject):
     #def play_command(self):
     #    print(f"{self.name} Play Command")
         
-    def init_hand(self):
-        #self.__organize_hand()
+    def init_hand(self)->bool:
         now_hand_lenth=len(self.hand)
         if now_hand_lenth>=5:
-            return
+            return False
         for i in range(now_hand_lenth,5):
-            #if self.hand[i] is None:
             self.draw()
+        return True
                 
     #def __organize_hand(self):
     #    cards=[card for card in self.hand if card is not None]
     #    nones=[None]*(len(self.hand)-len(cards))
     #    self.hand=cards+nones
         
-    def manage_hand(self,selected_card:list[Card]):
-        if not selected_card:
-            return
-        for i in len(self.hand):
-            if self.hand[i] in selected_card:
-                self.playmat.set_card_to_memory(self.hand[i])
-                self.hand[i]=None
-        self.int_hand()
+    def swap_hand_cards(self,hand_index_list:list[int])->bool:
+        if not hand_index_list:
+            return True
+        
+        waiting_cards:list[Card]=[]
+        for hand_index in hand_index_list:
+            try:
+                card = self.hand[hand_index]
+            except IndexError:
+                return False
+                # card = None
+            if card:
+                waiting_cards.append(card)
+        for waiting_card in waiting_cards:
+            if waiting_card in self.hand:
+                self.hand.remove(waiting_card)
+        
+        self._set_cards_to_waiting_room(waiting_cards)
+        return self.init_hand()
+        
+        # for i in len(self.hand):
+        #     if self.hand[i] in selected_card:
+        #         self.playmat.set_card_to_memory(self.hand[i])
+        #         self.hand[i]=None
+        # self.int_hand()
     
     def all_stage_stand(self):
         self.playmat.all_stage_stand()
         
     def change_stage_stand(self,stage_index:int,is_stand:bool):
         self.playmat.change_stage_stand(stage_index,is_stand)
+        
+    def _set_cards_to_waiting_room(self,cards:list[Card]):
+        self.playmat.set_cards_to_waiting_room(cards)

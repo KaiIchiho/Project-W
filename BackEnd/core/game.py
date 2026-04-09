@@ -224,20 +224,33 @@ class Game():
         await self.send_data_to_room(res)
     
     async def draw_initial_hand(self,player:Player)->bool:
-        # player=self.check_command_player(player_id)
         if self.check_player_identity(player)==-1:
             return False
-        # success=True
         for i in range(5):
             player.draw()
         return True
-        # common_data=self.get_common_data(
-        #     "draw_initial_hand",
-        #     success,
-        #     self.turn_player.player_id,
-        #     player.player_id)
-        # self.ws_send_data_to_room(self.room_id,common_data)
     
+    async def swap_hand_cards(self,player_id:int,hand_index_list:list[int]):
+        success=False
+        log=""
+        player:Player=self.check_command_player(player_id)
+        if player:
+            success=player.swap_hand_cards(hand_index_list)
+            if success:
+                log=f"{player.name}は手札の入れ替えが成功しました"
+            else:
+                log=f"{player.name}は手札の入れ替えが失敗しました"
+        else:
+            log=f"{player_id}のプレイヤーはゲーム内に存在しません"
+        
+        common=self.get_common_data(success,log,player_id)
+        res=game_flow.SwapHandCardsResponse(
+            common=common
+        )
+        
+        await self.send_data_to_room(res)
+        
+        
     def check_player_identity(self,user:Player)->int:
         if self.player_1 is user:
             return 1
@@ -265,14 +278,11 @@ class Game():
             return True
     
     def check_command_player(self,player_id:int)->Player:
-        if self.player_1 is None or self.player_2 is None:
-            return None
-        print(f"player 1 ID: {self.player_1.player_id}")
-        print(f"player 2 ID: {self.player_2.player_id}")
-        print(f"checked player ID: {player_id}")
-        if self.player_1.player_id==player_id:
+        # if self.player_1 is None or self.player_2 is None:
+        #     return None
+        if self.player_1 and self.player_1.player_id==player_id:
             return self.player_1
-        elif self.player_2.player_id==player_id:
+        elif self.player_2 and self.player_2.player_id==player_id:
             return self.player_2
         else:
             return None

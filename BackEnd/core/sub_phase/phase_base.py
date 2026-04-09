@@ -1,5 +1,6 @@
-from schemas import event_type
+from schemas import event_type,common
 from services.sub_command.next_turn_command import NextTurnCommand
+from services.parse_model import parse_model
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from core.game import Game
@@ -37,18 +38,25 @@ class Phase:
             if message.get("room") is not None:
                 message["room"]=room_message_text+message["room"]
             await game.send_message_backage(message,player_id)
-
-    async def handle_action(self,game:"Game",action:dict,player_id:int):
-        handler_name=self.handlers.get(action.get("action"))
+    
+    async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
+        model,req=self.parse_action_model(action,event)
+        if not model or not req:
+            return
+        
+        handler_name=self.handlers.get(event)
         if not handler_name:
             raise ValueError("Action Not Found")
         handler=getattr(self,handler_name)
         
-        messages=await handler(game,action,player_id)
+        messages=await handler(game,req,player_id)
         
-        await self.send_message_list(game,messages,player_id)
+        # await self.send_message_list(game,messages,player_id)
     
-    async def on_next_phase(self,game:"Game",action:dict,player_id:int)->list[dict]:
+    async def on_next_phase(
+        self,game:"Game",req,player_id:int
+    )->list[dict]:
+        pass
         messages=[]
         if not game.check_is_turn_player_command(player_id):
             message=game.create_message("Not Your Turn",None)
@@ -84,3 +92,11 @@ class Phase:
         message2["player_id"]=game.turn_player.player_id
         messages.append(message2)
         return messages
+    
+    def parse_action_model(self,action:dict,event:str):
+        model=event_type.event_req.get(event)
+        if model is None:
+            return None,None
+        req=parse_model(action,model)
+        return model,req
+        

@@ -4,7 +4,6 @@ from schemas import global_registration
 from typing import Callable,Awaitable
 from schemas.game_flow import SelectDeckResponse,StandbyResponse
 from pydantic import BaseModel
-# from typing import Optional
 import importlib
 from services.login_logout import get_logedin_user_name
 from schemas import event_type
@@ -129,13 +128,19 @@ def _create_game_instance(room:Room)->Game:
 def get_game_by_room_id(room_id:int)->Game:
     return global_registration.room_game.get(room_id)
 
-async def receive_command_json(room_id:int,command_json:dict,user_id:int):
-    action=command_json.get("action")
-    print(f"Log: Command Type Is {action}")
+def get_room_id_by_user_id(user_id:int)->int:
+    room_id=global_registration.user_room.get(user_id)
+    if room_id is None:
+        return -1
+    else:
+        return room_id
+
+async def receive_ingame_command(data:dict,user_id:int):
+    room_id=get_room_id_by_user_id(user_id)
     game=get_game_by_room_id(room_id)
     if game is None:
-        return #"Error !"
-    await game.handle_action(command_json,user_id)
+        return
+    await game.handle_action(data,user_id)
     
 async def start_game(game:Game,player_id:int):
     await game.start_game(player_id)

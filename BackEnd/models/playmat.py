@@ -51,3 +51,6 @@ class Playmat(GameObject):
         if self.stage_stand[stage_index]!=is_stand:
             self.stage_stand[stage_index]=is_stand
             self.on_stage_card_stand_changed(stage_index,is_stand)
+            
+    def set_cards_to_waiting_room(self,cards:list[Card]):
+        self.waiting_room.extend(cards)

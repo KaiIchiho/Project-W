@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from schemas.base import WSRequestBase,WSResponseBase
-from schemas.common import WSCommonResponseBase,ClientCommonData
+from schemas.common import WSCommonRequestBase,WSCommonResponseBase
 from schemas import event_type
 
 class SelectDeckRequest(WSRequestBase):
@@ -25,8 +25,8 @@ class GameStartResponse(WSCommonResponseBase):
 class DrawInitialHandResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.DRAW_INITIAL_HAND
 
-class SwapHandCardsRequest(BaseModel):
-    client_common:ClientCommonData
+class SwapHandCardsRequest(WSCommonRequestBase):
+    hand_index:list[int]
     
 class SwapHandCardsResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.SWAP_HAND_CARDS

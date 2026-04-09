@@ -10,6 +10,8 @@ from services.connection import Connection
 from schemas.global_registration import connections,connected_clients,rooms,user_room
 from services import game_flow,login_logout
 from config.setting import WS_TIMEOUT
+from services.parse_model import parse_model
+from schemas.common import WSRequestBase,WSCommonResponseBase
 
 async def websocket(ws:WebSocket):
     await ws.accept()
@@ -118,7 +120,8 @@ async def receive_text(ws:websocket,room:Room,text:str):
             
     await ws.send_text(f"From Server -\n (yourself){text}")
     
-async def receive_json(ws:websocket,user_id:int,json:dict):
+# async def receive_json(ws:websocket,user_id:int,json:dict):
+async def receive_json(user_id:int,json:dict):
     # command=json.get("type")
     # if command is None:
     #     print("Error: JSON Command Is None !")
@@ -129,11 +132,14 @@ async def receive_json(ws:websocket,user_id:int,json:dict):
     # else:
     #     await game_flow.receive_command_json(room.room_id,json,user_id)
     print("Received JSON: ",json)
-    if json.get("event") is not None:
+    
+    # if json.get("event") is not None:
+    if parse_model(json,WSRequestBase):
         # await game_flow.standby(user_id)
         await game_flow.handle_outgame_event(json,user_id)
-    # else:
-        # await game_flow.receive_command_json(room.room_id,json,user_id)
+    # elif json.get("client_common") is not None:
+    elif parse_model(json,WSCommonResponseBase):
+        await game_flow.receive_ingame_command(json,user_id)
 
 def create_message(self_text:str,room_text:str)->dict:
     message={}
