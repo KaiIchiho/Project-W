@@ -133,12 +133,12 @@ async def receive_json(user_id:int,json:dict):
     #     await game_flow.receive_command_json(room.room_id,json,user_id)
     print("Received JSON: ",json)
     
-    # if json.get("event") is not None:
-    if parse_model(json,WSRequestBase):
+    if json.get("event") is not None:
+    # if parse_model(json,WSRequestBase):
         # await game_flow.standby(user_id)
         await game_flow.handle_outgame_event(json,user_id)
-    # elif json.get("client_common") is not None:
-    elif parse_model(json,WSCommonRequestBase):
+    elif json.get("client_common") is not None:
+    # elif parse_model(json,WSCommonRequestBase):
         await game_flow.receive_ingame_command(json,user_id)
 
 def create_message(self_text:str,room_text:str)->dict:
