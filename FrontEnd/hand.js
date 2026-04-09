@@ -17,7 +17,7 @@ function addHand(card_id){
     }
     // buttons.set(btn,card_id);
     buttons.push(btn)
-    hand.appendChild(btn);
+    // hand.appendChild(btn);
 }
 
 function delHand(index){
@@ -38,5 +38,5 @@ function selectHandCard(card_id){
 }
 
 function swapSelectedHandCards(){
-    
+
 }
