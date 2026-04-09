@@ -20,7 +20,7 @@ function addHand(card_id){
         if(index!==undefined){
             let on_state=selectHandIndex(index);
             switchBtnState(btn,on_state);
-            print(selected_btn_index)
+            console.log(selected_btn_index)
         }
     }
     hand.appendChild(btn);
