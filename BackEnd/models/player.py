@@ -18,7 +18,7 @@ class Player(GameObject):
         #self.hand:list[Optional[Card]]=[None]*7
         self.hand:list[Card]=[]
         
-        self.is_swap_hand:bool=False
+        self._is_swap_hand:bool=False
     
     def set_deck_id(self,deck_id:int)->bool:
         self._deck_id=deck_id
@@ -87,7 +87,7 @@ class Player(GameObject):
         return True
     
     def get_is_swap_hand(self)->bool:
-        return self.is_swap_hand
+        return self._is_swap_hand
     
     def all_stage_stand(self):
         self.playmat.all_stage_stand()
