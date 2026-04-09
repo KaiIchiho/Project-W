@@ -1,4 +1,4 @@
-from schemas import event_type,common
+from schemas import event_type,game_flow
 from services.sub_command.next_turn_command import NextTurnCommand
 from services.parse_model import parse_model
 from typing import TYPE_CHECKING
@@ -94,7 +94,7 @@ class Phase:
         return messages
     
     def parse_action_model(self,action:dict,event:str):
-        model=event_type.event_req.get(event)
+        model=game_flow.event_req.get(event)
         if model is None:
             return None,None
         req=parse_model(action,model)

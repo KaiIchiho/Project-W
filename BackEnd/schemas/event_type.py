@@ -1,4 +1,4 @@
-from schemas import game_flow
+# from schemas import game_flow
 
 ENTER_ROOM="enter_room"
 EXIT_ROOM="exit_room"
@@ -12,6 +12,3 @@ SWAP_HAND_CARDS="swap_hand_cards"
 NEXT_PHASE="next_phase"
 NEXT_TURN="next_turn"
 
-event_req={
-    SWAP_HAND_CARDS:game_flow.SwapHandCardsRequest
-}

@@ -30,3 +30,7 @@ class SwapHandCardsRequest(WSCommonRequestBase):
     
 class SwapHandCardsResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.SWAP_HAND_CARDS
+
+event_req={
+    event_type.SWAP_HAND_CARDS:SwapHandCardsRequest
+}
