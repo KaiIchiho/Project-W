@@ -51,13 +51,13 @@ function handleFirstTurnplayer(data){
 
 function handleDrawInitialHand(data){
     console.log(data)
-    common=data.common
-    hand=common.hand
-    cards=hand.cards
-    for(const card of cards){
-        console.log(card)
-        addHand(card)
-    }
+    // common=data.common
+    // hand=common.hand
+    // cards=hand.cards
+    // for(const card of cards){
+    //     console.log(card)
+    //     addHand(card)
+    // }
 }
 
 function next_phase(){
