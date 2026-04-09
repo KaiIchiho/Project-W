@@ -31,7 +31,6 @@ function handleStandby(data){
     {
         return
     }
-    // receiveText(data.log);
     if(data.success){
         console.log(data.log)
 

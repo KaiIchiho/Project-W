@@ -13,6 +13,11 @@ function addHand(card_id){
     const btn=document.createElement("button");
     btn.textContent=card_id;
     btn.onclick=()=>{
+        if (btn.style.backgroundColor === "yellow") {
+            btn.style.backgroundColor = ""; // 恢复默认
+        } else {
+            btn.style.backgroundColor = "yellow"; // 变黄色
+        }
         selectHandCard(card_id);
     }
     // buttons.set(btn,card_id);
