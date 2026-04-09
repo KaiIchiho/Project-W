@@ -140,7 +140,8 @@ async def receive_ingame_command(data:dict,user_id:int):
     game=get_game_by_room_id(room_id)
     if game is None:
         return
-    await game.handle_action(data,user_id)
+    event=data.client_common.event
+    await game.handle_action(data,event,user_id)
     
 async def start_game(game:Game,player_id:int):
     await game.start_game(player_id)

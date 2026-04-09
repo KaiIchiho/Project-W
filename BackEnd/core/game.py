@@ -192,12 +192,12 @@ class Game():
         result_2=self.player_2.init_playmat()
         return result_1,result_2
     
-    async def handle_action(self,action:dict,player_id:int):
+    async def handle_action(self,action:dict,event:str,player_id:int):
         if self.check_is_full_players()==False:
             await self.send_message("Game Is Not Players Full !",None,None)
             return
         
-        await self.phase.handle_action(self,action,player_id)
+        await self.phase.handle_action(self,action,event,player_id)
         
         if self.phase.is_complete:
             await self.phase.on_next_phase(self,action)
