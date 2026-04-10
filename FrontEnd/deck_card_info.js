@@ -86,9 +86,6 @@ async function setDeck(){
 
 async function readCardInfo(){
     console.log("readCardInfo");
-    if (0 == hand_card_id.length) {
-        return;
-    }
     if(selected_card_id=-1){
         return
     }
