@@ -28,6 +28,7 @@ function addHand(card_id){
             else{
                 selected_card_id=-1
             }
+            console.log("selected_card_id: ",selected_card_id)
         }
     }
     hand.appendChild(btn);
