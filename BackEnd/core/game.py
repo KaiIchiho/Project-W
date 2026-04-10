@@ -2,6 +2,7 @@ from models.player import Player
 from typing import Callable,Optional,Awaitable
 from core.sub_phase.phase_base import Phase
 from core.sub_phase.standby_phase import StandbyPhase
+from core.sub_phase.stand_phase import StandPhase
 from pydantic import BaseModel
 from schemas import object,common,game_flow
 
@@ -36,6 +37,7 @@ class Game():
         #self.current_attack_step:AttackStep
         
         self.first_phase=StandbyPhase
+        self.pre_turn_first_phase=StandPhase
     
     async def _send_data_to_user(self,user_id:int,data:BaseModel):
         if self.ws_send_data_to_user:
@@ -165,7 +167,11 @@ class Game():
         self.phase=self.first_phase()
         await self.phase.on_enter(self)
     
-    async def start_next_turn(self,player_switch:Callable[[],None]=None,in_start_phase:Callable[[],None]=None)->int:
+    async def _in_turn_start_phase(self):
+        self.phase=self.pre_turn_first_phase()
+        await self.phase.on_enter(self)
+    
+    async def start_next_turn(self,player_switch:Callable[[],None]=None,in_turn_start_phase:Callable[[],None]=None)->int:
         print("Log: start_next_turn")
         next_player=0
         if self.turn_player is self.player_1:
@@ -180,9 +186,9 @@ class Game():
         if player_switch is not None:
             player_switch()
         
-        await self._in_start_phase()
-        if in_start_phase is not None:
-            in_start_phase()
+        await self._in_turn_start_phase()
+        if in_turn_start_phase is not None:
+            in_turn_start_phase()
         
         return next_player
         
