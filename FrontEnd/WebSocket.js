@@ -116,7 +116,8 @@ event_method_dict={
     "first_turnplayer":"handleFirstTurnplayer",
     "game_start":"handleGameStart",
     "draw_initial_hand":"handleDrawInitialHand",
-    "swap_hand_cards":"handleSwapHandCards"
+    "swap_hand_cards":"handleSwapHandCards",
+    "card_info":"handleCardInfo"
 }
 
 function handleWsJson(data){

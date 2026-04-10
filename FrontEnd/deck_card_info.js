@@ -97,3 +97,7 @@ async function readCardInfo(){
     }
     sendJson(data)
 }
+
+function handleCardInfo(data){
+    receiveText(data.columns)
+}
