@@ -166,6 +166,7 @@ class Game():
         await self.phase.on_enter(self)
     
     async def start_next_turn(self,player_switch:Callable[[],None]=None,in_start_phase:Callable[[],None]=None)->int:
+        print("Log: start_next_turn")
         next_player=0
         if self.turn_player is self.player_1:
             self.turn_player=self.player_2
@@ -257,6 +258,7 @@ class Game():
             await self._end_start_phase()
         
     async def _end_start_phase(self):
+        print("Log: _end_start_phase")
         if self.phase is self.first_phase:
             await self.transition_to_next_phase()
     
@@ -269,7 +271,7 @@ class Game():
             if self.phase.next_phase is None:
                 print("Log: on_next_phase, Next Phase Is None")
                 log="まもなく、次のターンを始めます"
-                self.start_next_turn()
+                await self.start_next_turn()
             else:
                 print("Log: on_next_phase, Next Phase Is Not None")
                 self.phase=self.phase.next_phase()
