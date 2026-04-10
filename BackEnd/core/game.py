@@ -259,7 +259,7 @@ class Game():
         
     async def _end_start_phase(self):
         print("Log: _end_start_phase")
-        if self.phase is self.first_phase:
+        if isinstance(self.phase,self.first_phase):
             await self.transition_to_next_phase(self.turn_player.player_id)
     
     async def transition_to_next_phase(self,player_id:int):
