@@ -2,25 +2,25 @@ from db import crud
 from config.setting_database import CARD_TABLE
 
 allowed_fields={
-    "card_img":"card_img",
-    "card_color":"card_color",
-    "card_trigger":"card_trigger",
-    "card_power":"card_power",
-    "card_level":"card_level",
-    "card_cost":"card_cost",
-    "card_name":"card_name",
-    "card_side":"card_side",
-    "card_type":"card_type",
-    "card_soul":"card_soul",
-    "card_trait1":"card_trait1",
-    "card_trait2":"card_trait2",
-    "card_trait3":"card_trait3",
-    "card_effect_text":"card_effect_text",
-    "card_effect_data":"card_effect_data",
-    "card_is_wildcard":"card_is_wildcard",
-    "card_has_counter_icon":"card_has_counter_icon",
-    "card_has_clock_icon":"card_has_clock_icon",
-    "card_has_cx_combo":"card_has_cx_combo"
+    "card_img":"image_filename",
+    "card_color":"color",
+    "card_trigger":"trigger_type",
+    "card_power":"power",
+    "card_level":"level",
+    "card_cost":"cost",
+    "card_name":"name",
+    "card_side":"side",
+    "card_type":"type",
+    "card_soul":"soul",
+    "card_trait1":"trait1",
+    "card_trait2":"trait2",
+    "card_trait3":"trait3",
+    "card_effect_text":"effect_text",
+    "card_effect_data":"effect_data",
+    "card_is_wildcard":"is_wildcard",
+    "card_has_counter_icon":"has_counter_icon",
+    "card_has_clock_icon":"has_clock_icon",
+    "card_has_cx_combo":"has_cx_combo"
 }
 
 # Card
@@ -41,7 +41,8 @@ def read_card_info(card_id:int)->list[dict]:
 def read_card_field(card_id:int,field:str):
     if field not in allowed_fields:
         raise ValueError("invalid card field")
-    return crud.read_field_value(CARD_TABLE,card_id,field)
+    field_name=allowed_fields.get(field)
+    return crud.read_field_value(CARD_TABLE,card_id,field_name)
 
 def read_card_field_list(card_id:int,field_list:list[str])->dict:
     field_value={}
@@ -50,3 +51,4 @@ def read_card_field_list(card_id:int,field_list:list[str])->dict:
         field_value[field]=value
     print("Log: read_card_field_list")
     print(field_value)
+    return field_list
