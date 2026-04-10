@@ -66,6 +66,7 @@ class Player(GameObject):
         if self._is_swap_hand:
             return False
         if not hand_index_list:
+            self._is_swap_hand=True
             return True
         
         waiting_cards:list[Card]=[]
