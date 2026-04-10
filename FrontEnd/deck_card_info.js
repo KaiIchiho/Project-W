@@ -86,7 +86,7 @@ async function setDeck(){
 
 async function readCardInfo(){
     console.log("readCardInfo");
-    if(selected_card_id=-1){
+    if(selected_card_id===-1){
         return
     }
     let data={
