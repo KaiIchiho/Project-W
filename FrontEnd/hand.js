@@ -1,5 +1,5 @@
 let buttons=[];
-let hand_card_id=[];
+let selected_card_id;
 let selected_btn_index=[];
 
 // window.addEventListener("DOMContentLoaded", () => {
@@ -15,7 +15,6 @@ function addHand(card_id){
     const btn=document.createElement("button");
     btn.textContent=card_id;
     // buttons.set(btn,card_id);
-    hand_card_id.push(card_id)
     buttons.push(btn)
     btn.onclick=()=>{
         let index=buttons.indexOf(btn)
@@ -23,6 +22,12 @@ function addHand(card_id){
             let on_state=selectHandIndex(index);
             switchBtnState(btn,on_state);
             console.log(selected_btn_index)
+            if(on_state){
+                selected_card_id=card_id
+            }
+            else{
+                selected_card_id=-1
+            }
         }
     }
     hand.appendChild(btn);

@@ -89,10 +89,12 @@ async function readCardInfo(){
     if (0 == hand_card_id.length) {
         return;
     }
-    let card_id=hand_card_id[0];
+    if(selected_card_id=-1){
+        return
+    }
     let data={
         event:"card_info",
-        card_id:card_id,
+        card_id:selected_card_id,
         columns:["card_img", "card_color", "card_trigger", "card_power"]
     }
     sendJson(data)

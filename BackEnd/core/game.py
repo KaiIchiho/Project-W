@@ -173,13 +173,14 @@ class Game():
     
     async def start_next_turn(self,player_switch:Callable[[],None]=None,in_turn_start_phase:Callable[[],None]=None)->int:
         print("Log: start_next_turn")
-        next_player=0
-        if self.turn_player is self.player_1:
-            self.turn_player=self.player_2
-            next_player=2
-        elif self.turn_player is self.player_2:
-            self.turn_player=self.player_1
-            next_player=1
+        if not isinstance(self.phase,self.first_phase):
+            next_player=0
+            if self.turn_player is self.player_1:
+                self.turn_player=self.player_2
+                next_player=2
+            elif self.turn_player is self.player_2:
+                self.turn_player=self.player_1
+                next_player=1
         self.current_turn+=1
         await self.send_message(None,"Next Turn",self.turn_player.player_id)
         
