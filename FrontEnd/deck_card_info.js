@@ -99,5 +99,5 @@ async function readCardInfo(){
 }
 
 function handleCardInfo(data){
-    receiveText(data.columns)
+    console.log(data.columns)
 }
