@@ -1,4 +1,5 @@
 let buttons=[];
+let hand_card_id=[];
 let selected_btn_index=[];
 
 // window.addEventListener("DOMContentLoaded", () => {
@@ -6,7 +7,7 @@ let selected_btn_index=[];
 // });
 
 // function initButtonMap(){
-//     buttons=new Map();
+//     btn_card_id=new Map();
 // }
 
 function addHand(card_id){
@@ -14,6 +15,7 @@ function addHand(card_id){
     const btn=document.createElement("button");
     btn.textContent=card_id;
     // buttons.set(btn,card_id);
+    hand_card_id.push(card_id)
     buttons.push(btn)
     btn.onclick=()=>{
         let index=buttons.indexOf(btn)
@@ -33,6 +35,7 @@ function delHand(index){
         return;
     }
     buttons.splice(index,1);
+    hand_card_id.splice(index,1)
     const hand=document.getElementById("hand");
     hand.removeChild(btn);
     btn.remove();
@@ -88,6 +91,7 @@ function handleSwapHandCards(data){
     const hand_zone=document.getElementById("hand");
     hand_zone.innerHTML = "";
     buttons=[]
+    hand_card_id=[]
     for(const card of cards){
         console.log(card);
         addHand(card);

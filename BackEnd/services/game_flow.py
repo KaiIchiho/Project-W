@@ -22,6 +22,7 @@ outgame_handlers={
         event_type.SELECT_DECK:"handle_select_deck",
         event_type.STANDBY:"handle_standby",
         # event_type.:"handle_deck_list",
+        event_type.CARD_INFO:"handle_card_info",
         }
 
 async def handle_outgame_event(data:dict,user_id:int):

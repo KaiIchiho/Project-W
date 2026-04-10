@@ -1,6 +1,7 @@
-from services import game_flow,room
+from services import game_flow,room,deck_card_info
 from services.parse_model import parse_model
 from schemas.room import EnterRoomRequest,ExitRoomRequest
+from schemas.deck_card_info import CardInfoRequest,CardInfoResponse
 from schemas.game_flow import SelectDeckRequest,StandbyRequest
 
 async def handle_select_deck(data:dict,user_id:int):
@@ -43,5 +44,13 @@ async def handle_exit_room(data:dict,user_id:int):
     if game_flow.ws_send_data_to_room_handler:
         print(f"handle_exit_room ID: {res.room_id}")
         await game_flow.ws_send_data_to_room_handler(res.room_id,res)
+    if game_flow.ws_send_data_to_user_handler:
+        await game_flow.ws_send_data_to_user_handler(user_id,res)
+
+async def handle_card_info(data:dict,user_id):
+    req=parse_model(data,CardInfoRequest)
+    if not req:
+        raise ValueError("ExitRoomRequest Parse Failed")
+    res=deck_card_info.card_info(req)
     if game_flow.ws_send_data_to_user_handler:
         await game_flow.ws_send_data_to_user_handler(user_id,res)

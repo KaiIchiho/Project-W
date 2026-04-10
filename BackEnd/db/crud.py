@@ -59,9 +59,9 @@ def read_data_by_value(table:str,field:str,value)->list[dict]:
     if not re.match(r"^[a-zA-Z_][a-zA-Z0-9_]*$", field):
         raise ValueError("Invalid field name")
     sql=f"SELECT * FROM {table} WHERE {field} = %s"
-    print("====== DEBUG ======")
-    print("SQL:", sql)
-    print("PARAM:", value, type(value))
+    # print("====== DEBUG ======")
+    # print("SQL:", sql)
+    # print("PARAM:", value, type(value))
     result=read_data(sql,(value,))
     if not result:
         return []
@@ -80,3 +80,11 @@ def read_data_by_id(table:str,id:int)->dict:
 def check_is_id_exist_by_table(table:str,id)->bool:
     result=read_data_by_id(table,id)
     return _check_bool(result)
+
+def read_field_value(table:str,id,field:str):
+    sql=f"SELECT {field} FROM {table} WHERE id = %s"
+    result=read_data(sql,(id,))
+    print("====== DEBUG ======")
+    print(sql)
+    print(result)
+    return result

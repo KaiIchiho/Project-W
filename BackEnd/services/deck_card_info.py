@@ -1,5 +1,5 @@
-from schemas.deck_card_info import DeckInfo,DeckListRequest,DeckListResponse
-from db import deck_repo
+from schemas.deck_card_info import DeckInfo,DeckListRequest,DeckListResponse,CardInfoRequest,CardInfoResponse
+from db import deck_repo,card_repo
 
 def deck_list(req:DeckListRequest)->DeckListResponse:
     deck_list=deck_repo.read_all_deck()
@@ -15,3 +15,12 @@ def deck_list(req:DeckListRequest)->DeckListResponse:
         deck_info=DeckInfo(deck_id=deck_id,deck_name=deck_name)
         deck_info_list.append(deck_info)
     return DeckListResponse(deck_list=deck_info_list)
+
+def card_info(req:CardInfoRequest)->CardInfoResponse:
+    result=card_repo.read_card_field_list(req.card_id,req.columns)
+    res=CardInfoResponse(
+        success=True,
+        columns=result,
+        log=f"カード情報の取得が成功しました")
+    return res
+    

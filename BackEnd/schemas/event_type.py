@@ -9,6 +9,8 @@ FIRST_TURNPLAYER="first_turnplayer"
 DRAW_INITIAL_HAND="draw_initial_hand"
 SWAP_HAND_CARDS="swap_hand_cards"
 
+CARD_INFO="card_info"
+
 NEXT_PHASE="next_phase"
 NEXT_TURN="next_turn"
 
