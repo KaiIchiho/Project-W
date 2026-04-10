@@ -14,3 +14,4 @@ CARD_INFO="card_info"
 NEXT_PHASE="next_phase"
 NEXT_TURN="next_turn"
 
+ON_PHASE_CHANGED="on_phase_changed"

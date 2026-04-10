@@ -19,11 +19,13 @@ class Phase:
         cls.handlers=cls.handlers.copy()
     
     async def on_enter(self,game:"Game"):
-        await game.send_message(None,f"Enter {self.phase_name}",game.turn_player.player_id)
-        return self.phase_name
+        await game.phase_enter_response()
+        # await game.send_message(None,f"Enter {self.phase_name}",game.turn_player.player_id)
+        # return self.phase_name
     async def on_exit(self,game:"Game"):
-        await game.send_message(None,f"Exit {self.phase_name}",game.turn_player.player_id)
-        return self.phase_name
+        await game.phase_exit_response()
+        # await game.send_message(None,f"Exit {self.phase_name}",game.turn_player.player_id)
+        # return self.phase_name
     
     async def send_message_list(self,game:"Game",message_list:list[dict],default_player_id:int):
         for message in message_list:
@@ -49,49 +51,52 @@ class Phase:
             raise ValueError("Action Not Found")
         handler=getattr(self,handler_name)
         
-        messages=await handler(game,req,player_id)
+        await handler(game,req,player_id)
+        # messages=await handler(game,req,player_id)
         
         # await self.send_message_list(game,messages,player_id)
     
-    async def on_next_phase(
-        self,game:"Game",req,player_id:int
-    )->list[dict]:
-        pass
-        messages=[]
-        if not game.check_is_turn_player_command(player_id):
-            message=game.create_message("Not Your Turn",None)
-            messages.append(message)
-            return messages
+    async def on_next_phase(self,game:"Game",req,player_id:int):
+        game.transition_to_next_phase(player_id)
+    # )->list[dict]:
+        # pass
+        # messages=[]
+        # if not game.check_is_turn_player_command(player_id):
+        #     message=game.create_message("Not Your Turn",None)
+        #     messages.append(message)
+        #     return messages
         
-        print(f"Log: on_next_phase, Now Phase Is {self.phase_name}")
-        await game.phase.on_exit(game)
-        if self.next_phase is None:
-            print("Log: on_next_phase, Next Phase Is None")
-            messages=await self.on_next_turn(game,action,player_id)
-        else:
-            print("Log: on_next_phase, Next Phase Is Not None")
-            game.phase=self.next_phase()
-            await game.phase.on_enter(game)
-            message=game.create_message(None,f"Next Phase : {game.phase.phase_name}")
-            messages.append(message)
+        # print(f"Log: on_next_phase, Now Phase Is {self.phase_name}")
+        # await game.phase.on_exit(game)
+        # if self.next_phase is None:
+        #     print("Log: on_next_phase, Next Phase Is None")
+        #     messages=await self.on_next_turn(game,action,player_id)
+        # else:
+        #     print("Log: on_next_phase, Next Phase Is Not None")
+        #     game.phase=self.next_phase()
+        #     await game.phase.on_enter(game)
+        #     message=game.create_message(None,f"Next Phase : {game.phase.phase_name}")
+        #     messages.append(message)
         
-        return messages
+        # return messages
     
-    async def on_next_turn(self,game:"Game",action:dict,player_id:int)->list[dict]:
-        messages=[]
+    async def on_next_turn(self,game:"Game",req,player_id:int)->list[dict]:
+        # messages=[]
         if not game.check_is_turn_player_command(player_id):
-            message=game.create_message("Not Your Turn",None)
-            messages.append(message)
-            return messages
+            # message=game.create_message("Not Your Turn",None)
+            # messages.append(message)
+            # return messages
+            return
         
-        next_player=await game.start_next_turn()
+        await game.start_next_turn()
+        # next_player=await game.start_next_turn()
         
-        message1=game.create_message(None,f"Next Is Player {next_player}'s Turn")
-        messages.append(message1)
-        message2=game.create_message(None,"In Start Phase")
-        message2["player_id"]=game.turn_player.player_id
-        messages.append(message2)
-        return messages
+        # message1=game.create_message(None,f"Next Is Player {next_player}'s Turn")
+        # messages.append(message1)
+        # message2=game.create_message(None,"In Start Phase")
+        # message2["player_id"]=game.turn_player.player_id
+        # messages.append(message2)
+        # return messages
     
     def parse_action_model(self,action:dict,event:str):
         model=game_flow.event_req.get(event)

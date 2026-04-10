@@ -68,6 +68,10 @@ function handleDrawInitialHand(data){
     }
 }
 
+function handleOnPhaseChanged(data){
+    console.log(data.common)
+}
+
 function next_phase(){
     if(ws.readyState!==WebSocket.OPEN){
         console.error("WebSocket not open:",ws.readyState);

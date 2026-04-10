@@ -117,7 +117,8 @@ event_method_dict={
     "game_start":"handleGameStart",
     "draw_initial_hand":"handleDrawInitialHand",
     "swap_hand_cards":"handleSwapHandCards",
-    "card_info":"handleCardInfo"
+    "card_info":"handleCardInfo",
+    "on_phase_changed":"handleOnPhaseChanged"
 }
 
 function handleWsJson(data){
