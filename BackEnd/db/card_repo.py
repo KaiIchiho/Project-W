@@ -42,7 +42,12 @@ def read_card_field(card_id:int,field:str):
     if field not in allowed_fields:
         raise ValueError("invalid card field")
     field_name=allowed_fields.get(field)
-    return crud.read_field_value(CARD_TABLE,card_id,field_name)
+    result=None
+    result_list=crud.read_field_value(CARD_TABLE,card_id,field_name)
+    if result_list:
+        result_dict=result_list[0]
+        result=result_dict.get(field_name)
+    return result
 
 def read_card_field_list(card_id:int,field_list:list[str])->dict:
     field_value={}
