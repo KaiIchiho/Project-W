@@ -20,13 +20,13 @@ class AttackPhase(Phase):
     async def on_exit(self, game):
         await super().on_exit(game)
     
-    async def handle_action(self, game, action,player_id):
-        await super().handle_action(game, action,player_id)
+    # async def handle_action(self, game, action,player_id):
+    #     await super().handle_action(game, action,player_id)
         
-        if not game.attack_step:
-            return
-        if game.attack_step.is_complete==True:
-            game.attack_step.on_next_step()
+    #     if not game.attack_step:
+    #         return
+    #     if game.attack_step.is_complete==True:
+    #         game.attack_step.on_next_step()
         
     async def on_start_attack(self,game:"Game",action,player_id):
         #if game.attack_step:
