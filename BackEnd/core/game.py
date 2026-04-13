@@ -201,7 +201,7 @@ class Game():
         return result_1,result_2
     
     async def all_players_deck_shuffle(self):
-        if self.check_is_full_players():
+        if not self.check_is_full_players():
             return
         print("Log: all_players_deck_shuffle Start")
         await self.player_deck_shuffle(self.player_1.player_id)
