@@ -203,8 +203,10 @@ class Game():
     async def all_players_deck_shuffle(self):
         if self.check_is_full_players():
             return
+        print("Log: all_players_deck_shuffle Start")
         await self.player_deck_shuffle(self.player_1.player_id)
         await self.player_deck_shuffle(self.player_2.player_id)
+        print("Log: all_players_deck_shuffle End")
     
     async def player_deck_shuffle(self,player_id:int):
         player_identity=self.check_player_identity_by_id(player_id)
@@ -224,7 +226,8 @@ class Game():
                 log=f"{player.name}のシャッフルが失敗しました"
         else:
             log=f"{player_id}のプレイヤーはゲーム内に存在しません"
-            
+        
+        print(log)
         common=self.get_common_data(result,log,player_id)
         res=game_flow.ShuffleResponse(common=common)
         await self.send_data_to_room(res)
