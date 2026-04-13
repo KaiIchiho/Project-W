@@ -7,10 +7,10 @@ if TYPE_CHECKING:
     from core.game import Game
 
 class AttackPhase(Phase):
+    phase_name="Attack Phase"
+    next_phase=EndPhase
     def __init__(self):
         super().__init__()
-        self.phase_name="Attack Phase"
-        self.next_phase=EndPhase
         self.handlers["start_attack"]="on_start_attack"
         self.handlers["encore"]="on_encore"
         

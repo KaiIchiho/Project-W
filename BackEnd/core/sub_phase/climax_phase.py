@@ -2,10 +2,10 @@ from core.sub_phase.phase_base import Phase
 from core.sub_phase.attack_phase import AttackPhase
 
 class ClimaxPhase(Phase):
+    phase_name="Climax Phase"
+    next_phase=AttackPhase
     def __init__(self):
         super().__init__()
-        self.phase_name="Climax Phase"
-        self.next_phase=AttackPhase
         
     async def on_enter(self, game):
         await super().on_enter(game)

@@ -5,10 +5,10 @@ if TYPE_CHECKING:
     from core.game import Game
 
 class StandbyPhase(Phase):
+    phase_name="Standby Phase"
+    next_phase=None
     def __init__(self):
         super().__init__()
-        self.phase_name="Standby Phase"
-        self.next_phase=None
         self.handlers={
             event_type.SWAP_HAND_CARDS:"on_swap_hand_cards"
         }

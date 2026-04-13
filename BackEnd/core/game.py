@@ -319,7 +319,7 @@ class Game():
         else:
             _is_next_phase=True
             print("Log: on_next_phase, Next Phase Is Not None")
-            log=f"{self.turn_player.name}の{self.phase.next_phase().phase_name}フェーズに遷移します"
+            log=f"{self.turn_player.name}の{self.phase.next_phase.phase_name}フェーズに遷移します"
         
         common=self.get_common_data(
             True,
