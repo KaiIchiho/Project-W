@@ -59,7 +59,7 @@ class Phase:
     async def on_next_phase(self,game:"Game",req:game_flow.NextPhaseRequest,player_id:int):
         if not game.check_is_turn_player_command(player_id):
             return
-        game.transition_to_next_phase(player_id)
+        await game.transition_to_next_phase(player_id)
     # )->list[dict]:
         # pass
         # messages=[]
