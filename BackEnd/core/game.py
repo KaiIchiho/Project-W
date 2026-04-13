@@ -185,7 +185,6 @@ class Game():
             elif self.turn_player is self.player_2:
                 self.turn_player=self.player_1
         self.current_turn+=1
-        # await self.send_message(None,"Next Turn",self.turn_player.player_id)
         
         if on_player_switch is not None:
             on_player_switch()
@@ -320,7 +319,7 @@ class Game():
         else:
             _is_next_phase=True
             print("Log: on_next_phase, Next Phase Is Not None")
-            log=f"{self.turn_player.name}の{self.phase.next_phase.phase_name}フェーズに遷移します"
+            log=f"{self.turn_player.name}の{self.phase.next_phase().phase_name}フェーズに遷移します"
         
         common=self.get_common_data(
             True,
