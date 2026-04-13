@@ -34,6 +34,9 @@ class SwapHandCardsResponse(WSCommonResponseBase):
 class OnPhaseChangedResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.ON_PHASE_CHANGED
 
+class ShuffleResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.SHUFFLE
+
 event_req={
     event_type.SWAP_HAND_CARDS:SwapHandCardsRequest
 }

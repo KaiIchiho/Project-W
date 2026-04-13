@@ -200,6 +200,35 @@ class Game():
         result_2=self.player_2.init_playmat()
         return result_1,result_2
     
+    async def all_players_deck_shuffle(self):
+        if self.check_is_full_players():
+            return
+        await self.player_deck_shuffle(self.player_1.player_id)
+        await self.player_deck_shuffle(self.player_2.player_id)
+    
+    async def player_deck_shuffle(self,player_id:int):
+        player_identity=self.check_player_identity_by_id(player_id)
+        result=False
+        log=""
+        player=None
+        if player_identity==1 and self.player_1:
+            player=self.player_1
+        elif player_identity==2 and self.player_2:
+            player=self.player_2
+        
+        if player:
+            result=player.deck_shuffle()
+            if result:
+                log=f"{player.name}のシャッフルが成功しました"
+            else:
+                log=f"{player.name}のシャッフルが失敗しました"
+        else:
+            log=f"{player_id}のプレイヤーはゲーム内に存在しません"
+            
+        common=self.get_common_data(result,log,player_id)
+        res=game_flow.ShuffleResponse(common=common)
+        await self.send_data_to_room(res)
+    
     async def handle_action(self,action:dict,event:str,player_id:int):
         if self.check_is_full_players()==False:
             await self.send_message("Game Is Not Players Full !",None,None)

@@ -30,14 +30,21 @@ class Player(GameObject):
         else:
             return True
     
-    def init_playmat(self):
+    def init_playmat(self)->bool:
         self.playmat=Playmat(self.ori_owner_id)
         deck=Deck(self.ori_owner_id)
         if not deck.init_deck_by_deck_id(self._deck_id):
             return False
         self.playmat.set_init_deck(deck)
-        self.playmat.deck_shuffle()
+        # self.playmat.deck_shuffle()
         return True
+    
+    def deck_shuffle(self)->bool:
+        if self.playmat:
+            self.playmat.deck_shuffle()
+            return True
+        else:
+            return False
     
     def draw(self):
         print(f"{self.name} Draw")

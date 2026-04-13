@@ -11,6 +11,8 @@ SWAP_HAND_CARDS="swap_hand_cards"
 
 CARD_INFO="card_info"
 
+SHUFFLE="shuffle"
+
 NEXT_PHASE="next_phase"
 NEXT_TURN="next_turn"
 
