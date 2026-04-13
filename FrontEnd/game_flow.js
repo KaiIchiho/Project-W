@@ -76,14 +76,21 @@ function handleShuffle(data){
     console.log(data.common)
 }
 
-function next_phase(){
-    if(ws.readyState!==WebSocket.OPEN){
-        console.error("WebSocket not open:",ws.readyState);
-        return
+function nextPhase(){
+    // if(ws.readyState!==WebSocket.OPEN){
+    //     console.error("WebSocket not open:",ws.readyState);
+    //     return
+    // }
+    // console.log("Command Player ID: ",user_id)
+    // ws.send(JSON.stringify({
+    //     type:"action",
+    //     action:"next_phase"
+    // }));
+    console.log("nextPhase");
+    data={
+        client_common:{
+            event:"next_phase"
+        }
     }
-    console.log("Command Player ID: ",user_id)
-    ws.send(JSON.stringify({
-        type:"action",
-        action:"next_phase"
-    }));
+    sendJson(data);
 }

@@ -56,7 +56,9 @@ class Phase:
         
         # await self.send_message_list(game,messages,player_id)
     
-    async def on_next_phase(self,game:"Game",req,player_id:int):
+    async def on_next_phase(self,game:"Game",req:game_flow.NextPhaseRequest,player_id:int):
+        if not game.check_is_turn_player_command(player_id):
+            return
         game.transition_to_next_phase(player_id)
     # )->list[dict]:
         # pass
@@ -80,7 +82,7 @@ class Phase:
         
         # return messages
     
-    async def on_next_turn(self,game:"Game",req,player_id:int)->list[dict]:
+    async def on_next_turn(self,game:"Game",req:game_flow.NextTurnRequest,player_id:int)->list[dict]:
         # messages=[]
         if not game.check_is_turn_player_command(player_id):
             # message=game.create_message("Not Your Turn",None)
@@ -88,7 +90,7 @@ class Phase:
             # return messages
             return
         
-        await game.start_next_turn()
+        await game.start_next_turn(player_id)
         # next_player=await game.start_next_turn()
         
         # message1=game.create_message(None,f"Next Is Player {next_player}'s Turn")

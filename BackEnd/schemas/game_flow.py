@@ -37,6 +37,18 @@ class OnPhaseChangedResponse(WSCommonResponseBase):
 class ShuffleResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.SHUFFLE
 
+class NextPhaseRequest(WSCommonRequestBase):
+    pass
+class NextPhaseResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.NEXT_PHASE
+
+class NextTurnRequest(WSCommonRequestBase):
+    pass
+class NextTurnResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.NEXT_TURN
+
 event_req={
-    event_type.SWAP_HAND_CARDS:SwapHandCardsRequest
+    event_type.SWAP_HAND_CARDS:SwapHandCardsRequest,
+    event_type.NEXT_PHASE:NextPhaseRequest,
+    event_type.NEXT_TURN:NextTurnRequest,
 }
