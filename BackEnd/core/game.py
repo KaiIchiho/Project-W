@@ -189,14 +189,16 @@ class Game():
         
         if on_player_switch is not None:
             on_player_switch()
-        await self._in_turn_start_phase()
-        if in_turn_start_phase is not None:
-            in_turn_start_phase()
-        
+            
         common=self.get_common_data(
             True,f"次の{self.turn_player.name}のターンが始まります",player_id)
         res=game_flow.NextTurnResponse(common=common)
         await self.send_data_to_room(res)
+        
+        await self._in_turn_start_phase()
+        if in_turn_start_phase is not None:
+            in_turn_start_phase()
+        
         
     def init_players_playmat(self)->bool:
         if not self.check_is_full_players():
