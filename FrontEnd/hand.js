@@ -35,7 +35,7 @@ function addHand(card_id){
 }
 
 function delHand(index){
-    btn=buttons[index];
+    let btn=buttons[index];
     if(btn===undefined){
         console.error("button index[",index,"] not found");
         return;
@@ -69,7 +69,7 @@ function selectHandIndex(index){
 
 function swapSelectedHandCards(){
     console.log("swapSelectedHandCards");
-    data={
+    let data={
         client_common:{
             event:"swap_hand_cards"
         },

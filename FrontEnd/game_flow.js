@@ -87,7 +87,7 @@ function nextPhase(){
     //     action:"next_phase"
     // }));
     console.log("nextPhase");
-    data={
+    let data={
         client_common:{
             event:"next_phase"
         }
