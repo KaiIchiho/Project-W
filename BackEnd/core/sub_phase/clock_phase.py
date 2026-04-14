@@ -11,7 +11,7 @@ class ClockPhase(Phase):
     next_phase=MainPhase
     def __init__(self):
         super().__init__()
-        self.handle_action[event_type.CLOCK_PHASE_CLOCK]="start_clock"
+        self.handlers[event_type.CLOCK_PHASE_CLOCK]="start_clock"
         
     async def on_enter(self, game):
         await super().on_enter(game)
