@@ -1,5 +1,5 @@
 let buttons=[];
-let selected_card_id;
+let selected_card_id=-1;
 let selected_btn_index=[];
 
 // window.addEventListener("DOMContentLoaded", () => {
@@ -25,7 +25,9 @@ function updateHandByCommon(common){
     const hand_zone=document.getElementById("hand");
     hand_zone.innerHTML = "";
     buttons=[]
-    hand_card_id=[]
+    selected_card_id=-1
+    selected_btn_index=[]
+    // hand_card_id=[]
     for(const card of cards){
         console.log(card);
         addHand(card);
@@ -98,5 +100,17 @@ function swapSelectedHandCards(){
         "hand_index":selected_btn_index,
     }
     sendJson(data);
-    selected_btn_index=[]
+    // selected_btn_index=[]
+}
+
+function clockSelectedHand(){
+    console.log("clockSelectedHand")
+    if (selected_btn_index.length === 0){return}
+    let data={
+        client_common:{
+            event:"clock_phase_clock"
+        },
+        "clocked_hand_card":selected_btn_index[0],
+    }
+    sendJson(data);
 }

@@ -74,16 +74,12 @@ function handleDrawPhaseDraw(data){
     updateHandByCommon(common);
 }
 
+function handleClockPhaseClock(data){
+    let common=data.common;
+    updateHandByCommon(common);
+}
+
 function nextPhase(){
-    // if(ws.readyState!==WebSocket.OPEN){
-    //     console.error("WebSocket not open:",ws.readyState);
-    //     return
-    // }
-    // console.log("Command Player ID: ",user_id)
-    // ws.send(JSON.stringify({
-    //     type:"action",
-    //     action:"next_phase"
-    // }));
     console.log("nextPhase");
     let data={
         client_common:{
