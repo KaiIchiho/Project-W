@@ -76,6 +76,10 @@ function handleShuffle(data){
     console.log(data.common)
 }
 
+function handleDrawPhaseDraw(data){
+    console.log(data.common)
+}
+
 function nextPhase(){
     // if(ws.readyState!==WebSocket.OPEN){
     //     console.error("WebSocket not open:",ws.readyState);

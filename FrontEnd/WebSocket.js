@@ -120,7 +120,8 @@ event_method_dict={
     "swap_hand_cards":"handleSwapHandCards",
     "card_info":"handleCardInfo",
     "on_phase_changed":"handleOnPhaseChanged",
-    "shuffle":"handleShuffle"
+    "shuffle":"handleShuffle",
+    "draw_phase_draw":"handleDrawPhaseDraw"
 }
 
 function handleWsJson(data){
