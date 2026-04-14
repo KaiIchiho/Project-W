@@ -79,6 +79,11 @@ function handleClockPhaseClock(data){
     updateHandByCommon(common);
 }
 
+function handleClockPhaseDraw(data){
+    let common=data.common;
+    updateHandByCommon(common);
+}
+
 function nextPhase(){
     console.log("nextPhase");
     let data={

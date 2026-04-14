@@ -122,7 +122,8 @@ event_method_dict={
     "on_phase_changed":"handleOnPhaseChanged",
     "shuffle":"handleShuffle",
     "draw_phase_draw":"handleDrawPhaseDraw",
-    "clock_phase_clock":"handleClockPhaseClock"
+    "clock_phase_clock":"handleClockPhaseClock",
+    "clock_phase_draw":"handleClockPhaseDraw"
 }
 
 function handleWsJson(data){
