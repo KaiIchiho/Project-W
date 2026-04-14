@@ -48,15 +48,9 @@ class Player(GameObject):
     
     def draw(self)->int:
         print(f"{self.name} Draw")
-        #for i in range(len(self.hand)):
-        #    if self.hand[i] is None:
-        #        self.hand[i]=self.playmat.deck.draw()
         draw_card=self.playmat.deck.draw()
         self.hand.append(draw_card)
         return draw_card.card_id
-        
-    #def play_command(self):
-    #    print(f"{self.name} Play Command")
         
     def init_hand(self)->bool:
         now_hand_lenth=len(self.hand)
@@ -65,11 +59,6 @@ class Player(GameObject):
         for i in range(now_hand_lenth,5):
             self.draw()
         return True
-                
-    #def __organize_hand(self):
-    #    cards=[card for card in self.hand if card is not None]
-    #    nones=[None]*(len(self.hand)-len(cards))
-    #    self.hand=cards+nones
         
     def swap_hand_cards(self,hand_index_list:list[int])->bool:
         if self._is_swap_hand:
@@ -107,3 +96,12 @@ class Player(GameObject):
         
     def _set_cards_to_waiting_room(self,cards:list[Card]):
         self.playmat.set_cards_to_waiting_room(cards)
+    
+    def remove_hand(self,index:int)->Card:
+        card=None
+        if 0 <= index < len(self.hand):
+            card=self.hand.pop(index)
+        return card
+    
+    def set_card_to_clock(self,card:Card)->bool:
+        return self.playmat.set_card_to_clock(card)

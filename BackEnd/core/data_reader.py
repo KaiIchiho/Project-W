@@ -213,7 +213,8 @@ class DataReader():
     @staticmethod
     def get_add_card_data(card_id:int)->object.AddCardData:
         card_img=card_repo.read_card_field(card_id,"card_img")
-        
+        if card_img is None:
+            card_img=""
         return object.build_object_data(
             "add_card",
             card_id=card_id,

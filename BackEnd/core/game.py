@@ -292,29 +292,29 @@ class Game():
             player.draw()
         return True
     
-    async def draw_drap_phase_hand(self):
-        success=False
-        log=""
-        player_id=-1
-        player=self.turn_player
-        if player:
-            player_id=player.player_id
-            card_id=player.draw()
-            add_card_data=DataReader.get_add_card_data(card_id)
-            success=True
-            log=f"{player.name}はドローしました"
-        else:
-            log=f"{player.name}はドローできませんでした"
+    # async def draw_drap_phase_hand(self):
+    #     success=False
+    #     log=""
+    #     player_id=-1
+    #     player=self.turn_player
+    #     if player:
+    #         player_id=player.player_id
+    #         card_id=player.draw()
+    #         add_card_data=DataReader.get_add_card_data(card_id)
+    #         success=True
+    #         log=f"{player.name}はドローしました"
+    #     else:
+    #         log=f"{player.name}はドローできませんでした"
         
-        common=DataReader.get_common_data(
-            self,success,log,player_id
-        )
-        res_self=game_flow.DrawPhaseDrawSelfResponse(
-            common=common,add_hand_card=add_card_data)
-        res_other=game_flow.DrawPhaseDrawOtherResponse(
-            common=common)
-        await self.send_data_to_player(player_id,res_self)
-        await self.send_data_to_room_except_target(player_id,res_other)
+    #     common=DataReader.get_common_data(
+    #         self,success,log,player_id
+    #     )
+    #     res_self=game_flow.DrawPhaseDrawSelfResponse(
+    #         common=common,add_hand_card=add_card_data)
+    #     res_other=game_flow.DrawPhaseDrawOtherResponse(
+    #         common=common)
+    #     await self.send_data_to_player(player_id,res_self)
+    #     await self.send_data_to_room_except_target(player_id,res_other)
     
     async def swap_hand_cards(self,player_id:int,hand_index_list:list[int]):
         success=False
@@ -345,7 +345,18 @@ class Game():
         
         if identity==2 and success:
             await self._end_start_phase()
-        
+    
+    def _set_hand_to_clock(self,player_id:int,hand_index:int):
+        card_id=-1
+        player=self.check_command_player(player_id)
+        if not player:
+            return card_id
+        card=player.remove_hand(hand_index)
+        if card:
+            if_clock_full=player.set_card_to_clock(card)
+            card_id=card.card_id
+        return card_id
+    
     async def _end_start_phase(self):
         print("Log: _end_start_phase")
         if isinstance(self.phase,self.first_phase):
@@ -457,7 +468,17 @@ class Game():
         else:
             print(f"Check is Action Player False")
             return False
-        
+    
+    def get_other_player_id(self)->int:
+        if not self.check_is_full_players():
+            return -1
+        if not self.turn_player:
+            return -1
+        elif self.turn_player is self.player_1:
+            return self.player_2.player_id
+        elif self.turn_player is self.player_2:
+            return self.player_1.player_id
+    
     async def forced_game_end(self):
         self._is_in_progress=False
         

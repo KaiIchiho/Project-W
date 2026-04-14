@@ -54,3 +54,20 @@ class Playmat(GameObject):
             
     def set_cards_to_waiting_room(self,cards:list[Card]):
         self.waiting_room.extend(cards)
+        
+    def set_card_to_clock(self,card:Card)->bool:
+        counter=0
+        for i in range(len(self.clock)):
+            if self.clock[i] is None:
+                self.clock[i]=card
+                counter+=1
+                break
+            else:
+                counter+=1
+        if counter==len(self.clock):
+            return True
+        else:
+            return False
+    
+    def _level_up(self):
+        pass
