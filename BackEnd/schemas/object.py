@@ -17,7 +17,7 @@ class UserData(ObjectBaseData):
 
 @register("deck",registry)
 class DeckData(ObjectBaseData):
-    type:Literal["deck"]="deck"
+    type:Literal["deck"]=Field(default="deck", exclude=True)
     card_num:int=-1
     cards:list[int]=Field(default_factory=list)
 
