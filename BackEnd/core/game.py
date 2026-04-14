@@ -168,6 +168,20 @@ class Game():
         if self.ws_send_data_to_room_except_target:
             await self.ws_send_data_to_room_except_target(self.room_id,player_id,data)
     
+    async def send_data_to_self_other(self,self_player_id:int,self_data:BaseModel,other_data:BaseModel):
+        if not self.check_is_full_players():
+            return
+        self_identity=self.check_player_identity_by_id(self_player_id)
+        other_player_id=-1
+        if self_identity==-1:
+            return
+        elif self_identity==1:
+            other_player_id=self.player_2.player_id
+        elif self_identity==2:
+            other_player_id=self.player_1.player_id
+        await self.send_data_to_room_except_target(other_player_id,self_data)
+        await self.send_data_to_player(other_player_id,other_data)
+    
     async def _in_start_phase(self):
         self.phase=self.first_phase()
         await self.phase.on_enter(self)
@@ -205,8 +219,7 @@ class Game():
         await self._in_turn_start_phase()
         if in_turn_start_phase is not None:
             in_turn_start_phase()
-        
-        
+    
     def init_players_playmat(self)->bool:
         if not self.check_is_full_players():
             return False
@@ -291,6 +304,15 @@ class Game():
         for i in range(setting_ingame.INITIAL_HAND):
             player.draw()
         return True
+    
+    def player_draw(self,player_id:int)->int:
+        identity=self.check_player_identity_by_id(player_id)
+        card_id=-1
+        if identity==1:
+            card_id=self.player_1.draw()
+        elif identity==2:
+            card_id=self.player_2.draw()
+        return card_id
     
     def turn_player_draw(self)->int:
         player=self.turn_player
@@ -451,6 +473,14 @@ class Game():
         else:
             print(f"Check is Action Player False")
             return False
+    
+    def get_player_name_by_id(self,player_id:int)->str:
+        if self.player_1 and self.player_1.player_id==player_id:
+            return self.player_1.name
+        elif self.player_2 and self.player_2.player_id==player_id:
+            return self.player_2.name
+        else:
+            return ""
     
     def get_turn_player_id(self)->int:
         if self.turn_player:

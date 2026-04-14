@@ -24,7 +24,7 @@ class DrawPhase(Phase):
         log=""
         card_id=game.turn_player_draw()
         player_id=game.get_turn_player_id()
-        other_player_id=game.get_other_player_id()
+        # other_player_id=game.get_other_player_id()
         player_name=game.get_turn_player_name()
         if card_id!=-1:
             success=True
@@ -40,5 +40,6 @@ class DrawPhase(Phase):
             common=common,add_hand_card=add_card_data)
         res_other=game_flow.DrawPhaseDrawOtherResponse(
             common=common)
-        await game.send_data_to_room_except_target(other_player_id,res_self)
-        await game.send_data_to_player(other_player_id,res_other)
+        # await game.send_data_to_room_except_target(other_player_id,res_self)
+        # await game.send_data_to_player(other_player_id,res_other)
+        await game.send_data_to_self_other(player_id,res_self,res_other)

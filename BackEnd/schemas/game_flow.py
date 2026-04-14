@@ -61,6 +61,12 @@ class ClockPhaseClockSelfResponse(WSCommonResponseBase):
 class ClockPhaseClockOtherResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.CLOCK_PHASE_CLOCK
 
+class ClockPhaseDrowSelfResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.CLOCK_PHASE_DRAW
+    add_two_hand_cards:list[int]=[-1,-1]
+class ClockPhaseDrowOtherResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.CLOCK_PHASE_DRAW
+
 event_req={
     event_type.SWAP_HAND_CARDS:SwapHandCardsRequest,
     event_type.NEXT_PHASE:NextPhaseRequest,
