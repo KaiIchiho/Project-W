@@ -51,21 +51,13 @@ function handleFirstTurnplayer(data){
 function handleDrawInitialHand(data){
     // console.log(data);
     let common=data.common;
-    let player1=common.player_1;
-    let player2=common.player_2;
-    let player;
-    if(player1.user_id==user_id){
-        player=player1;
-    }
-    else if(player2.user_id==user_id){
-        player=player2;
-    }
-    let hand=player.hand;
-    let cards=hand.cards;
-    for(const card of cards){
-        console.log(card);
-        addHand(card);
-    }
+    updateHandByCommon(common);
+}
+
+function handleSwapHandCards(data){
+    console.log("New Hand");
+    let common=data.common;
+    updateHandByCommon(common)
 }
 
 function handleOnPhaseChanged(data){
@@ -78,6 +70,8 @@ function handleShuffle(data){
 
 function handleDrawPhaseDraw(data){
     console.log(data.common)
+    let common=data.common;
+    updateHandByCommon(common);
 }
 
 function nextPhase(){
