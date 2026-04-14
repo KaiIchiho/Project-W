@@ -22,21 +22,20 @@ class DrawPhase(Phase):
     async def draw_drap_phase_hand(self,game:"Game"):
         success=False
         log=""
-        player_id=-1
-        player=game.turn_player
-        if player:
-            player_id=player.player_id
-            card_id=player.draw()
-            add_card_data=DataReader.get_add_card_data(card_id)
-            success=True
-            log=f"{player.name}はドローしました"
-        else:
-            log=f"{player.name}はドローできませんでした"
-        
+        card_id=game.turn_player_draw()
+        player_id=game.get_turn_player_id()
         other_player_id=game.get_other_player_id()
+        player_name=game.get_turn_player_name()
+        if card_id!=-1:
+            success=True
+            log=f"{player_name}はドローしました"
+        else:
+            log=f"{player_name}はドローできませんでした"
+        
         common=DataReader.get_common_data(
             game,success,log,player_id
         )
+        add_card_data=DataReader.get_add_card_data(card_id)
         res_self=game_flow.DrawPhaseDrawSelfResponse(
             common=common,add_hand_card=add_card_data)
         res_other=game_flow.DrawPhaseDrawOtherResponse(

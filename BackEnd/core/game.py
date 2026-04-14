@@ -292,29 +292,12 @@ class Game():
             player.draw()
         return True
     
-    # async def draw_drap_phase_hand(self):
-    #     success=False
-    #     log=""
-    #     player_id=-1
-    #     player=self.turn_player
-    #     if player:
-    #         player_id=player.player_id
-    #         card_id=player.draw()
-    #         add_card_data=DataReader.get_add_card_data(card_id)
-    #         success=True
-    #         log=f"{player.name}はドローしました"
-    #     else:
-    #         log=f"{player.name}はドローできませんでした"
-        
-    #     common=DataReader.get_common_data(
-    #         self,success,log,player_id
-    #     )
-    #     res_self=game_flow.DrawPhaseDrawSelfResponse(
-    #         common=common,add_hand_card=add_card_data)
-    #     res_other=game_flow.DrawPhaseDrawOtherResponse(
-    #         common=common)
-    #     await self.send_data_to_player(player_id,res_self)
-    #     await self.send_data_to_room_except_target(player_id,res_other)
+    def turn_player_draw(self)->int:
+        player=self.turn_player
+        card_id=-1
+        if player:
+            card_id=player.draw()
+        return card_id
     
     async def swap_hand_cards(self,player_id:int,hand_index_list:list[int]):
         success=False
@@ -469,6 +452,18 @@ class Game():
             print(f"Check is Action Player False")
             return False
     
+    def get_turn_player_id(self)->int:
+        if self.turn_player:
+            return self.turn_player.player_id
+        else:
+            return -1
+    
+    def get_turn_player_name(self)->str:
+        if self.turn_player:
+            return self.turn_player.name
+        else:
+            return ""
+        
     def get_other_player_id(self)->int:
         if not self.check_is_full_players():
             return -1
@@ -478,6 +473,16 @@ class Game():
             return self.player_2.player_id
         elif self.turn_player is self.player_2:
             return self.player_1.player_id
+    
+    def get_other_player_name(self)->str:
+        if not self.check_is_full_players():
+            return ""
+        if not self.turn_player:
+            return ""
+        elif self.turn_player is self.player_1:
+            return self.player_2.name
+        elif self.turn_player is self.player_2:
+            return self.player_1.name
     
     async def forced_game_end(self):
         self._is_in_progress=False
