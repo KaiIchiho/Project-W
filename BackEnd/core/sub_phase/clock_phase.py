@@ -26,11 +26,12 @@ class ClockPhase(Phase):
         card_id=game._set_hand_to_clock(player_id,req.clocked_hand_card)
         success=False
         log=""
+        player_name=game.get_player_name_by_id(player_id)
         if card_id!=-1:
             success=True
-            log=f"{card_id}をクロック置き場に置きました"
+            log=f"{player_name}は1枚の手札をクロック置き場に置きました"
         else:
-            log=f"{card_id}をクロック置き場に置きませんでした"
+            log=f"{player_name}はクロック置き場に手札を置けませんでした"
         
         common=DataReader.get_common_data(game,success,log,player_id)
         res_self=game_flow.ClockPhaseClockSelfResponse(
