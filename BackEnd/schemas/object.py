@@ -10,7 +10,8 @@ class ObjectBaseData(BaseModel):
 
 @register("user",registry)
 class UserData(ObjectBaseData):
-    type:Literal["user"]="user"
+    # type:Literal["user"]="user"
+    type:Literal["user"]=Field(default="user", exclude=True)
     user_id:int=-1
     user_is_player:bool=False
 
@@ -22,14 +23,14 @@ class DeckData(ObjectBaseData):
 
 @register("stage",registry)
 class StageData(ObjectBaseData):
-    type:Literal["stage"]="stage"
+    type:Literal["stage"]=Field(default="stage", exclude=True)
     card_num:int=-1
     cards:list[int]=Field(default_factory=list)
     markers:list[list[int]]=Field(default_factory=list)
 
 @register("waiting_room",registry)
 class WaitingRoomData(ObjectBaseData):
-    type:Literal["waiting_room"]="waiting_room"
+    type:Literal["waiting_room"]=Field(default="waiting_room", exclude=True)
     card_num:int=-1
     char_card_num:int=-1
     event_card_num:int=-1
@@ -38,27 +39,27 @@ class WaitingRoomData(ObjectBaseData):
 
 @register("hand",registry)
 class HandData(ObjectBaseData):
-    type:Literal["hand"]="hand"
+    type:Literal["hand"]=Field(default="hand", exclude=True)
     card_num:int=-1
     cards:list[int]=Field(default_factory=list)
 
 @register("clock",registry)
 class ClockData(ObjectBaseData):
-    type:Literal["clock"]="clock"
+    type:Literal["clock"]=Field(default="clock", exclude=True)
     card_num:int=-1
     cards:list[int]=Field(default_factory=list)
     card_colors:list[str]=Field(default_factory=list)
 
 @register("level",registry)
 class LevelData(ObjectBaseData):
-    type:Literal["level"]="level"
+    type:Literal["level"]=Field(default="level", exclude=True)
     card_num:int=-1
     cards:list[int]=Field(default_factory=list)
     card_colors:list[str]=Field(default_factory=list)
 
 @register("stock",registry)
 class StockData(ObjectBaseData):
-    type:Literal["stock"]="stock"
+    type:Literal["stock"]=Field(default="stock", exclude=True)
     card_num:int=-1
     cx_card_num:int=-1
     cards:list[int]=Field(default_factory=list)
@@ -68,18 +69,18 @@ class StockData(ObjectBaseData):
 
 @register("cx",registry)
 class CXData(ObjectBaseData):
-    type:Literal["cx"]="cx"
+    type:Literal["cx"]=Field(default="cx", exclude=True)
     card_id:int=-1
 
 @register("memory",registry)
 class MemoryData(ObjectBaseData):
-    type:Literal["memory"]="memory"
+    type:Literal["memory"]=Field(default="memory", exclude=True)
     card_num:int=-1
     cards:list[int]=Field(default_factory=list)
 
 @register("player",registry)
 class PlayerData(ObjectBaseData):
-    type:Literal["player"]="player"
+    type:Literal["player"]=Field(default="player", exclude=True)
     user_id:int=-1
     deck:DeckData
     stage:StageData
@@ -93,7 +94,7 @@ class PlayerData(ObjectBaseData):
  
 @register("add_card",registry)
 class AddCardData(ObjectBaseData):
-     type:Literal["add_card"]="add_card"
+     type:Literal["add_card"]=Field(default="add_card", exclude=True)
      card_id:int=-1
      card_img:str=""
     
