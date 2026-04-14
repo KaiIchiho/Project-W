@@ -17,3 +17,5 @@ NEXT_PHASE="next_phase"
 NEXT_TURN="next_turn"
 
 ON_PHASE_CHANGED="on_phase_changed"
+
+DRAW_PHASE_DRAW="draw_phase_draw"

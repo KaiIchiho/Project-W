@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from schemas.base import WSRequestBase,WSResponseBase
 from schemas.common import WSCommonRequestBase,WSCommonResponseBase
-from schemas import event_type
+from schemas import event_type,object
 
 class SelectDeckRequest(WSRequestBase):
     event:str=event_type.SELECT_DECK
@@ -46,6 +46,12 @@ class NextTurnRequest(WSCommonRequestBase):
     pass
 class NextTurnResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.NEXT_TURN
+
+class DrawPhaseDrawSelfResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.DRAW_PHASE_DRAW
+    add_hand_card:object.AddCardData
+class DrawPhaseDrawOtherResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.DRAW_PHASE_DRAW
 
 event_req={
     event_type.SWAP_HAND_CARDS:SwapHandCardsRequest,

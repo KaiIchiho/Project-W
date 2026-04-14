@@ -90,7 +90,12 @@ class PlayerData(ObjectBaseData):
     stock:StockData
     cx:CXData
     memory:MemoryData
-    
+ 
+@register("add_card",registry)
+class AddCardData(ObjectBaseData):
+     type:Literal["add_card"]="add_card"
+     card_id:int=-1
+     card_img:str=""
     
 def build_object_data(type:str,**kwargs)->ObjectBaseData:
     cls=registry.get(type)

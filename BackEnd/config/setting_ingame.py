@@ -1,0 +1,1 @@
+INITIAL_HAND=5

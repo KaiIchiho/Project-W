@@ -9,6 +9,7 @@ class DrawPhase(Phase):
         
     async def on_enter(self, game):
         await super().on_enter(game)
+        await game.draw_drap_phase_hand()
     
     async def on_exit(self, game):
         await super().on_exit(game)

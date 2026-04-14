@@ -46,12 +46,14 @@ class Player(GameObject):
         else:
             return False
     
-    def draw(self):
+    def draw(self)->int:
         print(f"{self.name} Draw")
         #for i in range(len(self.hand)):
         #    if self.hand[i] is None:
         #        self.hand[i]=self.playmat.deck.draw()
-        self.hand.append(self.playmat.deck.draw())
+        draw_card=self.playmat.deck.draw()
+        self.hand.append(draw_card)
+        return draw_card.card_id
         
     #def play_command(self):
     #    print(f"{self.name} Play Command")
