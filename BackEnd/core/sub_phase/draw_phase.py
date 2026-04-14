@@ -19,7 +19,7 @@ class DrawPhase(Phase):
     async def on_exit(self, game):
         await super().on_exit(game)
     
-    async def draw_drap_phase_hand(game:"Game"):
+    async def draw_drap_phase_hand(self,game:"Game"):
         success=False
         log=""
         player_id=-1
