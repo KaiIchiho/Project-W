@@ -159,6 +159,7 @@ function handleWSDataByEvent(data,event){
     if(event in event_method_dict){
         const method=event_method_dict[event];
         console.log("method: ",method);
+        console.log(data)
         window[method](data);
     }
 }

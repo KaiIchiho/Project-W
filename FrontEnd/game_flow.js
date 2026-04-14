@@ -41,11 +41,11 @@ function handleStandby(data){
 }
 
 function handleGameStart(data){
-    console.log(data)
+    // console.log(data)
 }
 
 function handleFirstTurnplayer(data){
-    console.log(data)
+    // console.log(data)
 }
 
 function handleDrawInitialHand(data){
@@ -61,15 +61,15 @@ function handleSwapHandCards(data){
 }
 
 function handleOnPhaseChanged(data){
-    console.log(data.common)
+    // console.log(data)
 }
 
 function handleShuffle(data){
-    console.log(data.common)
+    // console.log(data)
 }
 
 function handleDrawPhaseDraw(data){
-    console.log(data.common)
+    // console.log(data)
     let common=data.common;
     updateHandByCommon(common);
 }
