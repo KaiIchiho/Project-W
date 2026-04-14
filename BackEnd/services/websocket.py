@@ -214,7 +214,7 @@ async def send_data_to_room_except_target(room_id:int,target_user_id:int,data:Ba
     room=rooms.get(room_id)
     if not room:
         return
-    user_ids:list[int]=None
+    user_ids:list[int]=[]
     if room.player_1 and room.player_1.player_id!=target_user_id:
         user_ids.append(room.player_1.player_id)
     if room.player_2 and room.player_2.player_id!=target_user_id:
