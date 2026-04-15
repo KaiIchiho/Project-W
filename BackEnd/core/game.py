@@ -1,11 +1,12 @@
 from models.player import Player
+from models.card import Card
 from typing import Callable,Optional,Awaitable
 from core.sub_phase.phase_base import Phase
 from core.sub_phase.standby_phase import StandbyPhase
 from core.sub_phase.stand_phase import StandPhase
+from core.data_reader import DataReader
 from pydantic import BaseModel
 from schemas import object,common,game_flow
-from core.data_reader import DataReader
 from config import setting_ingame
 
 class Game():
@@ -307,30 +308,16 @@ class Game():
             self.phase=self.phase.next_phase()
             await self.phase.on_enter(self)
     
-    # async def phase_enter_response(self):
-    #     common=DataReader.get_common_data(
-    #         self,
-    #         True,
-    #         f"{self.phase.phase_name}が始まります",
-    #         self.turn_player.player_id
-    #     )
-    #     res=game_flow.OnPhaseChangedResponse(
-    #         common=common
-    #     )
-    #     await self.send_data_to_room(res)
-        
-    # async def phase_exit_response(self):
-    #     pass
-        # common=DataReader.get_common_data(
-        #     self,
-        #     True,
-        #     f"{self.phase.phase_name}が始まります",
-        #     self.turn_player.player_id
-        # )
-        # res=game_flow.OnPhaseChangedResponse(
-        #     common=common
-        # )
-        # await self.send_data_to_room(res)
+    
+    def play_char_card(self,player_id:int,hand_index:int,stage_index:int):
+        player=self.check_command_player(player_id)
+        has_card=player.check_stage(stage_index)
+        card=player.pop_hand(hand_index)
+        result=player.set_card_to_stage(card,stage_index)
+        return has_card,result
+    
+    # def _set_card_to_stage(self,player:Player,card:Card,stage_index:int)->bool:
+    #     return player.set_card_to_stage(card,stage_index)
             
     def check_is_first_phase(self)->bool:
         return isinstance(self.phase,self.first_phase)
@@ -433,6 +420,14 @@ class Game():
             return self.player_2.name
         elif self.turn_player is self.player_2:
             return self.player_1.name
+    
+    def check_stage_state(self,player_id:int,stage_index:int)->bool:
+        player=self.check_command_player(player_id)
+        stage=player.playmat.stage[stage_index]
+        if stage is None:
+            return False
+        else:
+            return True
     
     async def forced_game_end(self):
         self._is_in_progress=False

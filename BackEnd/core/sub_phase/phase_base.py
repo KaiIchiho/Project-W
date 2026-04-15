@@ -1,5 +1,4 @@
 from schemas import event_type,game_flow
-from services.sub_command.next_turn_command import NextTurnCommand
 from services.parse_model import parse_model
 from core.data_reader import DataReader
 from typing import TYPE_CHECKING

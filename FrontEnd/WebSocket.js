@@ -123,7 +123,8 @@ event_method_dict={
     "shuffle":"handleShuffle",
     "draw_phase_draw":"handleDrawPhaseDraw",
     "clock_phase_clock":"handleClockPhaseClock",
-    "clock_phase_draw":"handleClockPhaseDraw"
+    "clock_phase_draw":"handleClockPhaseDraw",
+    "main_phase_char_play":"handledMainPhaseCharPlay"
 }
 
 function handleWsJson(data){

@@ -220,3 +220,11 @@ class DataReader():
             card_id=card_id,
             card_img=card_img
         )
+        
+    @staticmethod
+    def get_stage_position_data_pack(index:int,is_empty:bool)->object.StageData:
+        return object.build_object_data(
+            "stage_position",
+            index=index,
+            is_empty=is_empty
+        )

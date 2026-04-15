@@ -1,4 +1,5 @@
 let stage_buttons=[]
+let selected_stage_index=-1
 window.addEventListener("DOMContentLoaded", () => {
     initStage();
 });
@@ -10,8 +11,27 @@ function initStage(){
         btn.textContent=i+1;
         stage_buttons.push(btn)
         btn.onclick=()=>{
-            
+            selected_stage_index=i;
         }
         stage.appendChild(btn);
     }
+}
+
+function updataStage(stage_data){
+    const stage_zone=document.getElementById("stage");
+    stage_zone.innerHTML = "";
+    const cards=stage_data.cards
+    for (let i=0;i<cards.length;++i) {
+        console.log(cards[i]);
+        const btn=document.createElement("button");
+        if(card[i]==-1){
+            btn.textContent=i+1;
+        }
+        else{
+            btn.textContent=card[i];
+        }
+        stage_buttons.push(btn);
+        stage_zone.appendChild(btn);
+    }
+    selected_stage_index=-1
 }

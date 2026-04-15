@@ -67,9 +67,18 @@ class ClockPhaseDrowSelfResponse(WSCommonResponseBase):
 class ClockPhaseDrowOtherResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.CLOCK_PHASE_DRAW
 
+class MainPhaseCharPlayRequest(WSCommonRequestBase):
+    chosen_hand_card:int=-1
+    stage_position:int=-1
+class MainPhaseCharPlayResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.MAIN_PHASE_CHAR_PLAY
+    choice_hand_card:str=-1
+    stage_position:object.StageData
+
 event_req={
     event_type.SWAP_HAND_CARDS:SwapHandCardsRequest,
     event_type.NEXT_PHASE:NextPhaseRequest,
     event_type.NEXT_TURN:NextTurnRequest,
     event_type.CLOCK_PHASE_CLOCK:ClockPhaseClockRequest,
+    event_type.MAIN_PHASE_CHAR_PLAY:MainPhaseCharPlayRequest,
 }

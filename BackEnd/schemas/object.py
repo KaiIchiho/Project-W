@@ -25,8 +25,8 @@ class DeckData(ObjectBaseData):
 class StageData(ObjectBaseData):
     type:Literal["stage"]=Field(default="stage", exclude=True)
     card_num:int=-1
-    cards:list[int]=Field(default_factory=list)
-    markers:list[list[int]]=Field(default_factory=list)
+    cards:list[int]=Field(default_factory=lambda:[-1]*5)
+    markers:list[list[int]]=Field(default_factory=lambda:[[] for _ in range(5)])
 
 @register("waiting_room",registry)
 class WaitingRoomData(ObjectBaseData):
@@ -98,6 +98,12 @@ class AddCardData(ObjectBaseData):
      card_id:int=-1
      card_img:str=""
     
+@register("stage_position",registry)
+class StagePositionData(ObjectBaseData):
+    type:Literal["stage_position"]=Field(default="stage_position", exclude=True)
+    index:int=-1,
+    is_empty:bool=False
+
 def build_object_data(type:str,**kwargs)->ObjectBaseData:
     cls=registry.get(type)
     if not cls:

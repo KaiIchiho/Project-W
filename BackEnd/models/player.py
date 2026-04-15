@@ -15,7 +15,6 @@ class Player(GameObject):
         self.player_id=player_id
         self.name=name
         self.playmat=playmat
-        #self.hand:list[Optional[Card]]=[None]*7
         self.hand:list[Card]=[]
         
         self._is_swap_hand:bool=False
@@ -105,3 +104,22 @@ class Player(GameObject):
     
     def set_card_to_clock(self,card:Card)->bool:
         return self.playmat.set_card_to_clock(card)
+    
+    def has_stage_card(self,stage_index:int)->bool:
+        if self.playmat:
+            return self.playmat.has_stage_card(stage_index)
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")
+    
+    def pop_hand(self,hand_index:int)->Card:
+        if 0<=hand_index<len(self.hand):
+            card=self.hand.pop(hand_index)
+            return card
+        else:
+            raise ValueError("Hand Index Over the Range")
+        
+    def set_card_to_stage(self,card:Card,stage_index:int)->bool:
+        if self.playmat:
+            return self.playmat.set_card_to_stage(card,stage_index)
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")

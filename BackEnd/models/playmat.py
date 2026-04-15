@@ -51,9 +51,14 @@ class Playmat(GameObject):
         if self.stage_stand[stage_index]!=is_stand:
             self.stage_stand[stage_index]=is_stand
             self.on_stage_card_stand_changed(stage_index,is_stand)
+    
+    def set_card_to_waiting_room(self,card:Card):
+        self.waiting_room.append(card)
             
     def set_cards_to_waiting_room(self,cards:list[Card]):
-        self.waiting_room.extend(cards)
+        # self.waiting_room.extend(cards)
+        for card in cards:
+            self.set_card_to_waiting_room(card)
         
     def set_card_to_clock(self,card:Card)->bool:
         counter=0
@@ -71,3 +76,24 @@ class Playmat(GameObject):
     
     def _level_up(self):
         pass
+    
+    def has_stage_card(self,stage_index:int)->bool:
+        if 0<=stage_index<len(self.stage):
+            if self.stage[stage_index]:
+                return True
+            else:
+                return False
+        else:
+            raise ValueError("Stage Index Over the Range")
+        
+    def set_card_to_stage(self,card:Card,stage_index:int)->bool:
+        if not card:
+            return False
+        if 0<=stage_index<len(self.stage):
+            stage=self.stage[stage_index]
+            self.stage[stage_index]=card
+            if stage:
+                self.set_card_to_waiting_room(stage)
+            return True
+        else:
+            raise ValueError("Stage Index Over the Range")

@@ -21,3 +21,5 @@ ON_PHASE_CHANGED="on_phase_changed"
 DRAW_PHASE_DRAW="draw_phase_draw"
 CLOCK_PHASE_CLOCK="clock_phase_clock"
 CLOCK_PHASE_DRAW="clock_phase_draw"
+
+MAIN_PHASE_CHAR_PLAY="main_phase_char_play"
