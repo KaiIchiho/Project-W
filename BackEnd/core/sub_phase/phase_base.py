@@ -1,6 +1,7 @@
 from schemas import event_type,game_flow
 from services.sub_command.next_turn_command import NextTurnCommand
 from services.parse_model import parse_model
+from core.data_reader import DataReader
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from core.game import Game
@@ -41,13 +42,33 @@ class Phase:
         print("Log: on_next_phase")
         if not game.check_is_turn_player_command(player_id):
             return
-        await game.transition_to_next_phase(player_id)
+        await game.transition_to_next_phase(player_id,self._end_next_phase)        
     
-    async def on_next_turn(self,game:"Game",req:game_flow.NextTurnRequest,player_id:int):
+    async def _end_next_phase(self,game:"Game",player_id:int,is_next_phase:bool):
+        log=""
+        if not is_next_phase:
+            print("Log: on_next_phase, Next Phase Is None")
+            log="まもなく、次のターンを始めます"
+        else:
+            print("Log: on_next_phase, Next Phase Is Not None")
+            log=f"{game.get_player_name_by_id(player_id)}の{game.phase.next_phase.phase_name}フェーズに遷移します"
+        
+        common=DataReader.get_common_data(
+            game,True,log,player_id)
+        res=game_flow.NextPhaseResponse(common=common)
+        await game.send_data_to_room(res)
+        
+        if not is_next_phase:
+            if not game.check_is_first_phase():
+                await self.on_next_turn(game,None,player_id)
+            else:
+                await self.on_next_turn(game,None,player_id,False)
+    
+    async def on_next_turn(self,game:"Game",req:game_flow.NextTurnRequest,player_id:int,is_switch_turn_player:bool=True):
         if not game.check_is_turn_player_command(player_id):
             return
         
-        await game.start_next_turn(player_id)
+        await game.start_next_turn(player_id,is_switch_turn_player)
     
     def parse_action_model(self,action:dict,event:str):
         model=game_flow.event_req.get(event)

@@ -1,5 +1,6 @@
 from core.sub_phase.phase_base import Phase
 from schemas import event_type,game_flow
+from core.data_reader import DataReader
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from core.game import Game
@@ -17,9 +18,11 @@ class StandbyPhase(Phase):
         await super().on_enter(game)
         # self.init_playmat(game)
         game.init_players_playmat()
-        await game.all_players_deck_shuffle()
+        # await game.all_players_deck_shuffle()
+        await self.all_players_deck_shuffle(game)
         # await self.draw_initial_hand(game)
-        await game.draw_players_initial_hand()
+        # await game.draw_players_initial_hand()
+        await self.draw_players_initial_hand(game)
     
     # def init_playmat(self,game:"Game"):
     #     result_1,result_2=game.init_players_playmat()
@@ -31,6 +34,48 @@ class StandbyPhase(Phase):
         # print("Log: StandbyPhase draw_initial_hand")
         # await game.draw_players_initial_hand()
         # print("Log: draw_players_initial_hand ",result)
+    
+    async def all_players_deck_shuffle(self,game:"Game"):
+        if not game.check_is_full_players():
+            return
+        await self.player_deck_shuffle(game.get_turn_player_id())
+        await self.player_deck_shuffle(game.get_other_player_id())
+    
+    async def player_deck_shuffle(self,game:"Game",player_id:int):
+        result=False
+        log=""
+        player_identity=game.check_player_identity_by_id(player_id)
+        if player_identity==-1:
+            log=f"{player_id}のプレイヤーはゲーム内に存在しません"
+        else:
+            result=game.player_deck_shuffle(player_id)
+            player_name=game.get_player_name_by_id(player_id)    
+            if result:
+                log=f"{player_name}のシャッフルが成功しました"
+            else:
+                log=f"{player_name}のシャッフルが失敗しました"
+        
+        common=DataReader.get_common_data(
+            game,result,log,player_id)
+        res=game_flow.ShuffleResponse(common=common)
+        await game.send_data_to_room(res)
+    
+    async def draw_players_initial_hand(self,game:"Game"):
+        result=False
+        log="" 
+        result_1=await game.draw_initial_hand(game.get_turn_player_id())
+        result_2=await game.draw_initial_hand(game.get_other_player_id())
+        if result_1 and result_2:
+            result=True
+            log="初期手札のドロー（各5枚）が成功しました"
+        else:
+            log="初期手札のドローが失敗しました"
+        
+        common=DataReader.get_common_data(
+            game,result,log,-1)
+        res=game_flow.DrawInitialHandResponse(
+            common=common)
+        await game.send_data_to_room(res)
     
     async def on_swap_hand_cards(
         self,game:"Game",req:game_flow.SwapHandCardsRequest,player_id:int
