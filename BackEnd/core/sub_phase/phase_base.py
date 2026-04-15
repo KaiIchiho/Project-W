@@ -29,7 +29,8 @@ class Phase:
             common=common)
         await game.send_data_to_room(res)
     async def on_exit(self,game:"Game"):
-        await game.phase_exit_response()
+        # await game.phase_exit_response()
+        pass
     
     async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
         model,req=self.parse_action_model(action,event)
