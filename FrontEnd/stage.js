@@ -47,7 +47,7 @@ function charPlay(){
         client_common:{
             event:"main_phase_char_play"
         },
-        "chosen_hand_card":selected_btn_index,
+        "chosen_hand_card":selected_btn_index[0],
         "stage_position":selected_stage_index
     }
     sendJson(data);
