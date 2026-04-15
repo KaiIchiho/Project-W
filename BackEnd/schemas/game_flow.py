@@ -73,7 +73,7 @@ class MainPhaseCharPlayRequest(WSCommonRequestBase):
 class MainPhaseCharPlayResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.MAIN_PHASE_CHAR_PLAY
     choice_hand_card:str=-1
-    stage_position:object.StageData
+    stage_position:object.StagePositionData
 
 event_req={
     event_type.SWAP_HAND_CARDS:SwapHandCardsRequest,
