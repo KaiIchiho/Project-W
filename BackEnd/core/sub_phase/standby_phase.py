@@ -81,4 +81,24 @@ class StandbyPhase(Phase):
         self,game:"Game",req:game_flow.SwapHandCardsRequest,player_id:int
     ):
         hand_index_list=req.hand_index
-        await game.swap_hand_cards(player_id,hand_index_list)
+        success,identity=await game.swap_hand_cards(player_id,hand_index_list)
+        log=""
+        if success:
+            log=f"{game.get_player_name_by_id(player_id)}は手札の入れ替えが成功しました"
+        else:
+            if identity==2:
+                log="先攻プレイヤーはまだ手札の入れ替えが完成していません"
+            elif identity==-1:
+                log=f"{player_id}のプレイヤーはゲーム内に存在しません"
+            else:
+                log=f"{game.get_player_name_by_id(player_id)}は手札の入れ替えが失敗しました"
+        
+        common=DataReader.get_common_data(
+            game,success,log,player_id)
+        res=game_flow.SwapHandCardsResponse(
+            common=common)
+        await game.send_data_to_room(res)
+        
+        if success and identity==2:
+            await self.on_next_phase(game,None,game.get_turn_player_id())
+        

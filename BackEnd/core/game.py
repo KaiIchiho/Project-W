@@ -307,34 +307,16 @@ class Game():
         return card_id
     
     async def swap_hand_cards(self,player_id:int,hand_index_list:list[int]):
-        success=False
-        log=""
         player:Player=self.check_command_player(player_id)
         identity=self.check_player_identity(player)
+        success=False
         if player:
             if identity==2 and not self.player_1.get_is_swap_hand():
-                log="先攻プレイヤーはまだ手札の入れ替えが完成していません"
+                success=False
             else:
                 success=player.swap_hand_cards(hand_index_list)
-                if success:
-                    log=f"{player.name}は手札の入れ替えが成功しました"
-                else:
-                    log=f"{player.name}は手札の入れ替えが失敗しました"
-        else:
-            log=f"{player_id}のプレイヤーはゲーム内に存在しません"
         
-        common=DataReader.get_common_data(
-            self,
-            success,
-            log,
-            player_id)
-        res=game_flow.SwapHandCardsResponse(
-            common=common
-        )
-        await self.send_data_to_room(res)
-        
-        if identity==2 and success:
-            await self._end_start_phase()
+        return success,identity
     
     def _set_hand_to_clock(self,player_id:int,hand_index:int):
         card_id=-1
@@ -347,10 +329,10 @@ class Game():
             card_id=card.card_id
         return card_id
     
-    async def _end_start_phase(self):
-        print("Log: _end_start_phase")
-        if isinstance(self.phase,self.first_phase):
-            await self.transition_to_next_phase(self.turn_player.player_id)
+    # async def _end_start_phase(self):
+    #     print("Log: _end_start_phase")
+    #     if isinstance(self.phase,self.first_phase):
+    #         await self.transition_to_next_phase(self.turn_player.player_id)
     
     async def transition_to_next_phase(
         self,player_id:int,send_data_callback:Callable[["Game",int,bool],Awaitable[None]]
