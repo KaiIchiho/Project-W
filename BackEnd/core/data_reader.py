@@ -83,10 +83,14 @@ class DataReader():
         for card in player.playmat.stage:
             if card is not None:
                 cards.append(card.card_id)
+            else:
+                cards.append(-1)
         markers=[]
         for marker in player.playmat.markers:
             if marker is not None:
                 markers.append(marker)
+            else:
+                markers.append([])
         return object.build_object_data(
             "stage",
             card_num=len(cards),
