@@ -38,7 +38,6 @@ function addHand(card_id){
     const hand=document.getElementById("hand");
     const btn=document.createElement("button");
     btn.textContent=card_id;
-    // buttons.set(btn,card_id);
     buttons.push(btn)
     btn.onclick=()=>{
         let index=buttons.indexOf(btn)
