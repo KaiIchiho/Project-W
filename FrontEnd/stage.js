@@ -12,6 +12,7 @@ function initStage(){
         stage_buttons.push(btn)
         btn.onclick=()=>{
             selected_stage_index=i;
+            console.log("Selected Stage: ",selected_stage_index)
         }
         stage.appendChild(btn);
     }
@@ -30,8 +31,24 @@ function updataStage(stage_data){
         else{
             btn.textContent=card[i];
         }
+        btn.onclick=()=>{
+            selected_stage_index=i;
+            console.log("Selected Stage: ",selected_stage_index)
+        }
         stage_buttons.push(btn);
         stage_zone.appendChild(btn);
     }
     selected_stage_index=-1
+}
+
+function charPlay(){
+    console.log("charPlay");
+    let data={
+        client_common:{
+            event:"main_phase_char_play"
+        },
+        "chosen_hand_card":selected_btn_index,
+        "stage_position":selected_stage_index
+    }
+    sendJson(data);
 }
