@@ -311,7 +311,7 @@ class Game():
     
     def play_char_card(self,player_id:int,hand_index:int,stage_index:int):
         player=self.check_command_player(player_id)
-        has_card=player.check_stage(stage_index)
+        has_card=player.check_has_stage_card(stage_index)
         card=player.pop_hand(hand_index)
         result=player.set_card_to_stage(card,stage_index)
         return has_card,result

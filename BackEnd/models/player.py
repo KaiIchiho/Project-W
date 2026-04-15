@@ -105,7 +105,7 @@ class Player(GameObject):
     def set_card_to_clock(self,card:Card)->bool:
         return self.playmat.set_card_to_clock(card)
     
-    def has_stage_card(self,stage_index:int)->bool:
+    def check_has_stage_card(self,stage_index:int)->bool:
         if self.playmat:
             return self.playmat.has_stage_card(stage_index)
         else:
