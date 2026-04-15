@@ -235,7 +235,7 @@ class Game():
     #     await self.player_deck_shuffle(self.player_2.player_id)
     #     print("Log: all_players_deck_shuffle End")
     
-    async def player_deck_shuffle(self,player_id:int)->bool:
+    def player_deck_shuffle(self,player_id:int)->bool:
         player_identity=self.check_player_identity_by_id(player_id)
         result=False
         player=None
