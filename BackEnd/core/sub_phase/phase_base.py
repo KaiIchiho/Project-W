@@ -20,7 +20,14 @@ class Phase:
         cls.handlers=cls.handlers.copy()
     
     async def on_enter(self,game:"Game"):
-        await game.phase_enter_response()
+        # await game.phase_enter_response()
+        common=DataReader.get_common_data(
+            game,True,
+            f"{self.phase_name}が始まります",
+            self.turn_player.player_id)
+        res=game_flow.OnPhaseChangedResponse(
+            common=common)
+        await game.send_data_to_room(res)
     async def on_exit(self,game:"Game"):
         await game.phase_exit_response()
     
@@ -68,8 +75,19 @@ class Phase:
         if not game.check_is_turn_player_command(player_id):
             return
         
-        await game.start_next_turn(player_id,is_switch_turn_player)
-    
+        await game.start_next_turn(
+            player_id,
+            is_switch_turn_player,
+            self.on_turn_switched)
+        
+    async def on_turn_switched(self,game:"Game",player_id:int):
+        common=DataReader.get_common_data(
+            game,True,
+            f"次の{game.get_turn_player_name()}のターンが始まります",
+            player_id)
+        res=game_flow.NextTurnResponse(common=common)
+        await game.send_data_to_room(res)
+        
     def parse_action_model(self,action:dict,event:str):
         model=game_flow.event_req.get(event)
         if model is None:

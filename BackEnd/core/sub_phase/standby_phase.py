@@ -16,24 +16,9 @@ class StandbyPhase(Phase):
         
     async def on_enter(self,game:"Game"):
         await super().on_enter(game)
-        # self.init_playmat(game)
         game.init_players_playmat()
-        # await game.all_players_deck_shuffle()
         await self.all_players_deck_shuffle(game)
-        # await self.draw_initial_hand(game)
-        # await game.draw_players_initial_hand()
         await self.draw_players_initial_hand(game)
-    
-    # def init_playmat(self,game:"Game"):
-    #     result_1,result_2=game.init_players_playmat()
-    #     print("Log: init_playmat")
-    #     print("Log: player 1 Init Playmat: ",result_1)
-    #     print("Log: player 2 Init Playmat: ",result_2)
-        
-    # async def draw_initial_hand(self,game:"Game"):
-        # print("Log: StandbyPhase draw_initial_hand")
-        # await game.draw_players_initial_hand()
-        # print("Log: draw_players_initial_hand ",result)
     
     async def all_players_deck_shuffle(self,game:"Game"):
         if not game.check_is_full_players():

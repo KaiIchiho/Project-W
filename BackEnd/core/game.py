@@ -194,7 +194,7 @@ class Game():
         self,
         player_id:int,
         is_switch_turn_player:bool=True,
-        on_player_switch:Callable[[],None]=None,
+        on_player_switch:Callable[["Game",int],Awaitable[None]]=None,
         in_turn_start_phase:Callable[[],None]=None
     )->int:
         print("Log: start_next_turn")
@@ -206,15 +206,7 @@ class Game():
         self.current_turn+=1
         
         if on_player_switch is not None:
-            on_player_switch()
-            
-        common=DataReader.get_common_data(
-            self,
-            True,
-            f"次の{self.turn_player.name}のターンが始まります",
-            player_id)
-        res=game_flow.NextTurnResponse(common=common)
-        await self.send_data_to_room(res)
+            await on_player_switch(self,player_id)
         
         await self._in_turn_start_phase()
         if in_turn_start_phase is not None:
@@ -226,14 +218,6 @@ class Game():
         result_1=self.player_1.init_playmat()
         result_2=self.player_2.init_playmat()
         return result_1,result_2
-    
-    # async def all_players_deck_shuffle(self):
-    #     if not self.check_is_full_players():
-    #         return
-    #     print("Log: all_players_deck_shuffle Start")
-    #     await self.player_deck_shuffle(self.player_1.player_id)
-    #     await self.player_deck_shuffle(self.player_2.player_id)
-    #     print("Log: all_players_deck_shuffle End")
     
     def player_deck_shuffle(self,player_id:int)->bool:
         player_identity=self.check_player_identity_by_id(player_id)
@@ -257,30 +241,6 @@ class Game():
         
         if self.phase.is_complete:
             await self.phase.on_next_phase(self,action)
-    
-    # async def draw_players_initial_hand(self)->bool:
-    #     result=False
-    #     log=""
-    #     if self.check_is_full_players():    
-    #         result_1=await self.draw_initial_hand(self.player_1)
-    #         result_2=await self.draw_initial_hand(self.player_2)
-    #         if result_1 and result_2:
-    #             result=True
-    #             log="初期手札のドロー（各5枚）が成功しました"
-    #         elif not result_1:
-    #             log=f"{self.player_1.name}の初期手札のドローが失敗しました"
-    #         elif not result_2:
-    #             log=f"{self.player_2.name}の初期手札のドローが失敗しました"
-          
-    #     common=DataReader.get_common_data(
-    #         self,
-    #         result,
-    #         log,
-    #         -1)
-    #     res=game_flow.DrawInitialHandResponse(
-    #         common=common
-    #     )
-    #     await self.send_data_to_room(res)
     
     async def draw_initial_hand(self,player_id:int)->bool:
         player=self._get_ingame_player_by_id(player_id)
@@ -329,11 +289,6 @@ class Game():
             card_id=card.card_id
         return card_id
     
-    # async def _end_start_phase(self):
-    #     print("Log: _end_start_phase")
-    #     if isinstance(self.phase,self.first_phase):
-    #         await self.transition_to_next_phase(self.turn_player.player_id)
-    
     async def transition_to_next_phase(
         self,player_id:int,send_data_callback:Callable[["Game",int,bool],Awaitable[None]]
     ):
@@ -342,12 +297,8 @@ class Game():
         _is_next_phase=False
         if self.phase.next_phase is None:
             _is_next_phase=False
-            # print("Log: on_next_phase, Next Phase Is None")
-            # log="まもなく、次のターンを始めます"
         else:
             _is_next_phase=True
-            # print("Log: on_next_phase, Next Phase Is Not None")
-            # log=f"{self.turn_player.name}の{self.phase.next_phase.phase_name}フェーズに遷移します"
         
         if send_data_callback:
             await send_data_callback(self,player_id,_is_next_phase)
@@ -355,34 +306,21 @@ class Game():
         if _is_next_phase:
             self.phase=self.phase.next_phase()
             await self.phase.on_enter(self)
-        # common=DataReader.get_common_data(
-        #     self,True,log,player_id)
-        # res=game_flow.NextPhaseResponse(common=common)
-        # await self.send_data_to_room(res)
-        
-        # if not _is_next_phase:
-        #     if not isinstance(self.phase,self.first_phase):
-        #         await self.start_next_turn(player_id)
-        #     else:
-        #         await self.start_next_turn(player_id,False)
-        # else:
-        #     self.phase=self.phase.next_phase()
-        #     await self.phase.on_enter(self)
     
-    async def phase_enter_response(self):
-        common=DataReader.get_common_data(
-            self,
-            True,
-            f"{self.phase.phase_name}が始まります",
-            self.turn_player.player_id
-        )
-        res=game_flow.OnPhaseChangedResponse(
-            common=common
-        )
-        await self.send_data_to_room(res)
+    # async def phase_enter_response(self):
+    #     common=DataReader.get_common_data(
+    #         self,
+    #         True,
+    #         f"{self.phase.phase_name}が始まります",
+    #         self.turn_player.player_id
+    #     )
+    #     res=game_flow.OnPhaseChangedResponse(
+    #         common=common
+    #     )
+    #     await self.send_data_to_room(res)
         
-    async def phase_exit_response(self):
-        pass
+    # async def phase_exit_response(self):
+    #     pass
         # common=DataReader.get_common_data(
         #     self,
         #     True,
