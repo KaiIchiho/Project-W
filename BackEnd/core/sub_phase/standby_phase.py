@@ -38,8 +38,8 @@ class StandbyPhase(Phase):
     async def all_players_deck_shuffle(self,game:"Game"):
         if not game.check_is_full_players():
             return
-        await self.player_deck_shuffle(game.get_turn_player_id())
-        await self.player_deck_shuffle(game.get_other_player_id())
+        await self.player_deck_shuffle(game,game.get_turn_player_id())
+        await self.player_deck_shuffle(game,game.get_other_player_id())
     
     async def player_deck_shuffle(self,game:"Game",player_id:int):
         result=False
