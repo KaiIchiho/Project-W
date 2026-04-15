@@ -24,7 +24,7 @@ class Phase:
         common=DataReader.get_common_data(
             game,True,
             f"{self.phase_name}が始まります",
-            self.turn_player.player_id)
+            game.get_turn_player_id())
         res=game_flow.OnPhaseChangedResponse(
             common=common)
         await game.send_data_to_room(res)
