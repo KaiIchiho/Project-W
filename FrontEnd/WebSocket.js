@@ -124,7 +124,8 @@ event_method_dict={
     "draw_phase_draw":"handleDrawPhaseDraw",
     "clock_phase_clock":"handleClockPhaseClock",
     "clock_phase_draw":"handleClockPhaseDraw",
-    "main_phase_char_play":"handledMainPhaseCharPlay"
+    "main_phase_char_play":"handledMainPhaseCharPlay",
+    "main_phase_event_play":"handleMainPhaseEventPlay"
 }
 
 function handleWsJson(data){

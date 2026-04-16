@@ -1,7 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 from typing import Literal
 from schemas.register import register
-from pydantic import Field
 
 registry={}
 
@@ -89,6 +88,12 @@ class MemoryData(ObjectBaseData):
     cx_card_num:int=-1
     cards:list[dict]=Field(default_factory=list)
 
+@register("resolution",registry)
+class ResolutionData(ObjectBaseData):
+    type:Literal["player"]=Field(default="player", exclude=True)
+    card_num:int=-1
+    cards:list[dict]=Field(default_factory=list)
+
 @register("player",registry)
 class PlayerData(ObjectBaseData):
     type:Literal["player"]=Field(default="player", exclude=True)
@@ -102,7 +107,8 @@ class PlayerData(ObjectBaseData):
     stock:StockData
     cx:CXData
     memory:MemoryData
- 
+    resolution:ResolutionData
+
 @register("add_card",registry)
 class AddCardData(ObjectBaseData):
      type:Literal["add_card"]=Field(default="add_card", exclude=True)

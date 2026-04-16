@@ -99,6 +99,11 @@ function handledMainPhaseCharPlay(data){
     updateStage(player.stage)
 }
 
+function handleMainPhaseEventPlay(data){
+    let common=data.common;
+    updateHandByCommon(common);
+}
+
 function nextPhase(){
     console.log("nextPhase");
     let data={

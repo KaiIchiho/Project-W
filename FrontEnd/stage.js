@@ -26,7 +26,10 @@ function updateStage(stage_data){
     for (let i=0;i<cards.length;++i) {
         console.log(cards[i]);
         const btn=document.createElement("button");
-        if(cards[i].card_id==-1){
+        if(cards[i].card_id==-1||
+            cards[i].card_id===null||
+            cards[i].card_id===undefined)
+        {
             btn.textContent=i+1;
         }
         else{
@@ -52,4 +55,17 @@ function charPlay(){
         "stage_position":selected_stage_index
     }
     sendJson(data);
+}
+
+function eventPlay(){
+    console.log("eventPlay");
+    let data={
+        client_common:{
+            event:"main_phase_event_play",
+            "use_card": {
+                "hand_index": 4,
+            }
+        },
+    }
+    sendJson(data)
 }

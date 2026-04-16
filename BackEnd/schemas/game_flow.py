@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 from schemas.base import WSRequestBase,WSResponseBase
 from schemas.common import WSCommonRequestBase,WSCommonResponseBase
 from schemas import event_type,object
@@ -75,10 +75,16 @@ class MainPhaseCharPlayResponse(WSCommonResponseBase):
     choice_hand_card:str=-1
     stage_position:object.StagePositionData
 
+class MainPhaseEventPlayRequest(WSCommonRequestBase):
+    use_card:dict=Field(default_factory=dict)
+class MainPhaseEventPlayResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.MAIN_PHASE_EVENT_PLAY
+
 event_req={
     event_type.SWAP_HAND_CARDS:SwapHandCardsRequest,
     event_type.NEXT_PHASE:NextPhaseRequest,
     event_type.NEXT_TURN:NextTurnRequest,
     event_type.CLOCK_PHASE_CLOCK:ClockPhaseClockRequest,
     event_type.MAIN_PHASE_CHAR_PLAY:MainPhaseCharPlayRequest,
+    event_type.MAIN_PHASE_EVENT_PLAY:MainPhaseEventPlayRequest
 }

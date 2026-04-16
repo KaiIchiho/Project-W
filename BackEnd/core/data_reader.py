@@ -41,6 +41,7 @@ class DataReader():
         stock=DataReader.get_stock_data(player)
         cx=DataReader.get_cx_data(player)
         memory=DataReader.get_memory_data(player)
+        resolution=DataReader.get_resolution_data(player)
         return object.build_object_data(
             "player",
             user_id=user_id,
@@ -52,7 +53,8 @@ class DataReader():
             level=level,
             stock=stock,
             cx=cx,
-            memory=memory)
+            memory=memory,
+            resolution=resolution)
     
     @staticmethod
     def get_deck_data(player:"Player")->object.DeckData:
@@ -241,6 +243,26 @@ class DataReader():
             if card is None:
                 continue
             # cards.append(card.card_id)
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards.append(card_info)
+        
+        return object.build_object_data(
+            "memory",
+            card_num=len(cards),
+            cards=cards)
+    
+    @staticmethod
+    def get_resolution_data(player:"Player")->object.ResolutionData:
+        if not player:
+            return object.ResolutionData()
+        
+        if not player.playmat:
+            return object.ResolutionData()
+        cards:list[int]=[]
+        card_info_list=["card_id"]
+        for card in player.playmat.resolution:
+            if card is None:
+                continue
             card_info=card.get_current_info_by_list(card_info_list)
             cards.append(card_info)
         

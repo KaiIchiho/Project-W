@@ -22,9 +22,10 @@ class Playmat(GameObject):
         
         self.clock:list[Optional[Card]]=[None]*6
         self.level:list[Optional[Card]]=[None]*4
-        self.memory:list[Optional[Card]]=[]
+        self.memory:list[Card]=[]
         self.climax:Card=None
-        self.stock:list[Optional[Card]]=[]
+        self.stock:list[Card]=[]
+        self.resolution:list[Card]=[]
     
     def set_init_deck(self,init_deck:Deck):
         self.deck=init_deck
@@ -97,3 +98,9 @@ class Playmat(GameObject):
             return True
         else:
             raise ValueError("Stage Index Over the Range")
+        
+    def set_card_to_resolution(self,card:Card)->bool:
+        if not card:
+            return False
+        self.resolution.append(card)
+        return True

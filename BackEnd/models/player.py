@@ -129,3 +129,9 @@ class Player(GameObject):
             return self.playmat.set_card_to_stage(card,stage_index)
         else:
             raise ValueError(f"{self.player_id} No Playmat")
+    
+    def set_card_to_resolution(self,card:Card)->bool:
+        if self.playmat:
+            return self.playmat.set_card_to_resolution(card)
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")

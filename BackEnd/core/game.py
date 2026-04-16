@@ -302,7 +302,19 @@ class Game():
         card=player.pop_hand(hand_index)
         result=player.set_card_to_stage(card,stage_index)
         return has_card,result
-            
+    
+    def play_event_card(self,player_id:int,hand_index)->bool:
+        player=self.check_command_player(player_id)
+        
+        card_id=player.read_hand_id(hand_index)
+        card_type=card_repo.read_card_type(card_id)
+        if card_type!=CardType.EV:
+            return False
+        
+        card=player.pop_hand(hand_index)
+        result=player.set_card_to_resolution(card)
+        return result
+        
     def check_is_first_phase(self)->bool:
         return isinstance(self.phase,self.first_phase)
     

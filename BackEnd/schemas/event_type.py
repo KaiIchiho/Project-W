@@ -23,3 +23,4 @@ CLOCK_PHASE_CLOCK="clock_phase_clock"
 CLOCK_PHASE_DRAW="clock_phase_draw"
 
 MAIN_PHASE_CHAR_PLAY="main_phase_char_play"
+MAIN_PHASE_EVENT_PLAY="main_phase_event_play"

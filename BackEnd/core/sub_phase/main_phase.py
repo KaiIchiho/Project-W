@@ -46,4 +46,26 @@ class MainPhase(Phase):
             common=common,
             stage_position=stage_position)
         await game.send_data_to_room(res)
+    
+    async def event_play(
+        self,game:"Game",
+        req:game_flow.MainPhaseEventPlayRequest,
+        player_id:int
+    ):
+        hand_index=req.use_card.get("hand_index")
+        success=False
+        log=""
+        if hand_index is not None:
+            success=game.play_event_card(
+                player_id,hand_index)
+        player_name=game.get_player_name_by_id(player_id)
+        if success:
+            log=f"{player_name}はイベントカードをプレイしました"
+        else:
+            log=f"{player_name}はイベントカードをプレイできませんでした"
         
+        common=DataReader.get_common_data(
+            game,success,log,player_id)
+        res=game_flow.MainPhaseEventPlayResponse(
+            common=common)
+        await game.send_data_to_room(res)
