@@ -27,10 +27,9 @@ function updateHandByCommon(common){
     buttons=[]
     selected_card_id=-1
     selected_btn_index=[]
-    // hand_card_id=[]
     for(const card of cards){
         console.log(card);
-        addHand(card);
+        addHand(card.card_id);
     }
 }
 

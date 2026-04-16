@@ -26,11 +26,11 @@ function updateStage(stage_data){
     for (let i=0;i<cards.length;++i) {
         console.log(cards[i]);
         const btn=document.createElement("button");
-        if(cards[i]==-1){
+        if(cards[i].card_id==-1){
             btn.textContent=i+1;
         }
         else{
-            btn.textContent=cards[i];
+            btn.textContent=cards[i].card_id;
         }
         btn.onclick=()=>{
             selected_stage_index=i;
