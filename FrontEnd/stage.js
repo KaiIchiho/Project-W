@@ -18,18 +18,19 @@ function initStage(){
     }
 }
 
-function updataStage(stage_data){
+function updateStage(stage_data){
     const stage_zone=document.getElementById("stage");
     stage_zone.innerHTML = "";
+    stage_buttons=[]
     const cards=stage_data.cards
     for (let i=0;i<cards.length;++i) {
         console.log(cards[i]);
         const btn=document.createElement("button");
-        if(card[i]==-1){
+        if(cards[i]==-1){
             btn.textContent=i+1;
         }
         else{
-            btn.textContent=card[i];
+            btn.textContent=cards[i];
         }
         btn.onclick=()=>{
             selected_stage_index=i;
