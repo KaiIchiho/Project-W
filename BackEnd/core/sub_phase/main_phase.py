@@ -53,12 +53,13 @@ class MainPhase(Phase):
         req:game_flow.MainPhaseEventPlayRequest,
         player_id:int
     ):
-        hand_index=req.use_card.get("hand_index")
+        hand_index=req.use_card.hand_index
         success=False
         log=""
-        if hand_index is not None:
-            success=game.play_event_card(
-                player_id,hand_index)
+        # if hand_index is not None:
+        success=game.play_event_card(
+            player_id,hand_index)
+        
         player_name=game.get_player_name_by_id(player_id)
         if success:
             log=f"{player_name}はイベントカードをプレイしました"

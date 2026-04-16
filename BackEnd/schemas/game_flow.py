@@ -1,7 +1,7 @@
 from pydantic import BaseModel,Field
 from schemas.base import WSRequestBase,WSResponseBase
 from schemas.common import WSCommonRequestBase,WSCommonResponseBase
-from schemas import event_type,object
+from schemas import event_type,object,sub_request
 
 class SelectDeckRequest(WSRequestBase):
     event:str=event_type.SELECT_DECK
@@ -76,7 +76,8 @@ class MainPhaseCharPlayResponse(WSCommonResponseBase):
     stage_position:object.StagePositionData
 
 class MainPhaseEventPlayRequest(WSCommonRequestBase):
-    use_card:dict=Field(default_factory=dict)
+    # use_card:dict=Field(default_factory=dict)
+    use_card:sub_request.MainPhaseEventPlayUserCard
 class MainPhaseEventPlayResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.MAIN_PHASE_EVENT_PLAY
 
