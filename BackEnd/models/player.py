@@ -135,3 +135,9 @@ class Player(GameObject):
             return self.playmat.set_card_to_resolution(card)
         else:
             raise ValueError(f"{self.player_id} No Playmat")
+    
+    def process_resolution(self):
+        if self.playmat:
+            return self.playmat.resolution_to_waiting_room()
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")

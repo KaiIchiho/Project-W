@@ -104,3 +104,9 @@ class Playmat(GameObject):
             return False
         self.resolution.append(card)
         return True
+    
+    def resolution_to_waiting_room(self):
+        num=len(self.resolution)
+        for i in range(num):
+            print("Log: 1 Resolution Card Switch To Waiting Room")
+            self.waiting_room.append(self.resolution.pop(0))
