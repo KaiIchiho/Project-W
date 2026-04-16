@@ -4,10 +4,10 @@ from typing import Callable,Optional,Awaitable
 from core.sub_phase.phase_base import Phase
 from core.sub_phase.standby_phase import StandbyPhase
 from core.sub_phase.stand_phase import StandPhase
-from core.data_reader import DataReader
 from pydantic import BaseModel
-from schemas import object,common,game_flow
 from config import setting_ingame
+# from schemas import object,common,game_flow
+# from core.data_reader import DataReader
 
 class Game():
     ws_send_message:Callable[[dict,str],Awaitable[None]]=None
@@ -42,17 +42,17 @@ class Game():
         self.first_phase=StandbyPhase
         self.pre_turn_first_phase=StandPhase
     
-    async def _send_data_to_user(self,user_id:int,data:BaseModel):
-        if self.ws_send_data_to_user:
-            await self.ws_send_data_to_user(user_id,data)
+    # async def _send_data_to_user(self,user_id:int,data:BaseModel):
+    #     if self.ws_send_data_to_user:
+    #         await self.ws_send_data_to_user(user_id,data)
     
-    async def _send_data_to_room(self,room_id:int,data:BaseModel):
-        if self.ws_send_data_to_room:
-            await self.ws_send_data_to_room(room_id,data)
+    # async def _send_data_to_room(self,room_id:int,data:BaseModel):
+    #     if self.ws_send_data_to_room:
+    #         await self.ws_send_data_to_room(room_id,data)
     
-    async def _send_data_to_room_except_target(self,room_id:int,user_id:int,data:BaseModel):
-        if self.ws_send_data_to_room_except_target:
-            await self.ws_send_data_to_room_except_target(room_id,user_id,data)
+    # async def _send_data_to_room_except_target(self,room_id:int,user_id:int,data:BaseModel):
+    #     if self.ws_send_data_to_room_except_target:
+    #         await self.ws_send_data_to_room_except_target(room_id,user_id,data)
     
     def set_player_1(self,player_1:Player):
         if player_1 is not None:
@@ -66,26 +66,13 @@ class Game():
                 raise ValueError("2 Player Are the Same.")
         self.player_2=player_2
     
+    async def auto_set_first_player(self):
+        await self.set_first_player(self.player_1)
+    
     async def set_first_player(self,player:Player):
         if player is not self.player_1 and player is not self.player_2:
             raise ValueError("Player is not in Game.")
         self.turn_player=player
-        
-        # common=self.get_common_data(
-        common=DataReader.get_common_data(
-            # "first_turnplayer",
-            self,
-            True,
-            f"先攻プレイヤーは{player.name}",
-            player.player_id
-        )
-        
-        # Send Data To Client
-        await self._send_data_to_room(
-            self.room_id,
-            game_flow.FirstTurnPlayerResponse(
-                common=common,
-                first_turn_player=player.player_id))
         
     async def set_player_to_none(
         self,player:Player
@@ -124,24 +111,16 @@ class Game():
     def get_is_in_progress(self)->bool:
         return self._is_in_progress
     
-    async def start_game(self,player_id:int):
+    async def start_game(
+        self,player_id:int,
+        start_game_callback:Callable[["Game",int],Awaitable[None]]=None
+    ):
         if self.check_is_full_players()==False:
             return
         self._is_in_progress=True
-        # self.current_turn=1
-        await self.set_first_player(self.player_1)
-        # await self.send_message(None,"Start Game",player_id)
         
-        log="ゲーム開始"
-        common=DataReader.get_common_data(
-            self,
-            True,
-            log,
-            player_id)
-        data=game_flow.GameStartResponse(
-            common=common
-        )
-        await self.send_data_to_room(data)
+        if start_game_callback:
+            await start_game_callback(self,player_id)
         
         await self._in_start_phase()
     
@@ -315,9 +294,6 @@ class Game():
         card=player.pop_hand(hand_index)
         result=player.set_card_to_stage(card,stage_index)
         return has_card,result
-    
-    # def _set_card_to_stage(self,player:Player,card:Card,stage_index:int)->bool:
-    #     return player.set_card_to_stage(card,stage_index)
             
     def check_is_first_phase(self)->bool:
         return isinstance(self.phase,self.first_phase)
@@ -444,213 +420,3 @@ class Game():
         
         if self.create_message:
             await self.ws_send_message(self.create_message(None,"Game End"),player_id)
-            
-    #-------------------------------------------
-    # def get_common_data(
-    #     self,
-    #     success:bool,
-    #     log:str,
-    #     event_user_id:int
-    # )->common.CommonData:
-    #     player_1=self.get_player_data(self.player_1)
-    #     player_2=self.get_player_data(self.player_2)
-    #     turn_player_user_id=-1
-    #     if self.turn_player:
-    #         turn_player_user_id=self.turn_player.player_id
-    #     return common.CommonData(
-    #         # event=event,
-    #         success=success,
-    #         log=log,
-    #         turn_player_user_id=turn_player_user_id,
-    #         event_user_id=event_user_id,
-    #         player_1=player_1,
-    #         player_2=player_2)
-    
-    # def get_player_data(self,player:Player)->object.PlayerData:
-    #     user_id=-1
-    #     if player:
-    #         user_id=player.player_id
-    #     deck=self.get_deck_data(player)
-    #     stage=self.get_stage_data(player)
-    #     waiting_room=self.get_waiting_room_data(player)
-    #     hand=self.get_hand_data(player)
-    #     clock=self.get_clock_data(player)
-    #     level=self.get_level_data(player)
-    #     stock=self.get_stock_data(player)
-    #     cx=self.get_cx_data(player)
-    #     memory=self.get_memory_data(player)
-    #     return object.build_object_data(
-    #         "player",
-    #         user_id=user_id,
-    #         deck=deck,
-    #         stage=stage,
-    #         waiting_room=waiting_room,
-    #         hand=hand,
-    #         clock=clock,
-    #         level=level,
-    #         stock=stock,
-    #         cx=cx,
-    #         memory=memory)
-    
-    # def get_deck_data(self,player:Player)->object.DeckData:
-    #     # player=self.check_command_player(player_id)
-    #     if not player:
-    #         return object.DeckData()
-    #     if not player.playmat:
-    #         return object.DeckData()
-    #     if not player.playmat.deck:
-    #         return object.DeckData()
-    #     cards:list[int]=[]
-    #     for card in player.playmat.deck.cards:
-    #         if card is None:
-    #             continue
-    #         cards.append(card.card_id)
-        
-    #     return object.build_object_data(
-    #         "deck",
-    #         card_num=len(cards),
-    #         cards=cards)
-    
-    # def get_stage_data(self,player:Player)->object.StageData:
-    #     if not player:
-    #         return object.StageData()
-    #     if not player.playmat:
-    #         return object.StageData()
-    #     cards=[]
-    #     for card in player.playmat.stage:
-    #         if card is not None:
-    #             cards.append(card.card_id)
-    #     markers=[]
-    #     for marker in player.playmat.markers:
-    #         if marker is not None:
-    #             markers.append(marker)
-    #     return object.build_object_data(
-    #         "stage",
-    #         card_num=len(cards),
-    #         cards=cards,
-    #         markers=markers
-    #     )
-    
-    # def get_waiting_room_data(self,player:Player)->object.WaitingRoomData:
-    #     # player=self.check_command_player(player_id)
-    #     if not player:
-    #         return object.WaitingRoomData()
-    #     if not player.playmat:
-    #         return object.WaitingRoomData()
-    #     cards:list[int]=[]
-    #     for card in player.playmat.waiting_room:
-    #         if card is None:
-    #             continue
-    #         cards.append(card.card_id)
-        
-    #     return object.build_object_data(
-    #         "waiting_room",
-    #         card_num=len(cards),
-    #         cards=cards)
-    
-    # def get_hand_data(self,player:Player)->object.HandData:
-    #     # player=self.check_command_player(player_id)
-    #     if not player:
-    #         return object.HandData()
-    #     cards:list[int]=[]
-    #     for card in player.hand:
-    #         if card is None:
-    #             continue
-    #         cards.append(card.card_id)
-        
-    #     return object.build_object_data(
-    #         "hand",
-    #         card_num=len(cards),
-    #         cards=cards)
-
-    
-    # def get_clock_data(self,player:Player)->object.ClockData:
-    #     # player=self.check_command_player(player_id)
-    #     if not player:
-    #         return object.ClockData()
-    #     if not player.playmat:
-    #         return object.ClockData()
-    #     cards:list[int]=[]
-    #     for card in player.playmat.clock:
-    #         if card is None:
-    #             continue
-    #         cards.append(card.card_id)
-        
-    #     return object.build_object_data(
-    #         "clock",
-    #         card_num=len(cards),
-    #         cards=cards)
-    
-    # def get_level_data(self,player:Player)->object.LevelData:
-    #     # player=self.check_command_player(player_id)
-    #     if not player:
-    #         return object.LevelData()
-    #     if not player.playmat:
-    #         return object.LevelData()
-    #     cards:list[int]=[]
-    #     for card in player.playmat.level:
-    #         if card is None:
-    #             continue
-    #         cards.append(card.card_id)
-        
-    #     return object.build_object_data(
-    #         "level",
-    #         card_num=len(cards),
-    #         cards=cards)
-    
-    # def get_stock_data(self,player:Player)->object.StockData:
-    #     # player=self.check_command_player(player_id)
-    #     if not player:
-    #         return object.StockData()
-    #     if not player.playmat:
-    #         return object.StockData()
-    #     cards:list[int]=[]
-    #     for card in player.playmat.stock:
-    #         if card is None:
-    #             continue
-    #         cards.append(card.card_id)
-        
-    #     return object.build_object_data(
-    #         "stock",
-    #         card_num=len(cards),
-    #         cards=cards)
-    
-    # def get_cx_data(self,player:Player)->object.CXData:
-    #     # player=self.check_command_player(player_id)
-    #     if not player:
-    #         return object.CXData()
-    #     if not player.playmat:
-    #         return object.CXData()
-    #     card_id:int=-1
-    #     if player.playmat.climax:
-    #         card_id=player.playmat.climax.card_id
-        
-    #     return object.build_object_data(
-    #         "cx",
-    #         card_id=card_id)
-    
-    # def get_memory_data(self,player:Player)->object.MemoryData:
-    #     # player=self.check_command_player(player_id)
-    #     if not player:
-    #         return object.MemoryData()
-    #     if not player.playmat:
-    #         return object.MemoryData()
-    #     cards:list[int]=[]
-    #     for card in player.playmat.memory:
-    #         if card is None:
-    #             continue
-    #         cards.append(card.card_id)
-        
-    #     return object.build_object_data(
-    #         "memory",
-    #         card_num=len(cards),
-    #         cards=cards)
-        
-    # def get_add_card_data(self,card_id:int)->object.AddCardData:
-    #     card_img=""
-        
-    #     return object.build_object_data(
-    #         "add_card",
-    #         card_id=card_id,
-    #         card_img=card_img
-    #     )

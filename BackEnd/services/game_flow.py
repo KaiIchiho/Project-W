@@ -6,8 +6,9 @@ from schemas.game_flow import SelectDeckResponse,StandbyResponse
 from pydantic import BaseModel
 import importlib
 from services.login_logout import get_logedin_user_name
-from schemas import event_type
+from schemas import event_type,game_flow
 from db.deck_repo import read_deck_name_by_id
+from core.data_reader import DataReader
 
 ws_send_message_handler:Callable[[dict,str],Awaitable[None]]
 create_message_handler:Callable[[int,str],dict]
@@ -146,4 +147,20 @@ async def receive_ingame_command(data:dict,user_id:int):
     await game.handle_action(data,event,user_id)
     
 async def start_game(game:Game,player_id:int):
-    await game.start_game(player_id)
+    await game.start_game(player_id,start_game_callback)
+async def start_game_callback(game:Game,player_id:int):
+    await auto_set_first_player(game)
+    common=DataReader.get_common_data(
+        game,True,"ゲーム開始",player_id)
+    res=game_flow.GameStartResponse(
+        common=common)
+    await game.send_data_to_room(res)
+async def auto_set_first_player(game:Game):
+    await game.auto_set_first_player()
+    player_id=game.get_turn_player_id
+    player_name=game.get_turn_player_name()
+    common=DataReader.get_common_data(
+        game,True,f"先攻プレイヤーは{player_name}",player_name)
+    res=game_flow.FirstTurnPlayerResponse(
+        common=common,first_turn_player=player_id)
+    await game.send_data_to_room(res)
