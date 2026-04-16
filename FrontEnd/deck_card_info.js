@@ -92,7 +92,7 @@ async function readCardInfo(){
     let data={
         event:"card_info",
         card_id:selected_card_id,
-        columns:["card_img", "card_color", "card_trigger", "card_power"]
+        columns:["card_img", "card_color", "card_trigger", "card_power","card_type"]
     }
     sendJson(data)
 }
