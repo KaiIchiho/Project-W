@@ -13,6 +13,7 @@ class MainPhase(Phase):
     def __init__(self):
         super().__init__()
         self.handlers[event_type.MAIN_PHASE_CHAR_PLAY]="char_play"
+        self.handlers[event_type.MAIN_PHASE_EVENT_PLAY]="event_play"
         
     async def on_enter(self, game:"Game"):
         await super().on_enter(game)
