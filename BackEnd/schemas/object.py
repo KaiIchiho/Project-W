@@ -19,14 +19,14 @@ class UserData(ObjectBaseData):
 class DeckData(ObjectBaseData):
     type:Literal["deck"]=Field(default="deck", exclude=True)
     card_num:int=-1
-    cards:list[int]=Field(default_factory=list)
+    cards:list[dict]=Field(default_factory=list)
 
 @register("stage",registry)
 class StageData(ObjectBaseData):
     type:Literal["stage"]=Field(default="stage", exclude=True)
     card_num:int=-1
-    cards:list[int]=Field(default_factory=lambda:[-1]*5)
-    markers:list[list[int]]=Field(default_factory=lambda:[[] for _ in range(5)])
+    cards:list[dict]=Field(default_factory=lambda:[{"card_id": -1} for _ in range(5)])
+    markers:list[list[dict]]=Field(default_factory=lambda:[[] for _ in range(5)])
 
 @register("waiting_room",registry)
 class WaitingRoomData(ObjectBaseData):
@@ -35,34 +35,42 @@ class WaitingRoomData(ObjectBaseData):
     char_card_num:int=-1
     event_card_num:int=-1
     cx_card_num:int=-1
-    cards:list[int]=Field(default_factory=list)
+    cards:list[dict]=Field(default_factory=list)
 
 @register("hand",registry)
 class HandData(ObjectBaseData):
     type:Literal["hand"]=Field(default="hand", exclude=True)
     card_num:int=-1
-    cards:list[int]=Field(default_factory=list)
+    cards:list[dict]=Field(default_factory=list)
 
 @register("clock",registry)
 class ClockData(ObjectBaseData):
     type:Literal["clock"]=Field(default="clock", exclude=True)
     card_num:int=-1
-    cards:list[int]=Field(default_factory=list)
+    char_card_num:int=-1
+    event_card_num:int=-1
+    cx_card_num:int=-1
+    cards:list[dict]=Field(default_factory=list)
     card_colors:list[str]=Field(default_factory=list)
 
 @register("level",registry)
 class LevelData(ObjectBaseData):
     type:Literal["level"]=Field(default="level", exclude=True)
     card_num:int=-1
-    cards:list[int]=Field(default_factory=list)
+    char_card_num:int=-1
+    event_card_num:int=-1
+    cx_card_num:int=-1
+    cards:list[dict]=Field(default_factory=list)
     card_colors:list[str]=Field(default_factory=list)
 
 @register("stock",registry)
 class StockData(ObjectBaseData):
     type:Literal["stock"]=Field(default="stock", exclude=True)
     card_num:int=-1
+    char_card_num:int=-1
+    event_card_num:int=-1
     cx_card_num:int=-1
-    cards:list[int]=Field(default_factory=list)
+    cards:list[dict]=Field(default_factory=list)
     
     # [{index:1,tirgger:"xxx"},]
     cx_trigger:list[dict]=Field(default_factory=list)
@@ -76,7 +84,10 @@ class CXData(ObjectBaseData):
 class MemoryData(ObjectBaseData):
     type:Literal["memory"]=Field(default="memory", exclude=True)
     card_num:int=-1
-    cards:list[int]=Field(default_factory=list)
+    char_card_num:int=-1
+    event_card_num:int=-1
+    cx_card_num:int=-1
+    cards:list[dict]=Field(default_factory=list)
 
 @register("player",registry)
 class PlayerData(ObjectBaseData):

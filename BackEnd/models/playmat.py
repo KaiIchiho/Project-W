@@ -17,7 +17,7 @@ class Playmat(GameObject):
         self.waiting_room:list[Card]=[]
         
         self.stage:list[Optional[Card]]=[None]*5
-        self.markers:list[Optional[list[Card]]]=[None]*5
+        self.markers:list[list[Card]]=[[] for _ in range(5)]
         self.stage_stand:list[bool]=[True]*5
         
         self.clock:list[Optional[Card]]=[None]*6

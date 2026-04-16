@@ -63,10 +63,12 @@ class DataReader():
         if not player.playmat.deck:
             return object.DeckData()
         cards:list[int]=[]
+        card_info_list=["card_id"]
         for card in player.playmat.deck.cards:
             if card is None:
                 continue
-            cards.append(card.card_id)
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards.append(card_info)
         
         return object.build_object_data(
             "deck",
@@ -80,15 +82,30 @@ class DataReader():
         if not player.playmat:
             return object.StageData()
         cards=[]
+        card_info_list=[
+            "card_id",
+            "card_power",
+            "card_soul",
+            "card_cost",
+            "card_level",
+            "card_color",
+            "card_trigger",
+            "card_effect_text"]
         for card in player.playmat.stage:
             if card is not None:
-                cards.append(card.card_id)
+                card_info=card.get_current_info_by_list(card_info_list)
+                cards.append(card_info)
             else:
-                cards.append(-1)
+                cards.append({"card_info":-1})
         markers=[]
+        marker_info_list=["card_id"]
         for marker in player.playmat.markers:
             if marker is not None:
-                markers.append(marker)
+                marker_info=[]
+                for card in marker:
+                    info=card.get_current_info_by_list(marker_info_list)
+                    marker_info.append(info)
+                markers.append(marker_info)
             else:
                 markers.append([])
         return object.build_object_data(
@@ -105,10 +122,13 @@ class DataReader():
         if not player.playmat:
             return object.WaitingRoomData()
         cards:list[int]=[]
+        card_info_list=["card_id"]
         for card in player.playmat.waiting_room:
             if card is None:
                 continue
-            cards.append(card.card_id)
+            # cards.append(card.card_id)
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards.append(card_info)
         
         return object.build_object_data(
             "waiting_room",
@@ -120,10 +140,13 @@ class DataReader():
         if not player:
             return object.HandData()
         cards:list[int]=[]
+        card_info_list=["card_id"]
         for card in player.hand:
             if card is None:
                 continue
-            cards.append(card.card_id)
+            # cards.append(card.card_id)
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards.append(card_info)
         
         return object.build_object_data(
             "hand",
@@ -137,10 +160,13 @@ class DataReader():
         if not player.playmat:
             return object.ClockData()
         cards:list[int]=[]
+        card_info_list=["card_id"]
         for card in player.playmat.clock:
             if card is None:
                 continue
-            cards.append(card.card_id)
+            # cards.append(card.card_id)
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards.append(card_info)
         
         return object.build_object_data(
             "clock",
@@ -154,10 +180,13 @@ class DataReader():
         if not player.playmat:
             return object.LevelData()
         cards:list[int]=[]
+        card_info_list=["card_id"]
         for card in player.playmat.level:
             if card is None:
                 continue
-            cards.append(card.card_id)
+            # cards.append(card.card_id)
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards.append(card_info)
         
         return object.build_object_data(
             "level",
@@ -172,10 +201,13 @@ class DataReader():
         if not player.playmat:
             return object.StockData()
         cards:list[int]=[]
+        card_info_list=["card_id"]
         for card in player.playmat.stock:
             if card is None:
                 continue
-            cards.append(card.card_id)
+            # cards.append(card.card_id)
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards.append(card_info)
         
         return object.build_object_data(
             "stock",
@@ -204,10 +236,13 @@ class DataReader():
         if not player.playmat:
             return object.MemoryData()
         cards:list[int]=[]
+        card_info_list=["card_id"]
         for card in player.playmat.memory:
             if card is None:
                 continue
-            cards.append(card.card_id)
+            # cards.append(card.card_id)
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards.append(card_info)
         
         return object.build_object_data(
             "memory",
