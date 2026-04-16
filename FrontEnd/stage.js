@@ -62,10 +62,10 @@ function eventPlay(){
     let data={
         client_common:{
             event:"main_phase_event_play",
-            "use_card": {
-                "hand_index": 4,
-            }
         },
+        use_card: {
+            hand_index:selected_btn_index[0],
+        }
     }
     sendJson(data)
 }
