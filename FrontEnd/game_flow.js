@@ -87,6 +87,7 @@ function handleClockPhaseDraw(data){
 function handledMainPhaseCharPlay(data){
     let common=data.common;
     updateHandByCommon(common);
+    console.log(common.stage)
     updateStage(common.stage)
 }
 
