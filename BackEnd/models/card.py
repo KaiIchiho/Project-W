@@ -34,7 +34,7 @@ class Card(GameObject):
         for key in card_repo.allowed_fields:
             key_list.append(key)
         key_value=card_repo.read_card_field_list(self.card_id,key_list)
-        for key,value in key_value:
+        for key,value in key_value.items():
             self._set_current_info(key,value)
     
     def _set_current_info(self,info_name:str,value):
