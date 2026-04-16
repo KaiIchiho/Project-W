@@ -160,7 +160,7 @@ async def auto_set_first_player(game:Game):
     player_id=game.get_turn_player_id
     player_name=game.get_turn_player_name()
     common=DataReader.get_common_data(
-        game,True,f"先攻プレイヤーは{player_name}",player_name)
+        game,True,f"先攻プレイヤーは{player_name}",player_id)
     res=game_flow.FirstTurnPlayerResponse(
         common=common,first_turn_player=player_id)
     await game.send_data_to_room(res)
