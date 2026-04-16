@@ -267,7 +267,7 @@ class DataReader():
             cards.append(card_info)
         
         return object.build_object_data(
-            "memory",
+            "resolution",
             card_num=len(cards),
             cards=cards)
     

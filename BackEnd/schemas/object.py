@@ -90,7 +90,7 @@ class MemoryData(ObjectBaseData):
 
 @register("resolution",registry)
 class ResolutionData(ObjectBaseData):
-    type:Literal["player"]=Field(default="player", exclude=True)
+    type:Literal["resolution"]=Field(default="resolution", exclude=True)
     card_num:int=-1
     cards:list[dict]=Field(default_factory=list)
 
