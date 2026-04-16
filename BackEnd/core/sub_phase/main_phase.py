@@ -71,3 +71,6 @@ class MainPhase(Phase):
         res=game_flow.MainPhaseEventPlayResponse(
             common=common)
         await game.send_data_to_room(res)
+        
+        # Temporary
+        game.check_command_player(player_id).process_resolution()
