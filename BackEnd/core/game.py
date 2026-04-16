@@ -300,7 +300,6 @@ class Game():
             return has_card,False
         
         card=player.pop_hand(hand_index)
-        card_repo.read_card_type()
         result=player.set_card_to_stage(card,stage_index)
         return has_card,result
             
