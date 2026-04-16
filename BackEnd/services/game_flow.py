@@ -157,7 +157,7 @@ async def start_game_callback(game:Game,player_id:int):
     await game.send_data_to_room(res)
 async def auto_set_first_player(game:Game):
     await game.auto_set_first_player()
-    player_id=game.get_turn_player_id
+    player_id=game.get_turn_player_id()
     player_name=game.get_turn_player_name()
     common=DataReader.get_common_data(
         game,True,f"先攻プレイヤーは{player_name}",player_id)
