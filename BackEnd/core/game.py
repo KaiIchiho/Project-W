@@ -6,6 +6,8 @@ from core.sub_phase.standby_phase import StandbyPhase
 from core.sub_phase.stand_phase import StandPhase
 from pydantic import BaseModel
 from config import setting_ingame
+from db import card_repo
+from core.card_type import CardType
 # from schemas import object,common,game_flow
 # from core.data_reader import DataReader
 
@@ -291,7 +293,14 @@ class Game():
     def play_char_card(self,player_id:int,hand_index:int,stage_index:int):
         player=self.check_command_player(player_id)
         has_card=player.check_has_stage_card(stage_index)
+        
+        card_id=player.read_hand_id(hand_index)
+        card_type=card_repo.read_card_type(card_id)
+        if card_type!=CardType.CH:
+            return has_card,False
+        
         card=player.pop_hand(hand_index)
+        card_repo.read_card_type()
         result=player.set_card_to_stage(card,stage_index)
         return has_card,result
             

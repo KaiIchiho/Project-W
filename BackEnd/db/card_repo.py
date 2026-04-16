@@ -1,5 +1,6 @@
 from db import crud
 from config.setting_database import CARD_TABLE
+from core.card_type import CardType
 
 allowed_fields={
     "card_img":"image_filename",
@@ -57,3 +58,10 @@ def read_card_field_list(card_id:int,field_list:list[str])->dict:
     print("Log: read_card_field_list")
     print(field_value)
     return field_value
+
+def read_card_type(card_id:int)->CardType:
+    type=read_card_field(card_id,"card_type")
+    try:
+        return CardType(type)
+    except ValueError:
+        return None

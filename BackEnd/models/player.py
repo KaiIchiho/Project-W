@@ -111,6 +111,12 @@ class Player(GameObject):
         else:
             raise ValueError(f"{self.player_id} No Playmat")
     
+    def read_hand_id(self,hand_index:int)->int:
+        if 0<=hand_index<len(self.hand):
+            return self.hand[hand_index].card_id
+        else:
+            raise ValueError("Hand Index Over the Range")
+        
     def pop_hand(self,hand_index:int)->Card:
         if 0<=hand_index<len(self.hand):
             card=self.hand.pop(hand_index)
