@@ -66,7 +66,7 @@ class StandbyPhase(Phase):
         self,game:"Game",req:game_flow.SwapHandCardsRequest,player_id:int
     ):
         hand_index_list=req.hand_index
-        success,identity=await game.swap_hand_cards(player_id,hand_index_list)
+        success,identity=game.swap_hand_cards(player_id,hand_index_list)
         log=""
         if success:
             log=f"{game.get_player_name_by_id(player_id)}は手札の入れ替えが成功しました"
