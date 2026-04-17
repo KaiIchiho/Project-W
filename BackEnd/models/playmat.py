@@ -52,7 +52,7 @@ class Playmat(GameObject):
     def get_all_stage_status(self)->list:
         status_list=[]
         for status in self.stage_status:
-            status_str=status.value if status else None
+            status_str=status.value if status else ""
             status_list.append(status_str)
         return status_list
     
