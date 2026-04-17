@@ -7,9 +7,8 @@ from fastapi.staticfiles import StaticFiles
 app=FastAPI()
 
 # テスト用のフロントエンド
-# app.mount("/static", StaticFiles(directory="masterclient"), name="static")
 app.mount("/static", StaticFiles(directory="testclient"), name="static")
-app.mount("/static", StaticFiles(directory="client"), name="static")
+# app.mount("/static", StaticFiles(directory="client"), name="static")
 # @app.get("/testclient")
 # async def get():
 #     with open("testclient/test-frontend.html") as f:
