@@ -77,7 +77,7 @@ function charMove(){
         "client_common":{
             event:"main_phase_char_move",
         },
-        "stage_posisition":{
+        "stage_position":{
             "index": selected_stage_index[0],
         },
         "target_stage_position":{
