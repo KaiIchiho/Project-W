@@ -72,7 +72,7 @@ function eventPlay(){
 
 function charMove(){
     console.log("charMove");
-    if(selected_stage_index.length()<2){return}
+    if(selected_stage_index.length<2){return}
     let data={
         "client_common":{
             event:"main_phase_char_move",
