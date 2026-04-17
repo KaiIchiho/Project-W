@@ -48,7 +48,13 @@ class Playmat(GameObject):
         
     def set_card_to_memory(self,card:Card):
         self.climax=card
-        
+    
+    def get_all_stage_status(self)->list:
+        status_list=[]
+        for status in self.stage_status:
+            status_str=status.value if status else None
+            status_list.append(status_str)
+        return status_list
     # def all_stage_stand(self):
     #     for i in range(len(self.stage_stand)):
     #         self.change_stage_stand(i,True)

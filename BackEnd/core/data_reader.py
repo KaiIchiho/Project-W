@@ -110,10 +110,13 @@ class DataReader():
                 markers.append(marker_info)
             else:
                 markers.append([])
+                
+        stage_status=player.get_all_stage_status()
         return object.build_object_data(
             "stage",
             card_num=len(cards),
             cards=cards,
+            stage_status=stage_status,
             markers=markers
         )
     

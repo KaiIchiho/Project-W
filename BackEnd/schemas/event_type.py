@@ -18,6 +18,7 @@ NEXT_TURN="next_turn"
 
 ON_PHASE_CHANGED="on_phase_changed"
 
+STAND_PHASE_ALL_STAND="stand_phase_all_stand"
 DRAW_PHASE_DRAW="draw_phase_draw"
 CLOCK_PHASE_CLOCK="clock_phase_clock"
 CLOCK_PHASE_DRAW="clock_phase_draw"

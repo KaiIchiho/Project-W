@@ -47,6 +47,9 @@ class NextTurnRequest(WSCommonRequestBase):
 class NextTurnResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.NEXT_TURN
 
+class StandPhaseAllStandRepons(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.STAND_PHASE_ALL_STAND
+
 class DrawPhaseDrawSelfResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.DRAW_PHASE_DRAW
     add_hand_card:object.AddCardData

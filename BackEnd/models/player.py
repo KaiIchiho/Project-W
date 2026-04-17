@@ -87,6 +87,12 @@ class Player(GameObject):
     def get_is_swap_hand(self)->bool:
         return self._is_swap_hand
     
+    def get_all_stage_status(self)->list:
+        if self.playmat:
+            return self.playmat.get_all_stage_status()
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")
+    
     def all_stage_stand(self):
         self.playmat.all_stage_stand()
         
