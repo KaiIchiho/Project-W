@@ -64,7 +64,7 @@ class ClockPhaseClockOtherResponse(WSCommonResponseBase):
 
 class ClockPhaseDrowSelfResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.CLOCK_PHASE_DRAW
-    add_two_hand_cards:list[int]=[-1,-1]
+    add_two_hand_cards:list[dict]=Field(default_factroy=lambda:[{"card_id":-1} for _ in range(2)])
 class ClockPhaseDrowOtherResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.CLOCK_PHASE_DRAW
 
