@@ -1,5 +1,6 @@
 from pydantic import BaseModel,Field
 from typing import Literal
+from typing import Optional
 from schemas.register import register
 
 registry={}
@@ -25,7 +26,7 @@ class StageData(ObjectBaseData):
     type:Literal["stage"]=Field(default="stage", exclude=True)
     card_num:int=-1
     cards:list[dict]=Field(default_factory=lambda:[{"card_id": -1} for _ in range(5)])
-    stage_status:list[str|None]=Field(default_factory=lambda:[None for _ in range(5)])
+    stage_status:list[Optional[str]]=Field(default_factory=lambda:[None for _ in range(5)])
     markers:list[list[dict]]=Field(default_factory=lambda:[[] for _ in range(5)])
 
 @register("waiting_room",registry)
