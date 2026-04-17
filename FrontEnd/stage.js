@@ -1,5 +1,5 @@
 let stage_buttons=[]
-let selected_stage_index=-1
+let selected_stage_index=[]
 window.addEventListener("DOMContentLoaded", () => {
     initStage();
 });
@@ -11,7 +11,7 @@ function initStage(){
         btn.textContent=i+1;
         stage_buttons.push(btn)
         btn.onclick=()=>{
-            selected_stage_index=i;
+            selected_stage_index.push(i);
             console.log("Selected Stage: ",selected_stage_index)
         }
         stage.appendChild(btn);
@@ -65,6 +65,23 @@ function eventPlay(){
         },
         use_card: {
             hand_index:selected_btn_index[0],
+        }
+    }
+    sendJson(data)
+}
+
+function charMove(){
+    console.log("charMove");
+    if(selected_stage_index.length()<2){return}
+    let data={
+        "client_common":{
+            event:"main_phase_char_move",
+        },
+        "stage_posisition":{
+            "index": selected_stage_index[0],
+        },
+        "target_stage_position":{
+            "index": selected_stage_index[1],
         }
     }
     sendJson(data)

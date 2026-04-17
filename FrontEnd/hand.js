@@ -108,7 +108,9 @@ function clockSelectedHand(){
         client_common:{
             event:"clock_phase_clock"
         },
-        "clocked_hand_card":selected_btn_index[0],
+        clocked_hand_card:{
+            hand_index:selected_btn_index[0]
+        }
     }
     sendJson(data);
 }
