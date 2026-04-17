@@ -42,6 +42,7 @@ class Phase:
             print(f"Action {handler_name} Not Found")
             return
         
+        print(f"Log: handler action name: {handler_name}")
         handler=getattr(self,handler_name)
         await handler(game,req,player_id)
         

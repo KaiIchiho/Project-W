@@ -88,7 +88,7 @@ class MainPhase(Phase):
         if not game.check_is_turn_player_command(player_id):
             return
         result,ori_card_id,tar_card_id,ori_origin_status,tar_origin_status,ori_card_status,tar_card_status\
-        =game.move_stage_char(player_id)
+        =game.move_stage_char(player_id,req.stage_position.index,req.target_stage_position.index)
         stage_position={
             "index":req.stage_position.index,
             "card_id":tar_card_id,
