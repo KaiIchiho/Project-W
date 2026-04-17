@@ -48,8 +48,8 @@ class StandbyPhase(Phase):
     async def draw_players_initial_hand(self,game:"Game"):
         result=False
         log="" 
-        result_1=await game.draw_initial_hand(game.get_turn_player_id())
-        result_2=await game.draw_initial_hand(game.get_other_player_id())
+        result_1=game.draw_initial_hand(game.get_turn_player_id())
+        result_2=game.draw_initial_hand(game.get_other_player_id())
         if result_1 and result_2:
             result=True
             log="初期手札のドロー（各5枚）が成功しました"
