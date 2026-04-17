@@ -57,7 +57,7 @@ class Playmat(GameObject):
         return status_list
     
     def all_stage_rest_stand(self):
-        for i in range(len(self.stage_stand)):
+        for i in range(len(self.stage_status)):
             self.change_stage_status(i,StageStatus.STAND,StageStatus.REST)
         
     def change_stage_status(self,stage_index:int,status:StageStatus,condition_status:StageStatus=None):
