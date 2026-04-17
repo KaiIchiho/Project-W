@@ -68,6 +68,10 @@ function handleShuffle(data){
     // console.log(data)
 }
 
+function handleStandPhaseAllStand(data){
+    
+}
+
 function handleDrawPhaseDraw(data){
     // console.log(data)
     let common=data.common;

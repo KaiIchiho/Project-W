@@ -44,18 +44,6 @@ class Game():
         self.first_phase=StandbyPhase
         self.pre_turn_first_phase=StandPhase
     
-    # async def _send_data_to_user(self,user_id:int,data:BaseModel):
-    #     if self.ws_send_data_to_user:
-    #         await self.ws_send_data_to_user(user_id,data)
-    
-    # async def _send_data_to_room(self,room_id:int,data:BaseModel):
-    #     if self.ws_send_data_to_room:
-    #         await self.ws_send_data_to_room(room_id,data)
-    
-    # async def _send_data_to_room_except_target(self,room_id:int,user_id:int,data:BaseModel):
-    #     if self.ws_send_data_to_room_except_target:
-    #         await self.ws_send_data_to_room_except_target(room_id,user_id,data)
-    
     def set_player_1(self,player_1:Player):
         if player_1 is not None:
             if player_1 is self.player_2:
@@ -224,12 +212,20 @@ class Game():
         if self.phase.is_complete:
             await self.phase.on_next_phase(self,action)
     
-    async def draw_initial_hand(self,player_id:int)->bool:
+    def draw_initial_hand(self,player_id:int)->bool:
         player=self._get_ingame_player_by_id(player_id)
         if not player:
             return False
         for i in range(setting_ingame.INITIAL_HAND):
             player.draw()
+        return True
+    
+    def player_all_stage_rest_stand(self,player_id:int)->bool:
+        player=self.check_command_player(player_id)
+        if not player:
+            return False
+        
+        player.all_stage_rest_stand()
         return True
     
     def player_draw(self,player_id:int)->int:
@@ -248,7 +244,7 @@ class Game():
             card_id=player.draw()
         return card_id
     
-    async def swap_hand_cards(self,player_id:int,hand_index_list:list[int]):
+    def swap_hand_cards(self,player_id:int,hand_index_list:list[int]):
         player:Player=self.check_command_player(player_id)
         identity=self.check_player_identity(player)
         success=False
@@ -289,7 +285,6 @@ class Game():
             self.phase=self.phase.next_phase()
             await self.phase.on_enter(self)
     
-    
     def play_char_card(self,player_id:int,hand_index:int,stage_index:int):
         player=self.check_command_player(player_id)
         has_card=player.check_has_stage_card(stage_index)
@@ -320,7 +315,7 @@ class Game():
         if not player:
             return False,None,None,None,None,None,None
         return player.move_stage_char(ori_index,tar_index)
-        
+    
     def check_is_first_phase(self)->bool:
         return isinstance(self.phase,self.first_phase)
     

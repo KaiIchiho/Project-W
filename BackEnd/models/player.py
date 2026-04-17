@@ -93,8 +93,8 @@ class Player(GameObject):
         else:
             raise ValueError(f"{self.player_id} No Playmat")
     
-    def all_stage_stand(self):
-        self.playmat.all_stage_stand()
+    def all_stage_rest_stand(self):
+        self.playmat.all_stage_rest_stand()
         
     def change_stage_stand(self,stage_index:int,is_stand:bool):
         self.playmat.change_stage_stand(stage_index,is_stand)

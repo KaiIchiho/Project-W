@@ -1,6 +1,5 @@
 from core.sub_phase.phase_base import Phase
 from core.sub_phase.climax_phase import ClimaxPhase
-from services.parse_model import parse_model
 from core.data_reader import DataReader
 from schemas import event_type,game_flow
 from typing import TYPE_CHECKING

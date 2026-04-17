@@ -10,7 +10,7 @@ class StageStatus(str,Enum):
     REVERSE="reverse"
 
 class Playmat(GameObject):
-    on_stage_card_stand_changed:Callable[[int,bool],None]
+    on_stage_card_stand_changed:Callable[[int,StageStatus],None]=None
     
     # deck:Optional[Deck]=None
     
@@ -55,16 +55,19 @@ class Playmat(GameObject):
             status_str=status.value if status else None
             status_list.append(status_str)
         return status_list
-    # def all_stage_stand(self):
-    #     for i in range(len(self.stage_stand)):
-    #         self.change_stage_stand(i,True)
+    
+    def all_stage_rest_stand(self):
+        for i in range(len(self.stage_stand)):
+            self.change_stage_status(i,StageStatus.STAND,StageStatus.REST)
         
-    # def change_stage_stand(self,stage_index:int,is_stand:bool):
-    #     if not 0<=stage_index<5:
-    #         return
-    #     if self.stage_stand[stage_index]!=is_stand:
-    #         self.stage_stand[stage_index]=is_stand
-    #         self.on_stage_card_stand_changed(stage_index,is_stand)
+    def change_stage_status(self,stage_index:int,status:StageStatus,condition_status:StageStatus=None):
+        if not 0<=stage_index<5:
+            return
+        if condition_status and self.stage_status[stage_index]!=condition_status:
+            return
+        self.stage_status[stage_index]=status
+        if self.on_stage_card_stand_changed:
+            self.on_stage_card_stand_changed(stage_index,status)
     
     def set_card_to_waiting_room(self,card:Card):
         self.waiting_room.append(card)
