@@ -141,3 +141,9 @@ class Player(GameObject):
             return self.playmat.resolution_to_waiting_room()
         else:
             raise ValueError(f"{self.player_id} No Playmat")
+        
+    def move_stage_char(self,ori_index:int,tar_index:int):
+        if self.playmat:
+            return self.playmat.move_stage_char(ori_index,tar_index)
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")

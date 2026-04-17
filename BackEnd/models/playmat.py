@@ -2,6 +2,12 @@ from models.base import GameObject
 from models.deck import Deck
 from models.card import Card
 from typing import Optional,Callable
+from enum import Enum
+
+class StageStatus(str,Enum):
+    STAND="stand"
+    REST="rest"
+    REVERSE="reverse"
 
 class Playmat(GameObject):
     on_stage_card_stand_changed:Callable[[int,bool],None]
@@ -18,6 +24,7 @@ class Playmat(GameObject):
         
         self.stage:list[Optional[Card]]=[None]*5
         self.markers:list[list[Card]]=[[] for _ in range(5)]
+        self.stage_status:list[StageStatus]=[None]*5
         self.stage_stand:list[bool]=[True]*5
         
         self.clock:list[Optional[Card]]=[None]*6
@@ -87,12 +94,13 @@ class Playmat(GameObject):
         else:
             raise ValueError("Stage Index Over the Range")
         
-    def set_card_to_stage(self,card:Card,stage_index:int)->bool:
+    def set_card_to_stage(self,card:Card,stage_index:int,status:StageStatus=StageStatus.STAND)->bool:
         if not card:
             return False
         if 0<=stage_index<len(self.stage):
             stage=self.stage[stage_index]
             self.stage[stage_index]=card
+            self.stage_stand[stage_index]=status
             if stage:
                 self.set_card_to_waiting_room(stage)
             return True
@@ -110,3 +118,31 @@ class Playmat(GameObject):
         for i in range(num):
             print("Log: 1 Resolution Card Switch To Waiting Room")
             self.waiting_room.append(self.resolution.pop(0))
+            
+    def move_stage_char(self,ori_index:int,tar_index:int):
+        result=False
+        tar_card_id=None
+        ori_card_id=None
+        ori_origin_status=""
+        ori_card_status=""
+        tar_origin_status=""
+        tar_card_status=""
+        if 0<=ori_index<len(self.stage) and 0<=tar_index<len(self.stage):
+            card=self.stage[ori_index]
+            tar_card_id=self.stage[tar_index].card_id if self.stage[tar_index] else None
+            ori_origin_status=self.stage_status[ori_index].value
+            tar_origin_status=self.stage_status[tar_index].value if self.stage_status[tar_index] else None
+            if not card:
+                return result,ori_card_id,tar_card_id,ori_origin_status,tar_origin_status,ori_card_status,tar_card_status
+            ori_card_id=card.card_id
+            
+            self.stage[ori_index],self.stage[tar_index]=\
+                self.stage[tar_index],self.stage[ori_index]
+            self.stage_status[ori_index],self.stage_status[tar_index]=\
+                self.stage_status[tar_index],self.stage_status[ori_index]
+            
+            ori_card_status=self.stage_status[ori_index].value if self.stage_status[ori_index] else None
+            tar_card_status=self.stage_status[tar_index].value
+            result=True
+            
+        return result,ori_card_id,tar_card_id,ori_origin_status,tar_origin_status,ori_card_status,tar_card_status

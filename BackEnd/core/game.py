@@ -314,6 +314,12 @@ class Game():
         card=player.pop_hand(hand_index)
         result=player.set_card_to_resolution(card)
         return result
+    
+    def move_stage_char(self,player_id:int,ori_index:int,tar_index:int):
+        player=self.check_command_player(player_id)
+        if not player:
+            return False,None,None,None,None,None,None
+        return player.move_stage_char(ori_index,tar_index)
         
     def check_is_first_phase(self)->bool:
         return isinstance(self.phase,self.first_phase)

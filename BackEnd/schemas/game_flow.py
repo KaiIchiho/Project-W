@@ -81,11 +81,20 @@ class MainPhaseEventPlayRequest(WSCommonRequestBase):
 class MainPhaseEventPlayResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.MAIN_PHASE_EVENT_PLAY
 
+class MainPhaseCharMoveRequest(WSCommonRequestBase):
+    stage_position:sub_request.MainPhaseCharMoveStagePos
+    target_stage_position:sub_request.MainPhaseCharMoveStagePos
+class MainPhaseCharMoveResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.MAIN_PHASE_CHAR_MOVE
+    stage_position:dict=Field(default_factroy=dict)
+    target_stage_position:dict=Field(default_factroy=dict)
+
 event_req={
     event_type.SWAP_HAND_CARDS:SwapHandCardsRequest,
     event_type.NEXT_PHASE:NextPhaseRequest,
     event_type.NEXT_TURN:NextTurnRequest,
     event_type.CLOCK_PHASE_CLOCK:ClockPhaseClockRequest,
     event_type.MAIN_PHASE_CHAR_PLAY:MainPhaseCharPlayRequest,
-    event_type.MAIN_PHASE_EVENT_PLAY:MainPhaseEventPlayRequest
+    event_type.MAIN_PHASE_EVENT_PLAY:MainPhaseEventPlayRequest,
+    event_type.MAIN_PHASE_CHAR_MOVE:MainPhaseCharMoveRequest,
 }
