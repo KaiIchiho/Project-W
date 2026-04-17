@@ -25,7 +25,7 @@ class Playmat(GameObject):
         self.stage:list[Optional[Card]]=[None]*5
         self.markers:list[list[Card]]=[[] for _ in range(5)]
         self.stage_status:list[StageStatus]=[None]*5
-        self.stage_stand:list[bool]=[True]*5
+        # self.stage_stand:list[bool]=[True]*5
         
         self.clock:list[Optional[Card]]=[None]*6
         self.level:list[Optional[Card]]=[None]*4
@@ -49,16 +49,16 @@ class Playmat(GameObject):
     def set_card_to_memory(self,card:Card):
         self.climax=card
         
-    def all_stage_stand(self):
-        for i in range(len(self.stage_stand)):
-            self.change_stage_stand(i,True)
+    # def all_stage_stand(self):
+    #     for i in range(len(self.stage_stand)):
+    #         self.change_stage_stand(i,True)
         
-    def change_stage_stand(self,stage_index:int,is_stand:bool):
-        if not 0<=stage_index<5:
-            return
-        if self.stage_stand[stage_index]!=is_stand:
-            self.stage_stand[stage_index]=is_stand
-            self.on_stage_card_stand_changed(stage_index,is_stand)
+    # def change_stage_stand(self,stage_index:int,is_stand:bool):
+    #     if not 0<=stage_index<5:
+    #         return
+    #     if self.stage_stand[stage_index]!=is_stand:
+    #         self.stage_stand[stage_index]=is_stand
+    #         self.on_stage_card_stand_changed(stage_index,is_stand)
     
     def set_card_to_waiting_room(self,card:Card):
         self.waiting_room.append(card)
@@ -100,7 +100,7 @@ class Playmat(GameObject):
         if 0<=stage_index<len(self.stage):
             stage=self.stage[stage_index]
             self.stage[stage_index]=card
-            self.stage_stand[stage_index]=status
+            self.stage_status[stage_index]=status
             if stage:
                 self.set_card_to_waiting_room(stage)
             return True
