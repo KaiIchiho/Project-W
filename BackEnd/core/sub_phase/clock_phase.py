@@ -23,7 +23,8 @@ class ClockPhase(Phase):
     async def start_clock(self,game:"Game",req:game_flow.ClockPhaseClockRequest,player_id:int):
         if not game.check_is_turn_player_command(player_id):
             return
-        card_id=game._set_hand_to_clock(player_id,req.clocked_hand_card)
+        hand_index=req.clocked_hand_card.hand_index
+        card_id=game._set_hand_to_clock(player_id,hand_index)
         success=False
         log=""
         player_name=game.get_player_name_by_id(player_id)
@@ -36,7 +37,7 @@ class ClockPhase(Phase):
         common=DataReader.get_common_data(game,success,log,player_id)
         res_self=game_flow.ClockPhaseClockSelfResponse(
             common=common,
-            clocked_hand_card=card_id)
+            clocked_hand_card={"card_id":card_id})
         res_other=game_flow.ClockPhaseClockOtherResponse(
             common=common)
         await game.send_data_to_self_other(player_id,res_self,res_other)
@@ -52,7 +53,7 @@ class ClockPhase(Phase):
             card_id=game.player_draw(player_id)
             if card_id==-1:
                 success=False
-            cards.append(card_id)
+            cards.append({"card_id":card_id})
         player_name=game.get_player_name_by_id(player_id)
         if success:
             log=f"{player_name}は山札から2枚のカードをドローしました"

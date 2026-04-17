@@ -54,10 +54,11 @@ class DrawPhaseDrawOtherResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.DRAW_PHASE_DRAW
 
 class ClockPhaseClockRequest(WSCommonRequestBase):
-    clocked_hand_card:int # index
+    # clocked_hand_card:int # index
+    clocked_hand_card:sub_request.ClockPhaseClockHandCard
 class ClockPhaseClockSelfResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.CLOCK_PHASE_CLOCK
-    clocked_hand_card:int # card_id
+    clocked_hand_card:dict # {card_id}
 class ClockPhaseClockOtherResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.CLOCK_PHASE_CLOCK
 
@@ -76,7 +77,6 @@ class MainPhaseCharPlayResponse(WSCommonResponseBase):
     stage_position:object.StagePositionData
 
 class MainPhaseEventPlayRequest(WSCommonRequestBase):
-    # use_card:dict=Field(default_factory=dict)
     use_card:sub_request.MainPhaseEventPlayUserCard
 class MainPhaseEventPlayResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.MAIN_PHASE_EVENT_PLAY
