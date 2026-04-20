@@ -133,6 +133,7 @@ function handleClimaxPhaseCxSet(data){
     else if(player2.user_id==user_id){
         player=player2;
     }
+    updateHandByCommon(common)
     updateClimax(player)
 }
 
