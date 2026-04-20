@@ -27,8 +27,10 @@ class Playmat(GameObject):
         self.stage_status:list[StageStatus]=[None]*5
         # self.stage_stand:list[bool]=[True]*5
         
-        self.clock:list[Optional[Card]]=[None]*6
-        self.level:list[Optional[Card]]=[None]*4
+        # self.clock:list[Optional[Card]]=[None]*6
+        self.clock:list[Card]=[]
+        # self.level:list[Optional[Card]]=[None]*4
+        self.level:list[Card]=[]
         self.memory:list[Card]=[]
         self.climax:Card=None
         self.stock:list[Card]=[]
