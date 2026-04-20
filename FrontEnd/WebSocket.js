@@ -128,7 +128,8 @@ event_method_dict={
     "main_phase_char_play":"handledMainPhaseCharPlay",
     "main_phase_event_play":"handleMainPhaseEventPlay",
     "main_phase_char_move":"handleMainPhaseCharMove",
-    "climax_phase_cx_set":"handleClimaxPhaseCxSet"
+    "climax_phase_cx_set":"handleClimaxPhaseCxSet",
+    "end_phase_cx_remove":"handleEndPhaseCxRemove"
 }
 
 function handleWsJson(data){
