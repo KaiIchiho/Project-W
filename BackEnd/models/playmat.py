@@ -47,6 +47,7 @@ class Playmat(GameObject):
         cards_info=[]
         for card in self.stage:
             if card is None:
+                cards_info.append(-1)
                 continue
             card_info=card.get_current_info_by_list(card_info_list)
             cards_info.append(card_info)
@@ -74,6 +75,7 @@ class Playmat(GameObject):
         cards_info=[]
         for card in self.clock:
             if card is None:
+                cards_info.append(-1)
                 continue
             card_info=card.get_current_info_by_list(card_info_list)
             cards_info.append(card_info)
