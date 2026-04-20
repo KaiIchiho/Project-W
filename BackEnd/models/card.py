@@ -2,31 +2,30 @@ from models.base import GameObject
 from db import card_repo
 
 class Card(GameObject):
-    card_id:int
-    image_filename:str
-    color:str
-    trigger_type:str
-    power:int
-    level:int
-    cost:int
-    name:str
-    side:str
-    type:str
-    soul:int
-    trait1:str
-    trait2:str
-    trait3:str
-    effect_text:str
-    effect_data:dict
-    is_wildcard:bool
-    has_counter_icon:bool
-    has_clock_icon:bool
-    has_cx_combo:bool
     def __init__(self, 
                  ori_owner_id:int,
                  card_id:int):
         super().__init__(ori_owner_id)
         self.card_id=card_id
+        self.image_filename:str=""
+        self.color:str=""
+        self.trigger_type:str=""
+        self.power:int=-1
+        self.level:int=-1
+        self.cost:int=-1
+        self.name:str=""
+        self.side:str=""
+        self.type:str=""
+        self.soul:int=-1
+        self.trait1:str=""
+        self.trait2:str=""
+        self.trait3:str=""
+        self.effect_text:str=""
+        self.effect_data:dict={}
+        self.is_wildcard:bool=False
+        self.has_counter_icon:bool=False
+        self.has_clock_icon:bool=False
+        self.has_cx_combo:bool=False
         self.init_info()
         
     def init_info(self):
