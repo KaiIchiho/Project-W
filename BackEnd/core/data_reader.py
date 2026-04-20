@@ -64,60 +64,33 @@ class DataReader():
             return object.DeckData()
         if not player.playmat.deck:
             return object.DeckData()
-        cards:list[int]=[]
         card_info_list=["card_id"]
-        for card in player.playmat.deck.cards:
-            if card is None:
-                continue
-            card_info=card.get_current_info_by_list(card_info_list)
-            cards.append(card_info)
-        
+        cards_info=player.get_deck_cards_info_by_list(card_info_list)
         return object.build_object_data(
             "deck",
-            card_num=len(cards),
-            cards=cards)
+            card_num=len(cards_info),
+            cards=cards_info)
     
     @staticmethod
     def get_stage_data(player:"Player")->object.StageData:
-        if not player:
+        if not player or not player.playmat:
             return object.StageData()
-        if not player.playmat:
-            return object.StageData()
-        cards=[]
         card_info_list=[
-            "card_id",
-            "card_power",
-            "card_soul",
-            "card_cost",
-            "card_level",
-            "card_color",
-            "card_trigger",
-            "card_effect_text"]
-        for card in player.playmat.stage:
-            if card is not None:
-                card_info=card.get_current_info_by_list(card_info_list)
-                cards.append(card_info)
-            else:
-                cards.append({"card_info":-1})
-        markers=[]
+            "card_id","card_power","card_soul",
+            "card_cost","card_level","card_color",
+            "card_trigger","card_effect_text"]
+        stage_info=player.get_stage_cards_info_by_list(card_info_list)
+        
         marker_info_list=["card_id"]
-        for marker in player.playmat.markers:
-            if marker is not None:
-                marker_info=[]
-                for card in marker:
-                    info=card.get_current_info_by_list(marker_info_list)
-                    marker_info.append(info)
-                markers.append(marker_info)
-            else:
-                markers.append([])
+        marker_info=player.get_marker_cards_info_by_list(marker_info_list)
                 
         stage_status=player.get_all_stage_status()
         return object.build_object_data(
             "stage",
-            card_num=len(cards),
-            cards=cards,
+            card_num=len(stage_info),
+            cards=stage_info,
             stage_status=stage_status,
-            markers=markers
+            markers=marker_info
         )
     
     @staticmethod
@@ -126,37 +99,26 @@ class DataReader():
             return object.WaitingRoomData()
         if not player.playmat:
             return object.WaitingRoomData()
-        cards:list[int]=[]
         card_info_list=["card_id"]
-        for card in player.playmat.waiting_room:
-            if card is None:
-                continue
-            # cards.append(card.card_id)
-            card_info=card.get_current_info_by_list(card_info_list)
-            cards.append(card_info)
+        cards_info=\
+            player.get_waiting_room_cards_info_by_list(card_info_list)
         
         return object.build_object_data(
             "waiting_room",
-            card_num=len(cards),
-            cards=cards)
+            card_num=len(cards_info),
+            cards=cards_info)
     
     @staticmethod
     def get_hand_data(player:"Player")->object.HandData:
         if not player:
             return object.HandData()
-        cards:list[int]=[]
         card_info_list=["card_id"]
-        for card in player.hand:
-            if card is None:
-                continue
-            # cards.append(card.card_id)
-            card_info=card.get_current_info_by_list(card_info_list)
-            cards.append(card_info)
+        cards_info=player.get_hand_cards_info_by_list(card_info_list)
         
         return object.build_object_data(
             "hand",
-            card_num=len(cards),
-            cards=cards)
+            card_num=len(cards_info),
+            cards=cards_info)
 
     @staticmethod
     def get_clock_data(player:"Player")->object.ClockData:
@@ -164,19 +126,13 @@ class DataReader():
             return object.ClockData()
         if not player.playmat:
             return object.ClockData()
-        cards:list[int]=[]
         card_info_list=["card_id"]
-        for card in player.playmat.clock:
-            if card is None:
-                continue
-            # cards.append(card.card_id)
-            card_info=card.get_current_info_by_list(card_info_list)
-            cards.append(card_info)
+        cards_info=player.get_clock_cards_info_by_list(card_info_list)
         
         return object.build_object_data(
             "clock",
-            card_num=len(cards),
-            cards=cards)
+            card_num=len(cards_info),
+            cards=cards_info)
     
     @staticmethod
     def get_level_data(player:"Player")->object.LevelData:
@@ -184,19 +140,13 @@ class DataReader():
             return object.LevelData()
         if not player.playmat:
             return object.LevelData()
-        cards:list[int]=[]
         card_info_list=["card_id"]
-        for card in player.playmat.level:
-            if card is None:
-                continue
-            # cards.append(card.card_id)
-            card_info=card.get_current_info_by_list(card_info_list)
-            cards.append(card_info)
+        cards_info=player.get_level_cards_info_by_list(card_info_list)
         
         return object.build_object_data(
             "level",
-            card_num=len(cards),
-            cards=cards)
+            card_num=len(cards_info),
+            cards=cards_info)
     
     @staticmethod
     def get_stock_data(player:"Player")->object.StockData:
@@ -205,19 +155,13 @@ class DataReader():
             return object.StockData()
         if not player.playmat:
             return object.StockData()
-        cards:list[int]=[]
         card_info_list=["card_id"]
-        for card in player.playmat.stock:
-            if card is None:
-                continue
-            # cards.append(card.card_id)
-            card_info=card.get_current_info_by_list(card_info_list)
-            cards.append(card_info)
+        cards_info=player.get_stock_cards_info_by_list(card_info_list)
         
         return object.build_object_data(
             "stock",
-            card_num=len(cards),
-            cards=cards)
+            card_num=len(cards_info),
+            cards=cards_info)
     
     @staticmethod
     def get_cx_data(player:"Player")->object.CXData:
@@ -226,9 +170,7 @@ class DataReader():
             return object.CXData()
         if not player.playmat:
             return object.CXData()
-        card_id:int=-1
-        if player.playmat.climax:
-            card_id=player.playmat.climax.card_id
+        card_id:int=player.get_climax_id()
         
         return object.build_object_data(
             "cx",
@@ -240,19 +182,13 @@ class DataReader():
             return object.MemoryData()
         if not player.playmat:
             return object.MemoryData()
-        cards:list[int]=[]
         card_info_list=["card_id"]
-        for card in player.playmat.memory:
-            if card is None:
-                continue
-            # cards.append(card.card_id)
-            card_info=card.get_current_info_by_list(card_info_list)
-            cards.append(card_info)
+        cards_info=player.get_memory_cards_info_by_list(card_info_list)
         
         return object.build_object_data(
             "memory",
-            card_num=len(cards),
-            cards=cards)
+            card_num=len(cards_info),
+            cards=cards_info)
     
     @staticmethod
     def get_resolution_data(player:"Player")->object.ResolutionData:
@@ -261,18 +197,13 @@ class DataReader():
         
         if not player.playmat:
             return object.ResolutionData()
-        cards:list[int]=[]
         card_info_list=["card_id"]
-        for card in player.playmat.resolution:
-            if card is None:
-                continue
-            card_info=card.get_current_info_by_list(card_info_list)
-            cards.append(card_info)
+        cards_info=player.get_resolution_cards_info_by_list(card_info_list)
         
         return object.build_object_data(
             "resolution",
-            card_num=len(cards),
-            cards=cards)
+            card_num=len(cards_info),
+            cards=cards_info)
     
     @staticmethod
     def get_add_card_data(card_id:int)->object.AddCardData:

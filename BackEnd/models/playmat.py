@@ -38,6 +38,89 @@ class Playmat(GameObject):
         self.deck=init_deck
         self.deck.on_deck_empty=self.reset_deck
     
+    def get_deck_cards_info_by_list(self,card_info_list:list[str])->list[dict]:
+        if self.deck:
+            return self.deck.get_cards_info_by_list(card_info_list)
+        else:
+            raise ValueError("Deck Invailed")
+    def get_stage_cards_info_by_list(self,card_info_list:list[str])->list[dict]:
+        cards_info=[]
+        for card in self.stage:
+            if card is None:
+                continue
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards_info.append(card_info)
+        return cards_info
+    def get_marker_cards_info_by_list(self,card_info_list:list[str])->list[list[dict]]:
+        marker_info=[]
+        for marker in self.markers:
+            cards_info=[]
+            for card in marker:
+                if card is None:
+                    continue
+                card_info=card.get_current_info_by_list(card_info_list)
+                cards_info.append(card_info)
+            marker_info.append(card_info)
+        return marker_info
+    def get_waiting_room_cards_info_by_list(self,card_info_list:list[str])->list[dict]:
+        cards_info=[]
+        for card in self.waiting_room:
+            if card is None:
+                continue
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards_info.append(card_info)
+        return cards_info
+    def get_clock_cards_info_by_list(self,card_info_list:list[str])->list[dict]:
+        cards_info=[]
+        for card in self.clock:
+            if card is None:
+                continue
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards_info.append(card_info)
+        return cards_info
+    def get_level_cards_info_by_list(self,card_info_list:list[str])->list[dict]:
+        cards_info=[]
+        for card in self.level:
+            if card is None:
+                continue
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards_info.append(card_info)
+        return cards_info
+    def get_stock_cards_info_by_list(self,card_info_list:list[str])->list[dict]:
+        cards_info=[]
+        for card in self.stock:
+            if card is None:
+                continue
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards_info.append(card_info)
+        return cards_info
+    def get_climax_id(self)->int:
+        if self.climax:
+            return self.climax.card_id
+        else:
+            return -1
+    def get_climax_card_info_by_list(self,card_info_list:list[str])->dict:
+        if self.climax:
+            return self.climax.get_current_info_by_list(card_info_list)
+        else:
+            return {}
+    def get_memory_cards_info_by_list(self,card_info_list:list[str])->list[dict]:
+        cards_info=[]
+        for card in self.memory:
+            if card is None:
+                continue
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards_info.append(card_info)
+        return cards_info
+    def get_resolution_cards_info_by_list(self,card_info_list:list[str])->list[dict]:
+        cards_info=[]
+        for card in self.resolution:
+            if card is None:
+                continue
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards_info.append(card_info)
+        return cards_info
+    
     def deck_shuffle(self):
         if self.deck:
             self.deck.shuffle()

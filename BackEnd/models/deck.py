@@ -40,6 +40,15 @@ class Deck(GameObject):
         self.cards=card_list
         return True
     
+    def get_cards_info_by_list(self,card_info_list:list[str])->list[dict]:
+        cards_info=[]
+        for card in self.cards:
+            if card is None:
+                continue
+            card_info=card.get_current_info_by_list(card_info_list)
+            cards_info.append(card_info)
+        return cards_info
+    
     def shuffle(self):
         random.shuffle(self.cards)
         print(f"{self.ori_owner_id}: shuffle")
