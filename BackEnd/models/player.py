@@ -122,6 +122,12 @@ class Player(GameObject):
             return self.hand[hand_index].card_id
         else:
             raise ValueError("Hand Index Over the Range")
+    
+    def read_hand_type(self,hand_index:int)->str:
+        if 0<=hand_index<len(self.hand):
+            return self.hand[hand_index].type
+        else:
+            raise ValueError("Hand Index Over the Range")
         
     def pop_hand(self,hand_index:int)->Card:
         if 0<=hand_index<len(self.hand):
@@ -151,5 +157,17 @@ class Player(GameObject):
     def move_stage_char(self,ori_index:int,tar_index:int):
         if self.playmat:
             return self.playmat.move_stage_char(ori_index,tar_index)
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")
+        
+    def check_has_set_cx(self)->bool:
+        if self.playmat:
+            return self.playmat.check_has_set_cx()
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")
+    
+    def set_cx(self,card:Card):
+        if self.playmat:
+            return self.playmat.set_cx(card)
         else:
             raise ValueError(f"{self.player_id} No Playmat")

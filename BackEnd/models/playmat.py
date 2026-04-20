@@ -70,6 +70,7 @@ class Playmat(GameObject):
             self.on_stage_card_stand_changed(stage_index,status)
     
     def set_card_to_waiting_room(self,card:Card):
+        card.init_info()
         self.waiting_room.append(card)
             
     def set_cards_to_waiting_room(self,cards:list[Card]):
@@ -126,7 +127,7 @@ class Playmat(GameObject):
         num=len(self.resolution)
         for i in range(num):
             print("Log: 1 Resolution Card Switch To Waiting Room")
-            self.waiting_room.append(self.resolution.pop(0))
+            self.set_card_to_waiting_room(self.resolution.pop(0))
             
     def move_stage_char(self,ori_index:int,tar_index:int):
         result=False
@@ -155,3 +156,19 @@ class Playmat(GameObject):
             result=True
             
         return result,ori_card_id,tar_card_id,ori_origin_status,tar_origin_status,ori_card_status,tar_card_status
+    
+    def check_has_set_cx(self):
+        if self.climax:
+            return True
+        else:
+            return False
+    
+    def remove_cx(self):
+        if self.climax:
+            card=self.climax
+            self.climax=None
+            self.set_card_to_waiting_room(card)
+        
+    def set_cx(self,card:Card):
+        self.remove_cx()
+        self.climax=card

@@ -26,3 +26,7 @@ CLOCK_PHASE_DRAW="clock_phase_draw"
 MAIN_PHASE_CHAR_PLAY="main_phase_char_play"
 MAIN_PHASE_EVENT_PLAY="main_phase_event_play"
 MAIN_PHASE_CHAR_MOVE="main_phase_char_move"
+
+CLIMAX_PHASE_CX_SET="climax_phase_cx_set"
+
+END_PHASE_CX_REMOVE="end_phase_cx_remove"
