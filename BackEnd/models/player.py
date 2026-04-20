@@ -172,3 +172,9 @@ class Player(GameObject):
             return self.playmat.set_cx(card)
         else:
             raise ValueError(f"{self.player_id} No Playmat")
+        
+    def remove_cx(self):
+        if self.playmat:
+            return self.playmat.remove_cx()
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")

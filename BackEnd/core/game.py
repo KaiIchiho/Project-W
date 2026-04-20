@@ -289,7 +289,6 @@ class Game():
         player=self.check_command_player(player_id)
         has_card=player.check_has_stage_card(stage_index)
         
-        # card_id=player.read_hand_id(hand_index)
         card_type=player.read_hand_type(hand_index)
         if card_type!=CardType.CH:
             return has_card,False
@@ -301,7 +300,6 @@ class Game():
     def play_event_card(self,player_id:int,hand_index)->bool:
         player=self.check_command_player(player_id)
         
-        # card_id=player.read_hand_id(hand_index)
         card_type=player.read_hand_type(hand_index)
         if card_type!=CardType.EV:
             return False
@@ -326,6 +324,12 @@ class Game():
         card=player.pop_hand(hand_index)
         player.set_cx(card)
         return True,has_set_cx
+    
+    def remove_cx_card(self,player_id:int)->bool:
+        player=self.check_command_player(player_id)
+        has_set_cx=player.check_has_set_cx()
+        player.remove_cx()
+        return has_set_cx
     
     def check_is_first_phase(self)->bool:
         return isinstance(self.phase,self.first_phase)
