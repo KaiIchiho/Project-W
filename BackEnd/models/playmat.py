@@ -60,7 +60,7 @@ class Playmat(GameObject):
                     continue
                 card_info=card.get_current_info_by_list(card_info_list)
                 cards_info.append(card_info)
-            marker_info.append(card_info)
+            marker_info.append(cards_info)
         return marker_info
     def get_waiting_room_cards_info_by_list(self,card_info_list:list[str])->list[dict]:
         cards_info=[]
