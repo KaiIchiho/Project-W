@@ -3,7 +3,7 @@ function cxSet(){
     if(selected_btn_index.length<1){return}
     let data={
         "client_common":{
-            event:"main_phase_char_move",
+            event:"climax_phase_cx_set",
         },
         "hand_index":selected_btn_index[0]
     }
