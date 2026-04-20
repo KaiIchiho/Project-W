@@ -84,7 +84,7 @@ def check_is_id_exist_by_table(table:str,id)->bool:
 def read_field_value(table:str,id,field:str):
     sql=f"SELECT {field} FROM {table} WHERE id = %s"
     result=read_data(sql,(id,))
-    print("====== DEBUG ======")
-    print(sql)
-    print(result)
+    # print("====== DEBUG ======")
+    # print(sql)
+    # print(result)
     return result
