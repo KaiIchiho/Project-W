@@ -319,6 +319,7 @@ class Game():
     def set_cx_card(self,player_id:int,hand_index:int):
         player=self.check_command_player(player_id)
         card_type=player.read_hand_type(hand_index)
+        print(f"Log: Set CX Card. Card Type: {card_type.value}")
         has_set_cx=player.check_has_set_cx()
         if card_type!=CardType.CX:
             return False,has_set_cx

@@ -2,6 +2,7 @@ from models.base import GameObject
 from models.card import Card
 from models.deck import Deck
 from models.playmat import Playmat
+from core.card_type import CardType
 from typing import Optional
 
 class Player(GameObject):    
@@ -123,9 +124,9 @@ class Player(GameObject):
         else:
             raise ValueError("Hand Index Over the Range")
     
-    def read_hand_type(self,hand_index:int)->str:
+    def read_hand_type(self,hand_index:int)->CardType:
         if 0<=hand_index<len(self.hand):
-            return self.hand[hand_index].type
+            return self.hand[hand_index].type_enum
         else:
             raise ValueError("Hand Index Over the Range")
         

@@ -1,5 +1,6 @@
 from models.base import GameObject
 from db import card_repo
+from core.card_type import CardType
 
 class Card(GameObject):
     def __init__(self, 
@@ -27,6 +28,7 @@ class Card(GameObject):
         self.has_clock_icon:bool=False
         self.has_cx_combo:bool=False
         self.init_info()
+        self.type_enum=CardType(self.type)
         
     def init_info(self):
         key_list=[]
