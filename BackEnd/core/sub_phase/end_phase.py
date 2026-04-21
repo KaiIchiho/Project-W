@@ -15,7 +15,7 @@ class EndPhase(Phase):
     async def on_enter(self, game):
         await super().on_enter(game)
         await self.remove_turn_player_cx(game)
-        await self.check_turn_player_hand_with_limit()
+        await self.check_turn_player_hand_with_limit(game)
     
     async def on_exit(self, game):
         await super().on_exit(game)
