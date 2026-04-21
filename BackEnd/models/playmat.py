@@ -155,9 +155,12 @@ class Playmat(GameObject):
         if self.on_stage_card_stand_changed:
             self.on_stage_card_stand_changed(stage_index,status)
     
-    def set_card_to_waiting_room(self,card:Card):
+    def set_card_to_waiting_room(self,card:Card)->bool:
+        if not card:
+            return False
         card.init_info()
         self.waiting_room.append(card)
+        return True
             
     def set_cards_to_waiting_room(self,cards:list[Card]):
         # self.waiting_room.extend(cards)
@@ -207,12 +210,6 @@ class Playmat(GameObject):
         if not card:
             return False
         self.resolution.append(card)
-        return True
-    
-    def set_card_to_waiting_room(self,card:Card)->bool:
-        if not card:
-            return False
-        self.waiting_room.append(card)
         return True
     
     def resolution_to_waiting_room(self):

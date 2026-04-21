@@ -216,7 +216,7 @@ class Player(GameObject):
     
     def set_card_to_waiting_room(self,card:Card)->bool:
         if self.playmat:
-            return self.playmat.set_card_to_resolution(card)
+            return self.playmat.set_card_to_waiting_room(card)
         else:
             raise ValueError(f"{self.player_id} No Playmat")
     
