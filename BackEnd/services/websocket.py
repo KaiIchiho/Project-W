@@ -23,8 +23,12 @@ async def websocket(ws:WebSocket):
         ws.send_text("User ID must be an integer.")
         return
     # Add ws To Connected Clients List
-    connected_clients.append(ws)
     print("New client connected. Total:", len(connected_clients))
+    if connections.get(user_id) is not None:
+        print(f"Error: {user_id} has Loged In")
+        await ws.close(code=1008)
+        return
+    connected_clients.append(ws)
     connections[user_id]=Connection(user_id,ws)
     print(f"WebSocket bound to user: {user_id}")
     
@@ -79,7 +83,7 @@ async def websocket(ws:WebSocket):
             elif msg_type==2:
                 await receive_json(user_id,json.loads(msg["text"]))
     except WebSocketDisconnect:
-        print("Client disconnected.")
+        print("Log: Client disconnected.")
     finally:
         print("Log: WebSocket Finally.")
         await login_logout.logout_by_id(user_id)
