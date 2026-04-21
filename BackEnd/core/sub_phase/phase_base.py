@@ -6,6 +6,7 @@ if TYPE_CHECKING:
     from core.game import Game
 
 class Phase:
+    _is_frozen:bool=False
     handlers={
         event_type.NEXT_PHASE:"on_next_phase",
         event_type.NEXT_TURN:"on_next_turn"
@@ -17,6 +18,9 @@ class Phase:
     def __init_subclass__(cls, **kwargs):
         super.__init_subclass__(**kwargs)
         cls.handlers=cls.handlers.copy()
+    
+    def is_frozen(self)->bool:
+        return self._is_frozen
     
     async def on_enter(self,game:"Game"):
         # await game.phase_enter_response()

@@ -271,6 +271,8 @@ class Game():
         self,player_id:int,send_data_callback:Callable[["Game",int,bool],Awaitable[None]]
     ):
         print(f"Log: on_next_phase, Now Phase Is {self.phase.phase_name}")
+        if self.phase.is_frozen():
+            return
         await self.phase.on_exit(self)
         _is_next_phase=False
         if self.phase.next_phase is None:

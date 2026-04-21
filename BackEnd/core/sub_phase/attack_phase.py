@@ -1,7 +1,11 @@
 from core.sub_phase.phase_base import Phase
 from core.sub_phase.end_phase import EndPhase
-#from core.attack_step.attack_declaration import AttackDeclaration
-#from core.attack_step.encore import Encore
+from core.attack_type import AttackType
+from core.attack_step.attack_step_base import AttackStep
+from core.attack_step.attack_declaration import AttackDeclaration
+from core.attack_step.encore import Encore
+from core.data_reader import DataReader
+from schemas import event_type,game_flow
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from core.game import Game
@@ -11,22 +15,17 @@ class AttackPhase(Phase):
     next_phase=EndPhase
     def __init__(self):
         super().__init__()
-        self.handlers["start_attack"]="on_start_attack"
-        self.handlers["encore"]="on_encore"
+        self.handlers[event_type.ATTACK_PHASE_DECLARE]="on_start_attack"
+        # self.handlers[]="on_encore"
+        
+        self.step:AttackStep=None
+        self.first_step:AttackStep=AttackDeclaration
         
     async def on_enter(self, game):
         await super().on_enter(game)
     
     async def on_exit(self, game):
         await super().on_exit(game)
-    
-    # async def handle_action(self, game, action,player_id):
-    #     await super().handle_action(game, action,player_id)
-        
-    #     if not game.attack_step:
-    #         return
-    #     if game.attack_step.is_complete==True:
-    #         game.attack_step.on_next_step()
         
     async def on_start_attack(self,game:"Game",action,player_id):
         #if game.attack_step:

@@ -36,6 +36,7 @@ class EndPhase(Phase):
         player_id=game.get_turn_player_id()
         exceed=game.get_hand_exceed_limit(player_id)
         if exceed>0:
+            self._is_frozen=True
             common_self=DataReader.get_common_data(
                 game,True,
                 f"{player_name}の手札の枚数は上限を{exceed}枚超えたので、超えた枚数のカードを捨ててください",
@@ -70,6 +71,8 @@ class EndPhase(Phase):
             success=game.discard_hand_by_list(player_id,hand_index_list)
             if success:
                 log=f"{player_name}は手札の枚数を上限以下になるようにカードを控え室に置きました"
+                
+                self._is_frozen=False
             else:
                 log=f"{player_name}は手札の枚数を上限以下になるようにカードを控え室に置けませんでした"
             

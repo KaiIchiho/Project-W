@@ -29,6 +29,8 @@ MAIN_PHASE_CHAR_MOVE="main_phase_char_move"
 
 CLIMAX_PHASE_CX_SET="climax_phase_cx_set"
 
+ATTACK_PHASE_DECLARE="attack_phase_declare"
+
 END_PHASE_CX_REMOVE="end_phase_cx_remove"
 END_PHASE_HAND_EXCEED="end_phase_hand_exceed"
 END_PHASE_HAND_DISCARD="end_phase_hand_discard"
