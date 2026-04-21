@@ -1,7 +1,6 @@
 let buttons=[];
 let selected_card_id=-1;
 let selected_btn_index=[];
-
 // window.addEventListener("DOMContentLoaded", () => {
 //     initButtonMap();
 // });
@@ -113,4 +112,15 @@ function clockSelectedHand(){
         }
     }
     sendJson(data);
+}
+
+function dicardHand(){
+    console.log("dicardHand")
+    let data={
+        client_common:{
+            event:"end_phase_hand_discard"
+        },
+        set_waiting_room:selected_btn_index
+    }
+    sendJson(data)
 }

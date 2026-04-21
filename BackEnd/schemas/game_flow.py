@@ -102,6 +102,16 @@ class EndPhaseCXRemoveResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.END_PHASE_CX_REMOVE
     is_cx_zone_empty:bool
 
+class EndPhaseHandExceedResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.END_PHASE_HAND_EXCEED
+    exceed_hand_card_num:int
+    
+class EndPhaseHandDiscardRequest(WSCommonRequestBase):
+    set_waiting_room:list[int]
+class EndPhaseHandDiscardResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.END_PHASE_HAND_DISCARD
+    throw_hand_card:list[int]
+
 event_req={
     event_type.SWAP_HAND_CARDS:SwapHandCardsRequest,
     event_type.NEXT_PHASE:NextPhaseRequest,
@@ -111,4 +121,5 @@ event_req={
     event_type.MAIN_PHASE_EVENT_PLAY:MainPhaseEventPlayRequest,
     event_type.MAIN_PHASE_CHAR_MOVE:MainPhaseCharMoveRequest,
     event_type.CLIMAX_PHASE_CX_SET:ClimaxPhaseCXSetRequest,
+    event_type.END_PHASE_HAND_DISCARD:EndPhaseHandDiscardRequest
 }

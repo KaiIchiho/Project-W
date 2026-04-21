@@ -3,6 +3,7 @@ from models.card import Card
 from models.deck import Deck
 from models.playmat import Playmat
 from core.card_type import CardType
+from config import setting_ingame
 from typing import Optional
 
 class Player(GameObject):    
@@ -213,6 +214,12 @@ class Player(GameObject):
         else:
             raise ValueError(f"{self.player_id} No Playmat")
     
+    def set_card_to_waiting_room(self,card:Card)->bool:
+        if self.playmat:
+            return self.playmat.set_card_to_resolution(card)
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")
+    
     def process_resolution(self):
         if self.playmat:
             return self.playmat.resolution_to_waiting_room()
@@ -242,3 +249,10 @@ class Player(GameObject):
             return self.playmat.remove_cx()
         else:
             raise ValueError(f"{self.player_id} No Playmat")
+        
+    def get_hand_exceed_limit(self)->int:
+        hand_size=len(self.hand)
+        if hand_size>setting_ingame.HAND_LIMIT:
+            return hand_size-setting_ingame.HAND_LIMIT
+        else:
+            return 0

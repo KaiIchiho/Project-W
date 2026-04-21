@@ -8,6 +8,16 @@ function standby(){
     }));
 }
 
+function nextPhase(){
+    console.log("nextPhase");
+    let data={
+        client_common:{
+            event:"next_phase"
+        }
+    }
+    sendJson(data);
+}
+
 function handleSelectDeck(data){
     if(data.success===undefined||
         data.log===undefined)
@@ -151,12 +161,20 @@ function handleEndPhaseCxRemove(data){
     updateClimax(player)
 }
 
-function nextPhase(){
-    console.log("nextPhase");
-    let data={
-        client_common:{
-            event:"next_phase"
-        }
+function handleEndPhaseHandExceed(data){
+    
+}
+
+function handleEndPhaseHandDiscard(data){
+    let common=data.common;
+    let player1=common.player_1;
+    let player2=common.player_2;
+    let player;
+    if(player1.user_id==user_id){
+        player=player1;
     }
-    sendJson(data);
+    else if(player2.user_id==user_id){
+        player=player2;
+    }
+    updateHandByCommon(common)
 }

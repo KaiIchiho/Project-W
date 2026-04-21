@@ -331,6 +331,27 @@ class Game():
         player.remove_cx()
         return has_set_cx
     
+    def get_hand_exceed_limit(self,player_id:int)->bool:
+        player=self.check_command_player(player_id)
+        return player.get_hand_exceed_limit()
+    
+    def discard_hand(self,player_id:int,hand_index:int)->bool:
+        player=self.check_command_player(player_id)
+        card=player.pop_hand(hand_index)
+        return player.set_card_to_waiting_room(card)
+    def discard_hand_by_list(self,player_id:int,hand_index_list:list[int]):
+        hand_index_list_cp=sorted(hand_index_list,reverse=True)
+        print("Log: discard_hand_by_list")
+        print(f"Log: hand_index_list: {hand_index_list}")
+        print(f"Log: hand_index_list_cp: {hand_index_list_cp}")
+        
+        for index in hand_index_list_cp:
+            if not self.discard_hand(player_id,index):
+                return False
+            
+        return True
+            
+    
     def check_is_first_phase(self)->bool:
         return isinstance(self.phase,self.first_phase)
     

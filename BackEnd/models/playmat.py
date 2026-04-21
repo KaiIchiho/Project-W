@@ -209,6 +209,12 @@ class Playmat(GameObject):
         self.resolution.append(card)
         return True
     
+    def set_card_to_waiting_room(self,card:Card)->bool:
+        if not card:
+            return False
+        self.waiting_room.append(card)
+        return True
+    
     def resolution_to_waiting_room(self):
         num=len(self.resolution)
         for i in range(num):
