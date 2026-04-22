@@ -58,6 +58,8 @@ function updateStage(stage_data){
 
 function charPlay(){
     console.log("charPlay");
+    if(selected_btn_index.length<1){return}
+    if(selected_stage_index.length<1){return}
     let data={
         client_common:{
             event:"main_phase_char_play"
