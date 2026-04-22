@@ -11,8 +11,13 @@ function initStage(){
         btn.textContent=i+1;
         stage_buttons.push(btn)
         btn.onclick=()=>{
-            selected_stage_index.push(i);
-            console.log("Selected Stage: ",selected_stage_index)
+            const index=selected_stage_index.indexOf(i);
+            if (index !== -1) {
+                selected_stage_index.splice(index, 1);
+            }
+            else{
+                selected_stage_index.push(i);
+            }
         }
         stage.appendChild(btn);
     }
