@@ -6,6 +6,7 @@ from core.attack_step.attack_declaration import AttackDeclaration
 from core.attack_step.encore import Encore
 from core.data_reader import DataReader
 from schemas import event_type,game_flow
+from config import setting_ingame
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from core.game import Game
@@ -31,9 +32,11 @@ class AttackPhase(Phase):
     async def on_start_attack(
         self,game:"Game",
         req:game_flow.AttackPhaseDeclareRequest,
-        player_id
+        player_id:int
     ):
         if not game.check_is_turn_player_command(player_id):
+            return
+        if not req.stage_position_index in setting_ingame.FRONT_STAGE:
             return
         attack_type=self.parse_attack_type(req.attack_type)
         self._in_first_attack_step(attack_type)

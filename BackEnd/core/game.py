@@ -1,13 +1,13 @@
+from pydantic import BaseModel
 from models.player import Player
-from models.card import Card
 from typing import Callable,Optional,Awaitable
 from core.sub_phase.phase_base import Phase
 from core.sub_phase.standby_phase import StandbyPhase
 from core.sub_phase.stand_phase import StandPhase
-from pydantic import BaseModel
 from config import setting_ingame
-from db import card_repo
 from core.card_type import CardType
+# from models.card import Card
+# from db import card_repo
 # from schemas import object,common,game_flow
 # from core.data_reader import DataReader
 
@@ -369,8 +369,8 @@ class Game():
         return other_stage_index,is_empty,info_dict
     
     def get_other_stage_index(self,self_stage_index:int)->int:
-        front_index_list=[0,1,2]
-        back_index_list=[3,4]
+        front_index_list=setting_ingame.FRONT_STAGE
+        back_index_list=setting_ingame.BACK_STAGE
         index_list:list
         try:
             idx=front_index_list.index(self_stage_index)

@@ -2,6 +2,7 @@ from models.base import GameObject
 from models.deck import Deck
 from models.card import Card
 from typing import Optional,Callable
+from config import setting_ingame
 from enum import Enum
 
 class StageStatus(str,Enum):
@@ -22,9 +23,12 @@ class Playmat(GameObject):
         self.deck=None
         self.waiting_room:list[Card]=[]
         
-        self.stage:list[Optional[Card]]=[None]*5
-        self.markers:list[list[Card]]=[[] for _ in range(5)]
-        self.stage_status:list[StageStatus]=[None]*5
+        self.stage:list[Optional[Card]]=\
+            [None]*setting_ingame.STAGE_SIZE
+        self.markers:list[list[Card]]=\
+            [[] for _ in range(setting_ingame.STAGE_SIZE)]
+        self.stage_status:list[StageStatus]=\
+            [None]*setting_ingame.STAGE_SIZE
         # self.stage_stand:list[bool]=[True]*5
         
         # self.clock:list[Optional[Card]]=[None]*6
