@@ -6,9 +6,10 @@ if TYPE_CHECKING:
     from core.game import Game
 
 class Damage(AttackStep):
+    step_name="Damage"
+    next_step=Battle
     def __init__(self,attack_type:AttackType):
         super().__init__(attack_type)
-        self.next_step=Battle
         
     async def on_enter(self,game:"Game"):
         await super().on_enter(game)

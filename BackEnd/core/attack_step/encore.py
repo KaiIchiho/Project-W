@@ -4,6 +4,7 @@ if TYPE_CHECKING:
     from core.game import Game
 
 class Encore(AttackStep):
+    step_name="Encore"
     async def on_enter(self,game:"Game"):
         await super().on_enter(game)
     

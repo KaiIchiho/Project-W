@@ -38,17 +38,18 @@ class Phase:
     async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
         model,req=self.parse_action_model(action,event)
         if not model or not req:
-            return
+            return False
         
         handler_name=self.handlers.get(event)
         if not handler_name:
             # raise ValueError("Action Not Found")
             print(f"Action {handler_name} Not Found")
-            return
+            return False
         
         print(f"Log: handler action name: {handler_name}")
         handler=getattr(self,handler_name)
         await handler(game,req,player_id)
+        return True
         
     async def on_next_phase(self,game:"Game",req:game_flow.NextPhaseRequest,player_id:int):
         print("Log: on_next_phase")

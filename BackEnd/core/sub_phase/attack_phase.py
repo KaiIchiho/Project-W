@@ -22,7 +22,16 @@ class AttackPhase(Phase):
         self.step:AttackStep=None
         self.first_step:AttackStep=AttackDeclaration
         self.encore_step:AttackStep=Encore
-        
+    
+    async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
+        # handled = 
+        await super().handle_action(game, action, event, player_id)
+        # if handled:
+        #     return True
+        if self.step:
+            await self.step.handle_action(game, action, event, player_id)
+        # return False
+    
     async def on_enter(self, game):
         await super().on_enter(game)
     
@@ -39,44 +48,11 @@ class AttackPhase(Phase):
         if not req.stage_position_index in setting_ingame.FRONT_STAGE:
             return
         attack_type=self.parse_attack_type(req.attack_type)
-        self._in_first_attack_step(attack_type)
+        await self._in_first_attack_step(game,attack_type)
         
-        player_name=game.get_player_name_by_id(player_id)
-        is_first_turn=game.get_current_turn_num()==1
-        if not game.player_has_stage_card(player_id,req.stage_position_index):
-            success=False
-            log=f"{player_name}が選択した舞台はキャラが存在しません"
-        else:
-            success=True
-            log=f"{player_name}は{req.attack_type}の攻撃宣言をしました"
-        
-        other_index,other_is_empty,other_stage_info=\
-            game.get_other_player_stage_info(
-                player_id,
-                req.stage_position_index,
-                ["card_level"])
-        print("Log: on_start_attack")
-        print(f"Log: other_stage_info: {other_stage_info}")
-        other_level=\
-            other_stage_info["card_level"]\
-                if "card_level" in other_stage_info else -1
-
-        common=DataReader.get_common_data(
-            game,success,log,player_id)
-        target_stage_position={
-            "index":other_index,
-            "is_empty":other_is_empty,
-            "level":other_level}
-        res=game_flow.AttackPhaseDeclareResponse(
-            common=common,
-            target_stage_position=target_stage_position,
-            attack_type=req.attack_type,
-            is_first_turn=is_first_turn
-        )
-        await game.send_data_to_room(res)
-        
-    def _in_first_attack_step(self,attack_type:AttackType):
+    async def _in_first_attack_step(self,game:"Game",attack_type:AttackType):
         self.step=self.first_step(attack_type)
+        await self.step.on_enter(game)
     
     def _on_next_attack_step(self):
         if not self.step:
