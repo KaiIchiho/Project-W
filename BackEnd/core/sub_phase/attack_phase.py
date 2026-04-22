@@ -55,6 +55,8 @@ class AttackPhase(Phase):
                 player_id,
                 req.stage_position_index,
                 ["card_level"])
+        print("Log: on_start_attack")
+        print(f"Log: other_stage_info: {other_stage_info}")
         other_level=-1 if not other_stage_info.get("card_level") else other_stage_info.get("card_level")
 
         common=DataReader.get_common_data(
