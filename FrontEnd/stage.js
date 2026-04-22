@@ -9,7 +9,6 @@ function initStage(){
     for(let i=0;i<5;++i){
         const btn=document.createElement("button");
         btn.textContent=i+1;
-        stage_buttons.push(btn)
         btn.onclick=()=>{
             const index=selected_stage_index.indexOf(i);
             if (index !== -1) {
@@ -19,6 +18,7 @@ function initStage(){
                 selected_stage_index.push(i);
             }
         }
+        stage_buttons.push(btn)
         stage.appendChild(btn);
     }
 }
