@@ -147,6 +147,20 @@ function handleClimaxPhaseCxSet(data){
     updateClimax(player)
 }
 
+function handleAttackPhaseDeclare(data){
+    let common=data.common;
+    let player1=common.player_1;
+    let player2=common.player_2;
+    let player;
+    if(player1.user_id==user_id){
+        player=player1;
+    }
+    else if(player2.user_id==user_id){
+        player=player2;
+    }
+    updateStage(player.stage)
+}
+
 function handleEndPhaseCxRemove(data){
     let common=data.common;
     let player1=common.player_1;
