@@ -1,11 +1,12 @@
 from core.attack_step.attack_step_base import AttackStep
+from core.attack_type import AttackType
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from core.game import Game
 
 class Battle(AttackStep):
-    async def __init__(self):
-        super().__init__()
+    def __init__(self,attack_type:AttackType):
+        super().__init__(attack_type)
         self.next_step=None
         
     async def on_enter(self,game:"Game"):
