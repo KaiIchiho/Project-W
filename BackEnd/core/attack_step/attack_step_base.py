@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+from core.attack_type import AttackType
 if TYPE_CHECKING:
     from core.game import Game
 
@@ -9,6 +10,8 @@ class AttackStep:
         "next_step":"on_next_step"
         }
     is_complete=False
+    def __init__(self,attack_type:AttackType):
+        self.attack_type=attack_type
     
     async def on_enter(self,game:"Game"):
         pass

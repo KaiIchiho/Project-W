@@ -352,7 +352,42 @@ class Game():
                 return False
             
         return True
-            
+    
+    def get_current_turn_num(self)->int:
+        return self.current_turn
+    
+    def get_player_stage_info(self,player_id:int,stage_index:int,info_list:list=[])->dict:
+        player=self.check_command_player(player_id)
+        info_dict=player.get_stage_cards_info_by_list(info_list)[stage_index]
+        return info_dict
+    
+    def get_other_player_stage_info(self,self_player_id:int,self_stage_index:int,info_list:list=[]):
+        other_player=self.check_command_other_player(self_player_id)
+        other_stage_index=self.get_other_stage_index(self_stage_index)
+        is_empty=other_player.check_has_stage_card(other_stage_index)
+        info_dict=other_player.get_stage_cards_info_by_list(info_list)[other_stage_index]
+        return other_stage_index,is_empty,info_dict
+    
+    def get_other_stage_index(self,self_stage_index:int)->int:
+        front_index_list=[0,1,2]
+        back_index_list=[3,4]
+        index_list:list
+        try:
+            idx=front_index_list.index(self_stage_index)
+            index_list=front_index_list
+        except ValueError:
+            try:
+                idx=back_index_list.index(self_stage_index)
+                index_list=back_index_list
+            except ValueError:
+                raise ValueError(f"Stage Index {self_stage_index} Invalid")
+        other_idx=len(index_list)-idx-1
+        other_stage_index=index_list[other_idx]
+        return other_stage_index
+    
+    def player_has_stage_card(self,player_id:int,stage_index:int)->bool:
+        player=self.check_command_player(player_id)
+        return player.check_has_stage_card(stage_index)
     
     def check_is_first_phase(self)->bool:
         return isinstance(self.phase,self.first_phase)
@@ -392,7 +427,15 @@ class Game():
             return self.player_2
         else:
             return None
-        
+    
+    def check_command_other_player(self,player_id:int)->Player:
+        if self.player_1 and self.player_1.player_id==player_id:
+            return self.player_2
+        elif self.player_2 and self.player_2.player_id==player_id:
+            return self.player_1
+        else:
+            return None
+    
     def check_is_turn_player_command(self,player_id:int)->bool:
         print(f"Check is Action Player ID: {player_id}")
         command_player=self.check_command_player(player_id)
