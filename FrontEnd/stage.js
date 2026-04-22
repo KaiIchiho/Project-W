@@ -43,7 +43,7 @@ function updateStage(stage_data){
     selected_stage_index=[]
 }
 
-function stageBtnOnClicked(index){
+function stageBtnOnClicked(i){
     const index=selected_stage_index.indexOf(i);
     if (index !== -1) {
         selected_stage_index.splice(index, 1);
