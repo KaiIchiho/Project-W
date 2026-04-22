@@ -58,8 +58,8 @@ class AttackPhase(Phase):
         print("Log: on_start_attack")
         print(f"Log: other_stage_info: {other_stage_info}")
         other_level=\
-            -1 if other_stage_info.get("card_level") is None\
-                else other_stage_info.get("card_level")
+            other_stage_info["card_level"]\
+                if "card_level" in other_stage_info else -1
 
         common=DataReader.get_common_data(
             game,success,log,player_id)
