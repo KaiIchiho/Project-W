@@ -36,7 +36,13 @@ function updateStage(stage_data){
             btn.textContent=cards[i].card_id;
         }
         btn.onclick=()=>{
-            selected_stage_index.push(i);
+            const index=selected_stage_index.indexOf(i);
+            if (index !== -1) {
+                selected_stage_index.splice(index, 1);
+            }
+            else{
+                selected_stage_index.push(i);
+            }
             console.log("Selected Stage: ",selected_stage_index)
         }
         stage_buttons.push(btn);
