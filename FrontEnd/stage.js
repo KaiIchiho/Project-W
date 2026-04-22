@@ -10,13 +10,7 @@ function initStage(){
         const btn=document.createElement("button");
         btn.textContent=i+1;
         btn.onclick=()=>{
-            const index=selected_stage_index.indexOf(i);
-            if (index !== -1) {
-                selected_stage_index.splice(index, 1);
-            }
-            else{
-                selected_stage_index.push(i);
-            }
+            stageBtnOnClicked(i)
         }
         stage_buttons.push(btn)
         stage.appendChild(btn);
@@ -41,19 +35,23 @@ function updateStage(stage_data){
             btn.textContent=cards[i].card_id;
         }
         btn.onclick=()=>{
-            const index=selected_stage_index.indexOf(i);
-            if (index !== -1) {
-                selected_stage_index.splice(index, 1);
-            }
-            else{
-                selected_stage_index.push(i);
-            }
-            console.log("Selected Stage: ",selected_stage_index)
+            stageBtnOnClicked(i)
         }
         stage_buttons.push(btn);
         stage_zone.appendChild(btn);
     }
     selected_stage_index=[]
+}
+
+function stageBtnOnClicked(index){
+    const index=selected_stage_index.indexOf(i);
+    if (index !== -1) {
+        selected_stage_index.splice(index, 1);
+    }
+    else{
+        selected_stage_index.push(i);
+    }
+    console.log("Selected Stage: ",selected_stage_index)
 }
 
 function charPlay(){
