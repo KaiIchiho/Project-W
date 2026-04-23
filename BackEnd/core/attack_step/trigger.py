@@ -23,7 +23,7 @@ class Trigger(AttackStep):
         
     async def trigger_check(self,game:"Game"):
         player_id=game.get_turn_player_id()
-        card_id,trigger=game.player_check_trigger()
+        card_id,trigger=game.player_check_trigger(player_id)
         triggers=[{"type":trigger}]
         player_name=game.get_turn_player_name()
         common=DataReader.get_common_data(
