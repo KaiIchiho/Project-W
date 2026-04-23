@@ -32,6 +32,6 @@ class AttackStep(StateMachine):
     async def on_exit(self,game:"Game"):
         print(f"Log: Attack Step: {self.step_name} On Exit")
     
-    async def on_next_step(self,game:"Game",action:dict,player_id:str):
+    async def on_next_step(self):
         if self.auto_next_step:
             await self.auto_next_step()
