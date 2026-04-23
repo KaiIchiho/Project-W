@@ -8,8 +8,8 @@ if TYPE_CHECKING:
 class Damage(AttackStep):
     step_name="Damage"
     next_step=Battle
-    def __init__(self,attack_type:AttackType):
-        super().__init__(attack_type)
+    def __init__(self,attack_type:AttackType,is_declarated:bool):
+        super().__init__(attack_type,is_declarated)
         
     async def on_enter(self,game:"Game"):
         await super().on_enter(game)

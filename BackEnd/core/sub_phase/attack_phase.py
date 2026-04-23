@@ -24,13 +24,9 @@ class AttackPhase(Phase):
         self.encore_step:AttackStep=Encore
     
     async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
-        # handled = 
         await super().handle_action(game, action, event, player_id)
-        # if handled:
-        #     return True
         if self.step:
             await self.step.handle_action(game, action, event, player_id)
-        # return False
     
     async def on_enter(self, game):
         await super().on_enter(game)
@@ -65,14 +61,11 @@ class AttackPhase(Phase):
             return
         if not self.step.next_step:
             return
-        self.step=self.step.next_step(self.step.attack_type)
+        self.step=self.step.next_step(self.step.attack_type,self.step.is_declarated)
         
-    async def on_encore(self,game:"Game",action,player_id):
-        #if game.attack_step:
-        #    return
-        #game.attack_step=Encore()
-        #game.attack_step.on_enter(game)
-        pass
+    async def _in_encore_step(self,game:"Game"):
+        self.step=self.encore_step()
+        await self.step.on_enter(game)
     
     def parse_attack_type(self,type_str:str)->AttackType:
         try:

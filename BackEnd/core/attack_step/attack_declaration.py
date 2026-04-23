@@ -11,8 +11,8 @@ if TYPE_CHECKING:
 class AttackDeclaration(AttackStep):
     step_name="Attack Declaration"
     next_step=Trigger
-    def __init__(self,attack_type:AttackType):
-        super().__init__(attack_type)
+    def __init__(self,attack_type:AttackType,is_declarated:bool=False):
+        super().__init__(attack_type,is_declarated)
         self.handlers[event_type.ATTACK_PHASE_DECLARE]="on_start_attack"
         
     
@@ -31,6 +31,10 @@ class AttackDeclaration(AttackStep):
             return
         if not req.stage_position_index in setting_ingame.FRONT_STAGE:
             return
+        if self.is_declarated:
+            return
+        
+        self.is_declarated=True
         
         player_name=game.get_player_name_by_id(player_id)
         is_first_turn=game.get_current_turn_num()==1
