@@ -1,11 +1,11 @@
+from core.state_machine_base import StateMachine
 from schemas import event_type,game_flow
-from services.parse_model import parse_model
 from core.data_reader import DataReader
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from core.game import Game
 
-class Phase:
+class Phase(StateMachine):
     _is_frozen:bool=False
     handlers={
         event_type.NEXT_PHASE:"on_next_phase",
@@ -35,21 +35,21 @@ class Phase:
         # await game.phase_exit_response()
         pass
     
-    async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
-        model,req=self.parse_action_model(action,event)
-        if not model or not req:
-            return False
+    # async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
+    #     model,req=self.parse_action_model(action,event)
+    #     if not model or not req:
+    #         return False
         
-        handler_name=self.handlers.get(event)
-        if not handler_name:
-            # raise ValueError("Action Not Found")
-            print(f"Action {handler_name} Not Found")
-            return False
+    #     handler_name=self.handlers.get(event)
+    #     if not handler_name:
+    #         # raise ValueError("Action Not Found")
+    #         print(f"Action {handler_name} Not Found")
+    #         return False
         
-        print(f"Log: handler action name: {handler_name}")
-        handler=getattr(self,handler_name)
-        await handler(game,req,player_id)
-        return True
+    #     print(f"Log: handler action name: {handler_name}")
+    #     handler=getattr(self,handler_name)
+    #     await handler(game,req,player_id)
+    #     return True
         
     async def on_next_phase(self,game:"Game",req:game_flow.NextPhaseRequest,player_id:int):
         print("Log: on_next_phase")
@@ -94,12 +94,12 @@ class Phase:
         res=game_flow.NextTurnResponse(common=common)
         await game.send_data_to_room(res)
         
-    def parse_action_model(self,action:dict,event:str):
-        model=game_flow.event_req.get(event)
-        if model is None:
-            return None,None
-        req=parse_model(action,model)
-        return model,req
+    # def parse_action_model(self,action:dict,event:str):
+    #     model=game_flow.event_req.get(event)
+    #     if model is None:
+    #         return None,None
+    #     req=parse_model(action,model)
+    #     return model,req
     
     async def send_message_list(self,game:"Game",message_list:list[dict],default_player_id:int):
         for message in message_list:

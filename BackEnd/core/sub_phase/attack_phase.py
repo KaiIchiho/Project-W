@@ -48,6 +48,12 @@ class AttackPhase(Phase):
         if not req.stage_position_index in setting_ingame.FRONT_STAGE:
             return
         attack_type=self.parse_attack_type(req.attack_type)
+        other_stage_is_empty=\
+            game.get_other_player_stage_is_empty(
+                player_id,req.stage_position_index)
+        if not AttackType.check_could_attack(attack_type,other_stage_is_empty):
+            print("Warning: Could Not Attack")
+            return
         await self._in_first_attack_step(game,attack_type)
         
     async def _in_first_attack_step(self,game:"Game",attack_type:AttackType):

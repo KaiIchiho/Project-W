@@ -361,6 +361,12 @@ class Game():
         info_dict=player.get_stage_cards_info_by_list(info_list)[stage_index]
         return info_dict
     
+    def get_other_player_stage_is_empty(self,self_player_id:int,self_stage_index:int)->bool:
+        other_player=self.check_command_other_player(self_player_id)
+        other_stage_index=self.get_other_stage_index(self_stage_index)
+        is_empty=not other_player.check_has_stage_card(other_stage_index)
+        return is_empty
+    
     def get_other_player_stage_info(self,self_player_id:int,self_stage_index:int,info_list:list=[]):
         other_player=self.check_command_other_player(self_player_id)
         other_stage_index=self.get_other_stage_index(self_stage_index)
