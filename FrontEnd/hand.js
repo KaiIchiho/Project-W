@@ -114,8 +114,8 @@ function clockSelectedHand(){
     sendJson(data);
 }
 
-function dicardHand(){
-    console.log("dicardHand")
+function discardHand(){
+    console.log("discardHand")
     let data={
         client_common:{
             event:"end_phase_hand_discard"

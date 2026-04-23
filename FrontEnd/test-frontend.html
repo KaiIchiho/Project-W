@@ -76,27 +76,31 @@
                 </select><br>
                 <button onclick="setDeck()">Set Deck</button><br>
                 <button onclick="standby()">Standby</button><br>
-                <button id="next_phase_button" onclick="nextPhase()">Next Phase Button</button>
-
+                
                 <br>
                 <h3>Send Message</h3>
                 <input id="input" type="text" placeholder="Input Text">
                 <button onclick="sendMessage()">Send</button>
                 <div id="log"></div><br>
+                <button id="next_phase_button" onclick="nextPhase()">Next Phase Button</button>
                 <h4>Stage</h4>
                 <div id="stage"></div><br>
                 <h4>Climax</h4>
                 <button id="cx_button" onclick="">Empty</button>
                 <h4>Hand</h4>
                 <div id="hand"></div>
-                <button onclick="swapSelectedHandCards()">Swap</button>
-                <button onclick="readCardInfo()">Read Card Info</button>
-                <button onclick="clockSelectedHand()">Clock Hand</button>
-                <button onclick="charPlay()">Character Play</button>
-                <button onclick="eventPlay()">Event Play</button>
-                <button onclick="charMove()">Character Move</button>
-                <button onclick="cxSet()">Climax Set</button>
-                <button onclick="dicardHand()">Discard Hand</button>
+                    <button onclick="readCardInfo()">Read Card Info</button>
+                <div>
+                    <button onclick="swapSelectedHandCards()">Swap</button>
+                    <button onclick="clockSelectedHand()">Clock Hand</button>
+                </div>
+                <div>
+                    <button onclick="charPlay()">Character Play</button>
+                    <button onclick="eventPlay()">Event Play</button>
+                    <button onclick="charMove()">Character Move</button>
+                    <button onclick="cxSet()">Climax Set</button>
+                    <button onclick="discardHand()">Hand Discard</button>
+                </div>
                 <div>
                     <button onclick="directAttack()">Direct Attack</button>
                     <button onclick="frontAttack()">Front Attack</button>
