@@ -53,7 +53,7 @@ class AttackPhase(Phase):
         await self._in_first_attack_step(game,attack_type)
         
     async def _in_first_attack_step(self,game:"Game",attack_type:AttackType):
-        self.step=self.first_step(attack_type)
+        self.step=self.first_step(self._on_next_attack_step,attack_type)
         await self.step.on_enter(game)
     
     async def _on_next_attack_step(self,game:"Game"):
@@ -67,11 +67,11 @@ class AttackPhase(Phase):
         stage_position_index=self.step.stage_position_index
         if self.step.next_step is Counter:
             if AttackType.check_has_counter(attack_type):
-                self.step=self.step.next_step(attack_type,stage_position_index)
+                self.step=self.step.next_step(self._on_next_attack_step,attack_type,stage_position_index)
             else:
-                self.step=self.step.next_step.next_step(attack_type,stage_position_index)
+                self.step=self.step.next_step.next_step(self._on_next_attack_step,attack_type,stage_position_index)
         else:
-            self.step=self.step.next_step(attack_type,stage_position_index)
+            self.step=self.step.next_step(self._on_next_attack_step,attack_type,stage_position_index)
         await self.step.on_enter(game)
         
     async def _in_encore_step(self,game:"Game"):

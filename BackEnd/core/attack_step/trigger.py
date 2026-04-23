@@ -4,15 +4,15 @@ from core.attack_type import AttackType
 from core.data_reader import DataReader
 from schemas import event_type,game_flow
 from config import setting_ingame
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING,Callable
 if TYPE_CHECKING:
     from core.game import Game
 
 class Trigger(AttackStep):
     step_name="Trigger"
     next_step=Counter
-    def __init__(self,attack_type:AttackType,stage_position_index:int):
-        super().__init__(attack_type,True,stage_position_index)
+    def __init__(self,auto_next_step:Callable[[],None],attack_type:AttackType,stage_position_index:int):
+        super().__init__(auto_next_step,attack_type,True,stage_position_index)
         
     async def on_enter(self,game:"Game"):
         await super().on_enter(game)
@@ -40,3 +40,5 @@ class Trigger(AttackStep):
         game.player_process_resolution_to_stock(player_id)
         
         self.is_complete=True
+        await self.on_next_step()
+        

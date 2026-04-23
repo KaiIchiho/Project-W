@@ -6,7 +6,7 @@ if TYPE_CHECKING:
 class Encore(AttackStep):
     step_name="Encore"
     def __init__(self):
-        super().__init__(None, True)
+        super().__init__(None,None,True)
     
     async def on_enter(self,game:"Game"):
         await super().on_enter(game)

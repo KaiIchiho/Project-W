@@ -1,7 +1,7 @@
 from core.state_machine_base import StateMachine
 from core.attack_type import AttackType
 from schemas import game_flow
-from typing import TYPE_CHECKING,Type
+from typing import TYPE_CHECKING,Type,Callable,Awaitable
 if TYPE_CHECKING:
     from core.game import Game
 
@@ -14,7 +14,11 @@ class AttackStep(StateMachine):
         "next_step":"on_next_step"
     }
     stage_position_index:int=-1
-    def __init__(self,attack_type:AttackType,is_declarated:bool,stage_position_index:int=-1):
+    auto_next_step:Callable[[],Awaitable[None]]=None
+    def __init__(
+        self,auto_next_step:Callable[[],None],attack_type:AttackType,is_declarated:bool,stage_position_index:int=-1
+    ):
+        self.auto_next_step=auto_next_step
         self.attack_type=attack_type
         self.is_declarated=is_declarated
         self.stage_position_index=stage_position_index
@@ -29,10 +33,5 @@ class AttackStep(StateMachine):
         print(f"Log: Attack Step: {self.step_name} On Exit")
     
     async def on_next_step(self,game:"Game",action:dict,player_id:str):
-        # if game.attack_step:
-        #     game.attack_step.on_exit()
-        # if not self.next_step:
-        #     game.attack_step=None
-        #     return
-        # game.attack_step=self.next_step()
-        pass
+        if self.auto_next_step:
+            await self.auto_next_step()
