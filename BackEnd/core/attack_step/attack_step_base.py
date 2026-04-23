@@ -14,7 +14,7 @@ class AttackStep(StateMachine):
         "next_step":"on_next_step"
     }
     stage_position_index:int=-1
-    auto_next_step:Callable[[],Awaitable[None]]=None
+    auto_next_step:Callable[["Game"],Awaitable[None]]=None
     def __init__(
         self,auto_next_step:Callable[[],None],attack_type:AttackType,is_declarated:bool,stage_position_index:int=-1
     ):
@@ -32,6 +32,6 @@ class AttackStep(StateMachine):
     async def on_exit(self,game:"Game"):
         print(f"Log: Attack Step: {self.step_name} On Exit")
     
-    async def on_next_step(self):
+    async def on_next_step(self,game:"Game"):
         if self.auto_next_step:
-            await self.auto_next_step()
+            await self.auto_next_step(game)

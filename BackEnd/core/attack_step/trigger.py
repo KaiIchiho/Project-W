@@ -40,5 +40,5 @@ class Trigger(AttackStep):
         game.player_process_resolution_to_stock(player_id)
         
         self.is_complete=True
-        await self.on_next_step()
+        await self.on_next_step(game)
         
