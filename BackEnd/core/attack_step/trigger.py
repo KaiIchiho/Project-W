@@ -23,17 +23,18 @@ class Trigger(AttackStep):
         
     async def trigger_check(self,game:"Game"):
         player_id=game.get_turn_player_id()
-        card_id,trigger=game.player_check_trigger(player_id)
-        triggers=[{"type":trigger}]
+        card_id,triggers=game.player_check_trigger(player_id)
+        all_triggers=[{"type": trigger} for trigger in triggers]
         player_name=game.get_turn_player_name()
+        triggers_str = ",".join(triggers)
         common=DataReader.get_common_data(
             game,True,
-            f"{player_name}は{trigger}のトリガーをチェックしました",
+            f"{player_name}は{triggers_str}のトリガーをチェックしました",
             player_id)
         res=game_flow.AttackPhaseTriggerCheckResponse(
             common=common,
             trigger_card_id=card_id,
-            triggers=triggers)
+            triggers=all_triggers)
         await game.send_data_to_room(res)
         
         game.player_process_resolution_to_stock(player_id)

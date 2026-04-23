@@ -399,9 +399,9 @@ class Game():
         player=self.check_command_player(player_id)
         trigger_card=player.flip_over_deck_one_card()
         card_id=trigger_card.card_id
-        trigger=trigger_card.get_current_info("card_trigger")
+        triggers=trigger_card.get_triggers()
         player.set_card_to_resolution(trigger_card)
-        return card_id,trigger
+        return card_id,triggers
     
     def player_process_resolution_to_waiting_room(self,player_id:id):
         player=self.check_command_player(player_id)

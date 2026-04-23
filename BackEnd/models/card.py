@@ -27,8 +27,10 @@ class Card(GameObject):
         self.has_counter_icon:bool=False
         self.has_clock_icon:bool=False
         self.has_cx_combo:bool=False
+        
         self.init_info()
         self.type_enum=CardType(self.type)
+        self.triggers:list[str]=self.process_triggers()
         
     def init_info(self):
         key_list=[]
@@ -65,3 +67,10 @@ class Card(GameObject):
             info_dict[info_name]=value
             
         return info_dict
+    
+    def process_triggers(self)->list[str]:
+        triggers=self.trigger_type.split(",")
+        return triggers
+    
+    def get_triggers(self)->list[str]:
+        return self.triggers
