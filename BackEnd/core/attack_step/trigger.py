@@ -38,3 +38,5 @@ class Trigger(AttackStep):
         await game.send_data_to_room(res)
         
         game.player_process_resolution_to_stock(player_id)
+        
+        self.is_complete=True
