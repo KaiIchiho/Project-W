@@ -4,6 +4,7 @@ from core.attack_type import AttackType
 from core.attack_step.attack_step_base import AttackStep
 from core.attack_step.attack_declaration import AttackDeclaration
 from core.attack_step.encore import Encore
+from core.attack_step.counter import Counter
 from core.data_reader import DataReader
 from schemas import event_type,game_flow
 from config import setting_ingame
@@ -24,9 +25,8 @@ class AttackPhase(Phase):
         self.encore_step:AttackStep=Encore
     
     async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
-        await super().handle_action(game, action, event, player_id)
-        if self.step:
-            await self.step.handle_action(game, action, event, player_id)
+        await super().handle_action(game,action,event,player_id)
+        await self.handle_step_action(game,action,event,player_id)
     
     async def on_enter(self, game):
         await super().on_enter(game)
@@ -56,16 +56,36 @@ class AttackPhase(Phase):
         self.step=self.first_step(attack_type)
         await self.step.on_enter(game)
     
-    def _on_next_attack_step(self):
+    async def _on_next_attack_step(self,game:"Game"):
         if not self.step:
             return
+        self.step.next_step.on_exit(game)
         if not self.step.next_step:
+            self.step=None
             return
-        self.step=self.step.next_step(self.step.attack_type,self.step.is_declarated)
+        attack_type=self.step.attack_type
+        stage_position_index=self.step.stage_position_index
+        if self.step.next_step is Counter:
+            if AttackType.check_has_counter(attack_type):
+                self.step=self.step.next_step(attack_type,stage_position_index)
+            else:
+                self.step=self.step.next_step.next_step(attack_type,stage_position_index)
+        else:
+            self.step=self.step.next_step(attack_type,stage_position_index)
+        await self.step.on_enter(game)
         
     async def _in_encore_step(self,game:"Game"):
+        self.step.next_step.on_exit(game)
         self.step=self.encore_step()
         await self.step.on_enter(game)
+        
+    async def handle_step_action(self,game:"Game",action:dict,event:str,player_id:int):
+        if not self.step:
+            return
+        await self.step.handle_action(game, action, event, player_id)
+        if self.step.is_complete:
+            await self._on_next_attack_step(game)
+            
     
     def parse_attack_type(self,type_str:str)->AttackType:
         try:

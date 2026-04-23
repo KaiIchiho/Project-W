@@ -161,6 +161,10 @@ function handleAttackPhaseDeclare(data){
     updateStage(player.stage)
 }
 
+function handleAttackPhaseTriggerCheck(data){
+    
+}
+
 function handleEndPhaseCxRemove(data){
     let common=data.common;
     let player1=common.player_1;

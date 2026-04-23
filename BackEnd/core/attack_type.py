@@ -13,9 +13,23 @@ class AttackType(str,Enum):
         if could_when_is_empty is None:
             return False
         return could_when_is_empty==other_is_empty
+    
+    @staticmethod
+    def check_has_counter(attack_type:"AttackType")->bool:
+        result=attack_type_counter_registry.get(attack_type)
+        if result is None:
+            return False
+        else:
+            return result
 
 attack_type_empty_registry={
     AttackType.DIRECT:True,
     AttackType.FRONT:False,
+    AttackType.SIDE:False
+}
+
+attack_type_counter_registry={
+    AttackType.DIRECT:False,
+    AttackType.FRONT:True,
     AttackType.SIDE:False
 }

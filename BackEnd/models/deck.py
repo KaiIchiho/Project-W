@@ -58,7 +58,7 @@ class Deck(GameObject):
         if len(self.cards)==0:
             return None
         
-        card=self.cards.pop()
+        card=self.cards.pop(0)
         if len(self.cards)==0:
             self.on_deck_empty()
             

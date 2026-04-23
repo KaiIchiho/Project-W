@@ -395,6 +395,21 @@ class Game():
         player=self.check_command_player(player_id)
         return player.check_has_stage_card(stage_index)
     
+    def player_check_trigger(self,player_id:int):
+        player=self.check_command_player(player_id)
+        trigger_card=player.flip_over_deck_one_card()
+        card_id=trigger_card.card_id
+        trigger=trigger_card.get_current_info("card_trigger")
+        player.set_card_to_resolution(trigger_card)
+        return card_id,trigger
+    
+    def player_process_resolution_to_waiting_room(self,player_id:id):
+        player=self.check_command_player(player_id)
+        player.process_resolution_to_waiting_room()
+    def player_process_resolution_to_stock(self,player_id:id):
+        player=self.check_command_player(player_id)
+        player.process_resolution_to_stock()
+    
     def check_is_first_phase(self)->bool:
         return isinstance(self.phase,self.first_phase)
     

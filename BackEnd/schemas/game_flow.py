@@ -106,6 +106,10 @@ class AttackPhaseDeclareResponse(WSCommonResponseBase):
     target_stage_position:dict=Field(default_factroy=dict)
     attack_type:str
     is_first_turn:bool
+class AttackPhaseTriggerCheckResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_TRIGGER_CHECK
+    trigger_card_id:int
+    triggers:list[dict]=Field(default_factroy=list)
 
 class EndPhaseCXRemoveResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.END_PHASE_CX_REMOVE

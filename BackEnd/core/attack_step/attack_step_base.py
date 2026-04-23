@@ -1,21 +1,23 @@
 from core.state_machine_base import StateMachine
 from core.attack_type import AttackType
 from schemas import game_flow
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING,Type
 if TYPE_CHECKING:
     from core.game import Game
 
 class AttackStep(StateMachine):
     step_name="Attack Step Base"
-    next_step=None
+    next_step:Type["AttackStep"]=None
     is_complete=False
     is_declarated=False
     handlers={
         "next_step":"on_next_step"
     }
-    def __init__(self,attack_type:AttackType,is_declarated:bool):
+    stage_position_index:int=-1
+    def __init__(self,attack_type:AttackType,is_declarated:bool,stage_position_index:int=-1):
         self.attack_type=attack_type
         self.is_declarated=is_declarated
+        self.stage_position_index=stage_position_index
         
     def __init_subclass__(cls, **kwargs):
         super.__init_subclass__(**kwargs)

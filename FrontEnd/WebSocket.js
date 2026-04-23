@@ -130,6 +130,7 @@ event_method_dict={
     "main_phase_char_move":"handleMainPhaseCharMove",
     "climax_phase_cx_set":"handleClimaxPhaseCxSet",
     "attack_phase_declare":"handleAttackPhaseDeclare",
+    "attack_phase_trigger_check":"handleAttackPhaseTriggerCheck",
     "end_phase_cx_remove":"handleEndPhaseCxRemove",
     "end_phase_hand_exceed":"handleEndPhaseHandExceed",
     "end_phase_hand_discard":"handleEndPhaseHandDiscard"

@@ -202,6 +202,18 @@ class Player(GameObject):
         else:
             raise ValueError("Hand Index Over the Range")
         
+    def flip_over_deck(self,times:int)->list[Card]:
+        cards:list[Card]=[]
+        for one_time in times:
+            cards.append(self.flip_over_deck_one_card())
+        return cards
+        
+    def flip_over_deck_one_card(self)->Card:
+        if self.playmat:
+            return self.playmat.flip_over_deck_one_card()
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")
+    
     def set_card_to_stage(self,card:Card,stage_index:int)->bool:
         if self.playmat:
             return self.playmat.set_card_to_stage(card,stage_index)
@@ -220,9 +232,15 @@ class Player(GameObject):
         else:
             raise ValueError(f"{self.player_id} No Playmat")
     
-    def process_resolution(self):
+    def process_resolution_to_waiting_room(self):
         if self.playmat:
             return self.playmat.resolution_to_waiting_room()
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")
+    
+    def process_resolution_to_stock(self):
+        if self.playmat:
+            return self.playmat.resolution_to_stock()
         else:
             raise ValueError(f"{self.player_id} No Playmat")
         

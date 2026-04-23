@@ -20,7 +20,7 @@ class Playmat(GameObject):
                 #  deck:Deck=None
                  ):
         super().__init__(ori_owner_id)
-        self.deck=None
+        self.deck:Deck=None
         self.waiting_room:list[Card]=[]
         
         self.stage:list[Optional[Card]]=\
@@ -165,7 +165,7 @@ class Playmat(GameObject):
         card.init_info()
         self.waiting_room.append(card)
         return True
-            
+    
     def set_cards_to_waiting_room(self,cards:list[Card]):
         # self.waiting_room.extend(cards)
         for card in cards:
@@ -184,6 +184,13 @@ class Playmat(GameObject):
             return True
         else:
             return False
+    
+    def set_card_to_stock(self,card:Card)->bool:
+        if not card:
+            return False
+        card.init_info()
+        self.stock.append(card)
+        return True
     
     def _level_up(self):
         pass
@@ -221,6 +228,11 @@ class Playmat(GameObject):
         for i in range(num):
             print("Log: 1 Resolution Card Switch To Waiting Room")
             self.set_card_to_waiting_room(self.resolution.pop(0))
+    def resolution_to_stock(self):
+        num=len(self.resolution)
+        for i in range(num):
+            print("Log: 1 Resolution Card Switch To Waiting Room")
+            self.set_card_to_stock(self.resolution.pop(0))
             
     def move_stage_char(self,ori_index:int,tar_index:int):
         result=False
@@ -265,3 +277,6 @@ class Playmat(GameObject):
     def set_cx(self,card:Card):
         self.remove_cx()
         self.climax=card
+        
+    def flip_over_deck_one_card(self)->Card:
+        return self.deck.draw()

@@ -11,8 +11,8 @@ if TYPE_CHECKING:
 class AttackDeclaration(AttackStep):
     step_name="Attack Declaration"
     next_step=Trigger
-    def __init__(self,attack_type:AttackType,is_declarated:bool=False):
-        super().__init__(attack_type,is_declarated)
+    def __init__(self,attack_type:AttackType):
+        super().__init__(attack_type)
         self.handlers[event_type.ATTACK_PHASE_DECLARE]="on_start_attack"
         
     
@@ -66,3 +66,6 @@ class AttackDeclaration(AttackStep):
             attack_type=req.attack_type,
             is_first_turn=is_first_turn)
         await game.send_data_to_room(res)
+        
+        self.stage_position_index=req.stage_position_index
+        self.is_complete=True
