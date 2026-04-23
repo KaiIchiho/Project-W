@@ -12,7 +12,7 @@ class AttackDeclaration(AttackStep):
     step_name="Attack Declaration"
     next_step=Trigger
     def __init__(self,attack_type:AttackType):
-        super().__init__(attack_type)
+        super().__init__(attack_type,False,-1)
         self.handlers[event_type.ATTACK_PHASE_DECLARE]="on_start_attack"
         
     
