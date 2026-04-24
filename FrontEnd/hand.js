@@ -124,3 +124,22 @@ function discardHand(){
     }
     sendJson(data)
 }
+
+function doCounter(is_counter){
+    console.log("discardHand")
+    let chosen_card=null
+    if(is_counter){
+        if(selected_btn_index.length==0){return}
+        chosen_card=selected_btn_index[0]
+    }
+    let data={
+        client_common:{
+            event:"attack_phase_counter_check"
+        },
+        chosen_card:chosen_card
+    }
+    sendJson(data)
+    
+    //Temporary
+    setComponentHidden("counter_check",true)
+}

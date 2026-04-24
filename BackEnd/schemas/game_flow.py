@@ -2,6 +2,7 @@ from pydantic import BaseModel,Field
 from schemas.base import WSRequestBase,WSResponseBase
 from schemas.common import WSCommonRequestBase,WSCommonResponseBase
 from schemas import event_type,object,sub_request
+from typing import Optional
 
 class SelectDeckRequest(WSRequestBase):
     event:str=event_type.SELECT_DECK
@@ -111,13 +112,19 @@ class AttackPhaseTriggerCheckResponse(WSCommonResponseBase):
     trigger_card_id:int
     triggers:list[dict]=Field(default_factroy=list)
 
+class AttackPhaseCounterCheckResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_COUNTER_CHECK
+    is_counter:bool
+class AttackPhaseCounterCheckRequest(WSCommonRequestBase):
+    chosen_card:int
+
 class EndPhaseCXRemoveResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.END_PHASE_CX_REMOVE
     is_cx_zone_empty:bool
 
 class EndPhaseHandExceedResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.END_PHASE_HAND_EXCEED
-    exceed_hand_card_num:int
+    exceed_hand_card_num:Optional[int]
     
 class EndPhaseHandDiscardRequest(WSCommonRequestBase):
     set_waiting_room:list[int]
@@ -135,5 +142,6 @@ event_req={
     event_type.MAIN_PHASE_CHAR_MOVE:MainPhaseCharMoveRequest,
     event_type.CLIMAX_PHASE_CX_SET:ClimaxPhaseCXSetRequest,
     event_type.ATTACK_PHASE_DECLARE:AttackPhaseDeclareRequest,
+    event_type.ATTACK_PHASE_COUNTER_CHECK:AttackPhaseCounterCheckRequest,
     event_type.END_PHASE_HAND_DISCARD:EndPhaseHandDiscardRequest
 }
