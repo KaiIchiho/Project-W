@@ -22,30 +22,40 @@ class Damage(AttackStep):
         
     async def player_damage_check(self,game:"Game"):
         player_id=game.get_turn_player_id()
-        info_type=["card_soul"]
-        info_dict=game.get_player_stage_info(info_type)
-        soul=info_dict.get("card_soul")
-        master_user_id=\
-            game.get_player_stage_owner_id(player_id,self.stage_position_index)
-        attack_character={
-                "index":self.stage_position_index,
-                "master_user_id":master_user_id,
-                "soul":soul
-            }
-        if master_user_id==-1:
-            success=False
-            log="ダメージがチェックされました"
+        has_card=game.player_has_stage_card(player_id,self.stage_position_index)
+        if has_card:
+            info_type=["card_soul"]
+            info_dict=game.get_player_stage_info(
+                player_id,self.stage_position_index,info_type)
+            soul=info_dict.get("card_soul")
+            master_user_id=\
+                game.get_player_stage_owner_id(
+                    player_id,self.stage_position_index)
+            attack_character={
+                    "index":self.stage_position_index,
+                    "master_user_id":master_user_id,
+                    "soul":soul
+                }
+            if master_user_id==-1:
+                success=False
+                log="ダメージがチェックされました"
+            else:
+                success=True
+                log="ダメージのチェックが失敗しました"
         else:
-            success=True
-            log="ダメージのチェックが失敗しました"
+            success=False
+            log="攻撃したカード存在しないので、ダメージ処理はしません"
+            attack_character={
+                "index":self.stage_position_index,
+                "master_user_id":-1,
+                "soul":-1
+            }
         
         common=DataReader.get_common_data(
-            game,success,log,player_id
-        )
+            game,success,log,player_id)
         res=game_flow.AttackPhaseDamageCheckResponse(
             common=common,
-            attack_character=attack_character
-        )
+            attack_character=attack_character)
         await game.send_data_to_room(res)
         
         self.is_complete=True
