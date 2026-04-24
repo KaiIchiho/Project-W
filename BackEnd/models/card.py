@@ -47,8 +47,8 @@ class Card(GameObject):
     
     def _set_current_info(self,info_name:str,value):
         value_name=card_repo.allowed_fields.get(info_name)
-        print(f"Log: value_name: {value_name}, info_name: {info_name}")
-        print(f"Log: value: {value}")
+        # print(f"Log: value_name: {value_name}, info_name: {info_name}")
+        # print(f"Log: value: {value}")
         if value_name and hasattr(self,value_name):
             setattr(self,value_name,value)
             # print(f"Log: Card Id: {self.card_id}")
