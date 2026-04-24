@@ -60,3 +60,4 @@ class Damage(AttackStep):
         await game.send_data_to_room(res)
         
         self.is_complete=True
+        await self.on_next_step(game)
