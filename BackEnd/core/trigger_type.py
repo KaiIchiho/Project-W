@@ -14,3 +14,6 @@ class TriggerType(str,Enum):
     DISCOVERY="Discovery"
     CHANCE="Chance"
     FOCUS="Focus"
+    
+    SOULPLUS1="soulplus1"
+    SOULPLUS2="soulplus2"
