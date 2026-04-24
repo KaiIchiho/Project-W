@@ -116,7 +116,7 @@ class AttackPhaseCounterCheckResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_COUNTER_CHECK
     is_counter:bool
 class AttackPhaseCounterCheckRequest(WSCommonRequestBase):
-    chosen_card:int
+    chosen_card:Optional[int]
 
 class EndPhaseCXRemoveResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.END_PHASE_CX_REMOVE
@@ -124,7 +124,7 @@ class EndPhaseCXRemoveResponse(WSCommonResponseBase):
 
 class EndPhaseHandExceedResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.END_PHASE_HAND_EXCEED
-    exceed_hand_card_num:Optional[int]
+    exceed_hand_card_num:int
     
 class EndPhaseHandDiscardRequest(WSCommonRequestBase):
     set_waiting_room:list[int]
