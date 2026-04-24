@@ -55,8 +55,8 @@ def read_card_field_list(card_id:int,field_list:list[str])->dict:
     for field in field_list:
         value=read_card_field(card_id,field)
         field_value[field]=value
-    print("Log: read_card_field_list")
-    print(field_value)
+    # print("Log: read_card_field_list")
+    # print(field_value)
     return field_value
 
 def read_card_type(card_id:int)->CardType:
