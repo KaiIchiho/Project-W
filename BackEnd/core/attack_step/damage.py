@@ -22,6 +22,7 @@ class Damage(AttackStep):
         
     async def player_damage_check(self,game:"Game"):
         player_id=game.get_turn_player_id()
+        player_name=game.get_turn_player_name()
         has_card=game.player_has_stage_card(player_id,self.stage_position_index)
         if has_card:
             info_type=["card_soul"]
@@ -36,12 +37,12 @@ class Damage(AttackStep):
                     "master_user_id":master_user_id,
                     "soul":soul
                 }
-            if master_user_id==-1:
-                success=False
-                log="ダメージがチェックされました"
-            else:
+            if master_user_id!=-1:
                 success=True
-                log="ダメージのチェックが失敗しました"
+                log=f"{player_name}はダメージがチェックされました"
+            else:
+                success=False
+                log=f"{player_name}はダメージのチェックが失敗しました"
         else:
             success=False
             log="攻撃したカード存在しないので、ダメージ処理はしません"
