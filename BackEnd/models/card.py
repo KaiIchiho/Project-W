@@ -1,6 +1,7 @@
 from models.base import GameObject
 from db import card_repo
 from core.card_type import CardType
+from core.trigger_type import TriggerType
 
 class Card(GameObject):
     def __init__(self, 
@@ -32,7 +33,9 @@ class Card(GameObject):
         
         self.init_info()
         self.type_enum=CardType(self.type)
-        self.triggers:list[str]=self.process_triggers()
+        self.triggers:list[str]=[]
+        self.trigger_types:list[TriggerType]=[]
+        self._process_triggers()
         
     def init_info(self):
         key_list=[]
@@ -70,9 +73,16 @@ class Card(GameObject):
             
         return info_dict
     
-    def process_triggers(self)->list[str]:
-        triggers=self.trigger_type.split(",")
-        return triggers
+    def _process_triggers(self):
+        self.triggers=self.trigger_type.split(",")
+        for trigger in self.triggers:
+            trigger_type=TriggerType(trigger)
+            if trigger_type is None:
+                continue
+            self.trigger_types.append(trigger_type)
     
     def get_triggers(self)->list[str]:
         return self.triggers
+    
+    def get_trigger_types(self)->list[TriggerType]:
+        return self.trigger_types
