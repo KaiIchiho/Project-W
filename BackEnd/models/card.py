@@ -7,6 +7,8 @@ class Card(GameObject):
                  ori_owner_id:int,
                  card_id:int):
         super().__init__(ori_owner_id)
+        self.owner_id=ori_owner_id
+        
         self.card_id=card_id
         self.image_filename:str=""
         self.color:str=""

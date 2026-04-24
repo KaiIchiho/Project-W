@@ -280,3 +280,11 @@ class Playmat(GameObject):
         
     def flip_over_deck_one_card(self)->Card:
         return self.deck.draw()
+    
+    def get_stage_card_owner_id(self,stage_index:int)->int:
+        if 0<=stage_index<len(self.stage):
+            if self.stage[stage_index] is None:
+                return -1
+            return self.stage[stage_index].owner_id
+        else:
+            return -1

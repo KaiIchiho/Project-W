@@ -117,6 +117,10 @@ class AttackPhaseCounterCheckResponse(WSCommonResponseBase):
     is_counter:bool
 class AttackPhaseCounterCheckRequest(WSCommonRequestBase):
     chosen_card:Optional[int]
+    
+class AttackPhaseDamageCheckResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_DAMAGE_CHECK
+    attack_character:dict=Field(default_factroy=dict)
 
 class EndPhaseCXRemoveResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.END_PHASE_CX_REMOVE

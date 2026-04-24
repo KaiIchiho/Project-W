@@ -169,6 +169,10 @@ function handleAttackPhaseCounterCheck(data){
     setComponentHidden("counter_check",false)
 }
 
+function handleAttackPhaseDamageCheck(data){
+    
+}
+
 function handleEndPhaseCxRemove(data){
     let common=data.common;
     let player1=common.player_1;

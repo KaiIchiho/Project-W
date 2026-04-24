@@ -274,3 +274,9 @@ class Player(GameObject):
             return hand_size-setting_ingame.HAND_LIMIT
         else:
             return 0
+        
+    def get_stage_card_owner_id(self,stage_index:int)->int:
+        if self.playmat:
+            return self.playmat.get_stage_card_owner_id(stage_index)
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")
