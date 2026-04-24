@@ -80,6 +80,10 @@ class Card(GameObject):
             if trigger_type is None:
                 continue
             self.trigger_types.append(trigger_type)
+        if len(self.triggers)!=len(self.trigger_types):
+            print(f"Error: {self.card_id} Process Triggers Failed")
+        else:
+            print(f"Log: {self.card_id} Process Triggers Successed")
     
     def get_triggers(self)->list[str]:
         return self.triggers
