@@ -5,6 +5,7 @@ from core.attack_step.attack_step_base import AttackStep
 from core.attack_step.attack_declaration import AttackDeclaration
 from core.attack_step.encore import Encore
 from core.attack_step.counter import Counter
+from core.attack_step.battle import Battle
 from core.data_reader import DataReader
 from schemas import event_type,game_flow
 from config import setting_ingame
@@ -67,6 +68,11 @@ class AttackPhase(Phase):
         stage_position_index=self.step.stage_position_index
         if self.step.next_step is Counter:
             if AttackType.check_has_counter(attack_type):
+                self.step=self.step.next_step(self._on_next_attack_step,attack_type,stage_position_index)
+            else:
+                self.step=self.step.next_step.next_step(self._on_next_attack_step,attack_type,stage_position_index)
+        elif self.step.next_step is Battle:
+            if AttackType.check_has_battle(attack_type):
                 self.step=self.step.next_step(self._on_next_attack_step,attack_type,stage_position_index)
             else:
                 self.step=self.step.next_step.next_step(self._on_next_attack_step,attack_type,stage_position_index)

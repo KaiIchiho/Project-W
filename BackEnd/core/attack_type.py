@@ -21,6 +21,14 @@ class AttackType(str,Enum):
             return False
         else:
             return result
+        
+    @staticmethod
+    def check_has_battle(attack_type:"AttackType")->bool:
+        result=attack_type_battle_registry.get(attack_type)
+        if result is None:
+            return False
+        else:
+            return result
 
 attack_type_empty_registry={
     AttackType.DIRECT:True,
@@ -29,6 +37,12 @@ attack_type_empty_registry={
 }
 
 attack_type_counter_registry={
+    AttackType.DIRECT:False,
+    AttackType.FRONT:True,
+    AttackType.SIDE:False
+}
+
+attack_type_battle_registry={
     AttackType.DIRECT:False,
     AttackType.FRONT:True,
     AttackType.SIDE:False
