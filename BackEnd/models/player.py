@@ -191,7 +191,7 @@ class Player(GameObject):
     
     def read_hand_type(self,hand_index:int)->CardType:
         if 0<=hand_index<len(self.hand):
-            return self.hand[hand_index].type_enum
+            return self.hand[hand_index].get_card_type()
         else:
             raise ValueError("Hand Index Over the Range")
         
