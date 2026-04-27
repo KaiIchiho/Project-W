@@ -106,12 +106,12 @@ class Damage(AttackStep):
         elif self.attack_type==AttackType.FRONT:
             soul_damage=self.attack_card_soul
         elif self.attack_type==AttackType.SIDE:
-            other_level=\
+            other_stage_index,is_empty,info_dict=\
                 game.get_other_player_stage_info(
                     player_id,
                     self.stage_position_index,
-                    ["card_level"])\
-                        .get("card_level")
+                    ["card_level"])
+            other_level=info_dict.get("card_level")
             soul_damage=self.attack_card_soul-other_level
         if soul_damage<0:
             soul_damage=0
