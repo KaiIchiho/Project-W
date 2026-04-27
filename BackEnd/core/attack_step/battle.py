@@ -61,7 +61,7 @@ class Battle(AttackStep):
             "card_status":status_value
         }
         defense_character={
-            "stage_position_index":self.stage_position_index,
+            "stage_position_index":other_stage_index,
             "master_user_id":other_master_user_id,
             "power":other_power,
             "card_status":other_status_value
