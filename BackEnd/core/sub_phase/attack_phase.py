@@ -75,7 +75,11 @@ class AttackPhase(Phase):
             if AttackType.check_has_battle(attack_type):
                 self.step=self.step.next_step(self._on_next_attack_step,attack_type,stage_position_index)
             else:
-                self.step=self.step.next_step.next_step(self._on_next_attack_step,attack_type,stage_position_index)
+                if not self.step.next_step.next_step:
+                    self.step=None
+                    return
+                else:
+                    self.step=self.step.next_step.next_step(self._on_next_attack_step,attack_type,stage_position_index)
         else:
             self.step=self.step.next_step(self._on_next_attack_step,attack_type,stage_position_index)
         await self.step.on_enter(game)
