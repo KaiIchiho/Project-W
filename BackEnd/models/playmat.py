@@ -180,7 +180,7 @@ class Playmat(GameObject):
                 break
             else:
                 counter+=1
-        if counter==len(self.clock):
+        if counter==setting_ingame.CLOCK_LIMIT:
             return True
         else:
             return False
@@ -233,6 +233,11 @@ class Playmat(GameObject):
         for i in range(num):
             print("Log: 1 Resolution Card Switch To Waiting Room")
             self.set_card_to_stock(self.resolution.pop(0))
+    def resolution_to_clock(self):
+        num=len(self.resolution)
+        for i in range(num):
+            print("Log: 1 Resolution Card Switch To Waiting Room")
+            self.set_card_to_clock(self.resolution.pop(0))
             
     def move_stage_char(self,ori_index:int,tar_index:int):
         result=False

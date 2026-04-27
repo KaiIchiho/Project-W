@@ -133,6 +133,7 @@ event_method_dict={
     "attack_phase_trigger_check":"handleAttackPhaseTriggerCheck",
     "attack_phase_counter_check":"handleAttackPhaseCounterCheck",
     "attack_phase_damage_check":"handleAttackPhaseDamageCheck",
+    "attack_phase_damage_process":"handleAttackPhaseDamageProcess",
     "end_phase_cx_remove":"handleEndPhaseCxRemove",
     "end_phase_hand_exceed":"handleEndPhaseHandExceed",
     "end_phase_hand_discard":"handleEndPhaseHandDiscard"

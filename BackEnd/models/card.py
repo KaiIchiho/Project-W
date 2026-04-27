@@ -32,9 +32,9 @@ class Card(GameObject):
         self.has_cx_combo:bool=False
         
         self.init_info()
-        self.type_enum=CardType(self.type)
-        self.triggers:list[str]=[]
-        self.trigger_types:list[TriggerType]=[]
+        self._type_enum=CardType(self.type)
+        self._triggers:list[str]=[]
+        self._trigger_types:list[TriggerType]=[]
         self._process_triggers()
         
     def init_info(self):
@@ -74,19 +74,22 @@ class Card(GameObject):
         return info_dict
     
     def _process_triggers(self):
-        self.triggers=self.trigger_type.split(",")
-        for trigger in self.triggers:
+        self._triggers=self.trigger_type.split(",")
+        for trigger in self._triggers:
             trigger_type=TriggerType(trigger)
             if trigger_type is None:
                 continue
-            self.trigger_types.append(trigger_type)
-        if len(self.triggers)!=len(self.trigger_types):
+            self._trigger_types.append(trigger_type)
+        if len(self._triggers)!=len(self._trigger_types):
             print(f"Error: {self.card_id} Process Triggers Failed")
         else:
             print(f"Log: {self.card_id} Process Triggers Successed")
     
+    def get_card_type(self)->CardType:
+        return self._type_enum
+    
     def get_triggers(self)->list[str]:
-        return self.triggers
+        return self._triggers
     
     def get_trigger_types(self)->list[TriggerType]:
-        return self.trigger_types
+        return self._trigger_types

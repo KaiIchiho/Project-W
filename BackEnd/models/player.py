@@ -237,10 +237,14 @@ class Player(GameObject):
             return self.playmat.resolution_to_waiting_room()
         else:
             raise ValueError(f"{self.player_id} No Playmat")
-    
     def process_resolution_to_stock(self):
         if self.playmat:
             return self.playmat.resolution_to_stock()
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")
+    def process_resolution_to_clock(self):
+        if self.playmat:
+            return self.playmat.resolution_to_clock()
         else:
             raise ValueError(f"{self.player_id} No Playmat")
         

@@ -401,11 +401,26 @@ class Game():
     
     def player_check_trigger(self,player_id:int):
         player=self.check_command_player(player_id)
-        trigger_card=player.flip_over_deck_one_card()
-        card_id=trigger_card.card_id
-        triggers=trigger_card.get_triggers()
-        player.set_card_to_resolution(trigger_card)
+        checked_card=player.flip_over_deck_one_card()
+        card_id=checked_card.card_id
+        triggers=checked_card.get_triggers()
+        player.set_card_to_resolution(checked_card)
         return card_id,triggers
+    
+    def player_check_damage(self,player_id:int,times:int,info_list:list):
+        player=self.check_command_player(player_id)
+        checked_card_info=[]
+        is_broken=False
+        for i in range(times):
+            checked_card=player.flip_over_deck_one_card()
+            card_info=checked_card.get_current_info_by_list(info_list)
+            checked_card_info.append(card_info)
+            card_type=checked_card.get_card_type()
+            player.set_card_to_resolution(checked_card)
+            if card_type==CardType.CX:
+                is_broken=True
+                break
+        return is_broken,checked_card_info
     
     def player_process_resolution_to_waiting_room(self,player_id:id):
         player=self.check_command_player(player_id)
@@ -413,6 +428,9 @@ class Game():
     def player_process_resolution_to_stock(self,player_id:id):
         player=self.check_command_player(player_id)
         player.process_resolution_to_stock()
+    def player_process_resolution_to_clock(self,player_id:id):
+        player=self.check_command_player(player_id)
+        player.process_resolution_to_clock()
     
     def check_is_first_phase(self)->bool:
         return isinstance(self.phase,self.first_phase)

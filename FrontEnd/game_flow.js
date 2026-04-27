@@ -173,6 +173,10 @@ function handleAttackPhaseDamageCheck(data){
     
 }
 
+function handleAttackPhaseDamageProcess(data){
+    
+}
+
 function handleEndPhaseCxRemove(data){
     let common=data.common;
     let player1=common.player_1;
