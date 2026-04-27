@@ -40,9 +40,9 @@ class Battle(AttackStep):
             self.stage_position_index)
         other_master_user_id=game.get_player_stage_owner_id(
             other_player_id,other_stage_index)
-        other_power=game.get_other_player_stage_info(
-            player_id,
-            self.stage_position_index,
+        other_power=game.get_player_stage_info(
+            other_player_id,
+            other_stage_index,
             ["card_power"])\
                 .get("card_power")
         other_status=game.get_player_stage_status(other_player_id,other_stage_index)
