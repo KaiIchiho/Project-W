@@ -125,6 +125,10 @@ class AttackPhaseDamageProcessResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_DAMAGE_PROCESS
     revealed_card:list[dict]=Field(default_factroy=list)
     is_damage_cancel:bool
+class AttackPhaseBattleProcessResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_BATTLE_PROCESS
+    attack_character:dict=Field(default_factroy=dict)
+    defense_character:dict=Field(default_factroy=dict)
 
 class EndPhaseCXRemoveResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.END_PHASE_CX_REMOVE

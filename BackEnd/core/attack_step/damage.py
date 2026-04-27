@@ -63,7 +63,7 @@ class Damage(AttackStep):
         await game.send_data_to_room(res)
         
         self.is_complete=True
-        await self.on_next_step(game)
+        # await self.on_next_step(game)
         
     async def player_damage_process(self,game:"Game"):
         if not self.has_attack_card:
@@ -73,20 +73,7 @@ class Damage(AttackStep):
         other_player_id=game.get_other_player_id()
         revealed_card_info=["card_type"]
         
-        if self.attack_type==AttackType.DIRECT:
-            soul_damage=self.attack_card_soul+1
-        elif self.attack_type==AttackType.FRONT:
-            soul_damage=self.attack_card_soul
-        elif self.attack_type==AttackType.SIDE:
-            other_level=\
-                game.get_other_player_stage_info(
-                    player_id,
-                    self.stage_position_index,
-                    ["card_level"])\
-                        .get("card_level")
-            soul_damage=self.attack_card_soul-other_level
-        if soul_damage<0:
-            soul_damage=0
+        soul_damage=self._calculate_damage(game,player_id)
         
         is_broken,revealed_card=\
             game.player_check_damage(
@@ -112,3 +99,19 @@ class Damage(AttackStep):
             game.player_process_resolution_to_clock(player_id)
             
         await self.on_next_step(game)
+        
+    def _calculate_damage(self,game:"Game",player_id:int)->int:
+        if self.attack_type==AttackType.DIRECT:
+            soul_damage=self.attack_card_soul+1
+        elif self.attack_type==AttackType.FRONT:
+            soul_damage=self.attack_card_soul
+        elif self.attack_type==AttackType.SIDE:
+            other_level=\
+                game.get_other_player_stage_info(
+                    player_id,
+                    self.stage_position_index,
+                    ["card_level"])\
+                        .get("card_level")
+            soul_damage=self.attack_card_soul-other_level
+        if soul_damage<0:
+            soul_damage=0

@@ -6,6 +6,7 @@ from core.sub_phase.standby_phase import StandbyPhase
 from core.sub_phase.stand_phase import StandPhase
 from config import setting_ingame
 from core.card_type import CardType
+from models.playmat import StageStatus
 # from models.card import Card
 # from db import card_repo
 # from schemas import object,common,game_flow
@@ -364,6 +365,10 @@ class Game():
     def get_player_stage_owner_id(self,player_id:int,stage_index:int)->int:
         player=self.check_command_player(player_id)
         return player.get_stage_card_owner_id(stage_index)
+    
+    def get_player_stage_status(self,player_id:int,stage_index:int)->StageStatus:
+        player=self.check_command_player(player_id)
+        return player.get_stage_card_status(stage_index)
     
     def get_other_player_stage_is_empty(self,self_player_id:int,self_stage_index:int)->bool:
         other_player=self.check_command_other_player(self_player_id)

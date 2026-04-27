@@ -4,6 +4,7 @@ from models.deck import Deck
 from models.playmat import Playmat
 from core.card_type import CardType
 from config import setting_ingame
+from models.playmat import StageStatus
 from typing import Optional
 
 class Player(GameObject):    
@@ -282,5 +283,11 @@ class Player(GameObject):
     def get_stage_card_owner_id(self,stage_index:int)->int:
         if self.playmat:
             return self.playmat.get_stage_card_owner_id(stage_index)
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")
+        
+    def get_stage_card_status(self,stage_index:int)->StageStatus:
+        if self.playmat:
+            return self.playmat.get_stage_card_status(stage_index)
         else:
             raise ValueError(f"{self.player_id} No Playmat")

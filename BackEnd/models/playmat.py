@@ -293,3 +293,9 @@ class Playmat(GameObject):
             return self.stage[stage_index].owner_id
         else:
             return -1
+        
+    def get_stage_card_status(self,stage_index:int)->StageStatus:
+        if 0<=stage_index<len(self.stage_status):
+            return self.stage_status[stage_index]
+        else:
+            return None
