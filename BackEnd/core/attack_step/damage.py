@@ -115,3 +115,5 @@ class Damage(AttackStep):
             soul_damage=self.attack_card_soul-other_level
         if soul_damage<0:
             soul_damage=0
+            
+        return soul_damage
