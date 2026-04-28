@@ -61,11 +61,13 @@ class AttackPhase(Phase):
         if not self.step:
             return
         await self.step.on_exit(game)
-        if not self.step.next_step:
-            self.step=None
-            return
         if self.step is self.encore_step:
             self.is_complete=True
+            return
+        if not self.step.next_step:
+            # self.step=None
+            # Temporary
+            await self._in_encore_step(game)
             return
         attack_type=self.step.attack_type
         stage_position_index=self.step.stage_position_index
@@ -88,7 +90,7 @@ class AttackPhase(Phase):
         await self.step.on_enter(game)
         
     async def _in_encore_step(self,game:"Game"):
-        await self.step.on_exit(game)
+        # await self.step.on_exit(game)
         self.step=self.encore_step()
         await self.step.on_enter(game)
         
