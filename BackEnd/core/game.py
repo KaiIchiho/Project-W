@@ -334,6 +334,10 @@ class Game():
         player.remove_cx()
         return has_set_cx
     
+    def remove_stage_char_to_waiting_room(self,player_id:int,stage_index:int)->bool:
+        player=self.check_command_player(player_id)
+        return player.remove_stage_to_waiting_room(stage_index)
+    
     def get_hand_exceed_limit(self,player_id:int)->bool:
         player=self.check_command_player(player_id)
         return player.get_hand_exceed_limit()
@@ -369,6 +373,17 @@ class Game():
     def get_player_stage_status(self,player_id:int,stage_index:int)->StageStatus:
         player=self.check_command_player(player_id)
         return player.get_stage_card_status(stage_index)
+    
+    def set_player_stage_status(self,player_id:int,stage_index:int,status:StageStatus)->bool:
+        player=self.check_command_player(player_id)
+        return player.set_player_stage_status(stage_index,status)
+    
+    def set_player_stage_reverse(self,player_id:int,stage_index:int)->bool:
+        return self.set_player_stage_status(player_id,stage_index,StageStatus.REVERSE)
+        
+    def get_player_stage_reverse_index(self,player_id:int)->list[int]:
+        player=self.check_command_player(player_id)
+        return player.get_stage_index_by_status(StageStatus.REVERSE)
     
     def get_other_player_stage_is_empty(self,self_player_id:int,self_stage_index:int)->bool:
         other_player=self.check_command_other_player(self_player_id)

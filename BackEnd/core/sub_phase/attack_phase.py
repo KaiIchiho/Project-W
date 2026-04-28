@@ -64,6 +64,9 @@ class AttackPhase(Phase):
         if not self.step.next_step:
             self.step=None
             return
+        if self.step is self.encore_step:
+            self.is_complete=True
+            return
         attack_type=self.step.attack_type
         stage_position_index=self.step.stage_position_index
         if self.step.next_step is Counter:

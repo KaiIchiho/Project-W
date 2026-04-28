@@ -291,3 +291,21 @@ class Player(GameObject):
             return self.playmat.get_stage_card_status(stage_index)
         else:
             raise ValueError(f"{self.player_id} No Playmat")
+        
+    def set_stage_status(self,stage_index:int,status:StageStatus)->bool:
+        if self.playmat:
+            return self.playmat.set_stage_status(stage_index,status)
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")
+    
+    def get_stage_index_by_status(self,status:StageStatus)->list[int]:
+        if self.playmat:
+            return self.playmat.get_stage_index_by_status(status)
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")
+        
+    def remove_stage_to_waiting_room(self,stage_index:int)->bool:
+        if self.playmat:
+            return self.playmat.stage_to_waiting_room(stage_index)
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")

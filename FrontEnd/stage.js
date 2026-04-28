@@ -97,3 +97,16 @@ function charMove(){
     }
     sendJson(data)
 }
+
+function requestEncore(){
+    console.log("requestEncore");
+    if(selected_stage_index.length<1){return}
+    let data={
+        "client_common":{
+            event:"attack_phase_encore",
+        },
+        "chosen_cost":"None",
+        "order":selected_stage_index
+    }
+    sendJson(data)
+}

@@ -181,6 +181,13 @@ function handleAttackPhaseBattleProcess(data){
     
 }
 
+function handleAttackPhaseEncore(data){
+    // let common=data.common;
+    // if(common.event_user_id===user_id){
+
+    // }
+}
+
 function handleEndPhaseCxRemove(data){
     let common=data.common;
     let player1=common.player_1;

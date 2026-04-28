@@ -107,6 +107,7 @@ class AttackPhaseDeclareResponse(WSCommonResponseBase):
     target_stage_position:dict=Field(default_factroy=dict)
     attack_type:str
     is_first_turn:bool
+    
 class AttackPhaseTriggerCheckResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_TRIGGER_CHECK
     trigger_card_id:int
@@ -129,6 +130,13 @@ class AttackPhaseBattleProcessResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_BATTLE_PROCESS
     attack_character:dict=Field(default_factroy=dict)
     defense_character:dict=Field(default_factroy=dict)
+
+class AttackPhaseEncoreRequest(WSCommonRequestBase):
+    chosen_cost:str
+    order:list[int]=Field(default_factroy=list)
+class AttackPhaseEncoreResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_ENCORE
+    reverse_card_on_stage:list[dict]=Field(default_factroy=list)
 
 class EndPhaseCXRemoveResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.END_PHASE_CX_REMOVE
@@ -155,5 +163,6 @@ event_req={
     event_type.CLIMAX_PHASE_CX_SET:ClimaxPhaseCXSetRequest,
     event_type.ATTACK_PHASE_DECLARE:AttackPhaseDeclareRequest,
     event_type.ATTACK_PHASE_COUNTER_CHECK:AttackPhaseCounterCheckRequest,
+    event_type.ATTACK_PHASE_ENCORE:AttackPhaseEncoreRequest,
     event_type.END_PHASE_HAND_DISCARD:EndPhaseHandDiscardRequest
 }

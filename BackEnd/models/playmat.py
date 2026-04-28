@@ -299,3 +299,35 @@ class Playmat(GameObject):
             return self.stage_status[stage_index]
         else:
             return None
+        
+    def set_stage_status(self,stage_index:int,status:StageStatus)->bool:
+        if 0<=stage_index<len(self.stage_status):
+            if self.stage_status[stage_index] is None:
+                return False
+            else:
+                self.stage_status[stage_index]=status
+                return True
+        else:
+            return False
+        
+    def get_stage_index_by_status(self,status:StageStatus)->list[int]:
+        index_list=[]
+        for i in range(len(self.stage_status)):
+            if self.stage_status[i] is None:
+                continue
+            if self.stage_status[i]==status:
+                index_list.append(i)
+        return index_list
+    
+    def stage_to_waiting_room(self,stage_index:int)->bool:
+        if 0<=stage_index<len(self.stage_status):
+            if self.stage[stage_index]:
+                card=self.stage[stage_index]
+                self.stage[stage_index]=None
+                self.stage_status[stage_index]=None
+                self.set_card_to_waiting_room(card)
+                return True
+            else:
+                return False
+        else:
+            return False

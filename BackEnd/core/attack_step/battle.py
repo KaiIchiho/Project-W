@@ -45,12 +45,18 @@ class Battle(AttackStep):
             other_stage_index,
             ["card_power"])\
                 .get("card_power")
-        other_status=game.get_player_stage_status(other_player_id,other_stage_index)
+        other_status=game.get_player_stage_status(
+            other_player_id,other_stage_index)
         other_status_value=other_status.value\
             if other_status is not None else None
         
+        success=self.process_battle_result(
+            game,player_id,other_player_id,
+            power,other_power,
+            self.stage_position_index,other_stage_index)
+        
         common=DataReader.get_common_data(
-            game,True,
+            game,success,
             f"{player_name}はバトルを行います",
             player_id
         )
@@ -74,3 +80,27 @@ class Battle(AttackStep):
         await game.send_data_to_room(res)
         
         await self.on_next_step(game)
+        
+    def process_battle_result(
+        self,game:"Game",
+        player_id:int,other_player_id:int,
+        power,other_power,
+        stage_index:int,other_stage_index:int
+    )->bool:
+        if power>other_power:
+            success=game.set_player_stage_reverse(
+                other_player_id,other_stage_index)
+        elif power==other_power:
+            success_1=game.set_player_stage_reverse(
+                player_id,stage_index)
+            success_2=game.set_player_stage_reverse(
+                other_player_id,other_stage_index)
+            if success_1 and success_2:
+                success=True
+            else:
+                success=False
+        elif power<other_power:
+            success=game.set_player_stage_reverse(
+                player_id,self.stage_position_index)
+        
+        return success
