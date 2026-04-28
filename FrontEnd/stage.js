@@ -109,4 +109,5 @@ function requestEncore(){
         "order":selected_stage_index
     }
     sendJson(data)
+    setComponentHidden("encore",true)
 }

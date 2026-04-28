@@ -182,10 +182,10 @@ function handleAttackPhaseBattleProcess(data){
 }
 
 function handleAttackPhaseEncore(data){
-    // let common=data.common;
-    // if(common.event_user_id===user_id){
-
-    // }
+    let common=data.common;
+    if(common.event_user_id===user_id){
+        setComponentHidden("encore",false)
+    }
 }
 
 function handleEndPhaseCxRemove(data){
