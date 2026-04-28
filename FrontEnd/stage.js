@@ -100,7 +100,7 @@ function charMove(){
 
 function requestEncore(){
     console.log("requestEncore");
-    if(selected_stage_index.length<1){return}
+    // if(selected_stage_index.length<1){return}
     let data={
         "client_common":{
             event:"attack_phase_encore",
