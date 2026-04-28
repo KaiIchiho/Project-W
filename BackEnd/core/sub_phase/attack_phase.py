@@ -81,7 +81,9 @@ class AttackPhase(Phase):
                 self.step=self.step.next_step(self._on_next_attack_step,attack_type,stage_position_index)
             else:
                 if not self.step.next_step.next_step:
-                    self.step=None
+                    # self.step=None
+                    # Temporary
+                    await self._in_encore_step(game)
                     return
                 else:
                     self.step=self.step.next_step.next_step(self._on_next_attack_step,attack_type,stage_position_index)
