@@ -9,6 +9,7 @@ class Encore(AttackStep):
     step_name="Encore"
     def __init__(self):
         super().__init__(None,None,True)
+        self.handlers[event_type.ATTACK_PHASE_ENCORE]="on_encore"
         self.waiting_process_stage:dict={}
         self.process_player_order:list[int]=[]
         self.processing_player_id:int=-1
