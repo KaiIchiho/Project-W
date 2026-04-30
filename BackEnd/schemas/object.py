@@ -72,8 +72,6 @@ class StockData(ObjectBaseData):
     event_card_num:int=-1
     cx_card_num:int=-1
     cards:list[dict]=Field(default_factory=list)
-    
-    # [{index:1,tirgger:"xxx"},]
     cx_trigger:list[dict]=Field(default_factory=list)
 
 @register("cx",registry)

@@ -1,5 +1,6 @@
 from schemas import common,object
 from db import card_repo
+from core.card_type import CardType
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from core.game import Game
@@ -7,6 +8,34 @@ if TYPE_CHECKING:
     # from models.playmat import Playmat
 
 class DataReader():
+    @staticmethod
+    def calculate_card_num_by_type(cards_type_info:list[dict]):
+        char_card_num=0
+        event_card_num=0
+        cx_card_num=0
+        for card_type in cards_type_info:
+            if card_type.get("card_type") is None:
+                continue
+            if card_type.get("card_type")==CardType.CH.value:
+                char_card_num+=1
+            elif card_type.get("card_type")==CardType.EV.value:
+                event_card_num+=1
+            elif card_type.get("card_type")==CardType.CX.value:
+                cx_card_num+=1
+        return char_card_num,event_card_num,cx_card_num
+    
+    @staticmethod
+    def read_card_colors(cards_color_info:list[dict])->list[str]:
+        card_colors=[]
+        for card_info in cards_color_info:
+            color=card_info.get("card_color")
+            if color is None:
+                continue
+            if color in card_colors:
+                continue
+            card_colors.append(color)
+        return card_colors
+    
     @staticmethod
     def get_common_data(
         game:"Game",
@@ -102,17 +131,30 @@ class DataReader():
         card_info_list=["card_id"]
         cards_info=\
             player.get_waiting_room_cards_info_by_list(card_info_list)
+            
+        card_type_info_list=["card_type"]
+        cards_type_info=\
+            player.get_waiting_room_cards_info_by_list(card_type_info_list)
+        char_card_num,event_card_num,cx_card_num=\
+            DataReader.calculate_card_num_by_type(cards_type_info)
         
         return object.build_object_data(
             "waiting_room",
             card_num=len(cards_info),
+            char_card_num=char_card_num,
+            event_card_num=event_card_num,
+            cx_card_num=cx_card_num,
             cards=cards_info)
     
     @staticmethod
     def get_hand_data(player:"Player")->object.HandData:
         if not player:
             return object.HandData()
-        card_info_list=["card_id"]
+        card_info_list=[
+            "card_id","card_power",
+            "card_soul","card_cost",
+            "card_level","card_color",
+            "card_trigger","card_effect_text"]
         cards_info=player.get_hand_cards_info_by_list(card_info_list)
         
         return object.build_object_data(
@@ -129,10 +171,24 @@ class DataReader():
         card_info_list=["card_id"]
         cards_info=player.get_clock_cards_info_by_list(card_info_list)
         
+        card_type_info_list=["card_type"]
+        cards_type_info=\
+            player.get_clock_cards_info_by_list(card_type_info_list)
+        char_card_num,event_card_num,cx_card_num=\
+            DataReader.calculate_card_num_by_type(cards_type_info)
+        
+        card_color_info_list=["card_color"]
+        cards_color_info=player.get_clock_cards_info_by_list(card_color_info_list)
+        card_colors=DataReader.read_card_colors(cards_color_info)
+        
         return object.build_object_data(
             "clock",
             card_num=len(cards_info),
-            cards=cards_info)
+            char_card_num=char_card_num,
+            event_card_num=event_card_num,
+            cx_card_num=cx_card_num,
+            cards=cards_info,
+            card_colors=card_colors)
     
     @staticmethod
     def get_level_data(player:"Player")->object.LevelData:
@@ -143,10 +199,24 @@ class DataReader():
         card_info_list=["card_id"]
         cards_info=player.get_level_cards_info_by_list(card_info_list)
         
+        card_type_info_list=["card_type"]
+        cards_type_info=\
+            player.get_level_cards_info_by_list(card_type_info_list)
+        char_card_num,event_card_num,cx_card_num=\
+            DataReader.calculate_card_num_by_type(cards_type_info)
+        
+        card_color_info_list=["card_color"]
+        cards_color_info=player.get_level_cards_info_by_list(card_color_info_list)
+        card_colors=DataReader.read_card_colors(cards_color_info)
+        
         return object.build_object_data(
             "level",
             card_num=len(cards_info),
-            cards=cards_info)
+            char_card_num=char_card_num,
+            event_card_num=event_card_num,
+            cx_card_num=cx_card_num,
+            cards=cards_info,
+            card_colors=card_colors)
     
     @staticmethod
     def get_stock_data(player:"Player")->object.StockData:
@@ -158,10 +228,29 @@ class DataReader():
         card_info_list=["card_id"]
         cards_info=player.get_stock_cards_info_by_list(card_info_list)
         
+        card_type_info_list=["card_type","card_trigger"]
+        cards_type_info=\
+            player.get_stock_cards_info_by_list(card_type_info_list)
+        char_card_num,event_card_num,cx_card_num=\
+            DataReader.calculate_card_num_by_type(cards_type_info)
+        cx_trigger=[]
+        for i in range(cards_type_info):
+            if not cards_type_info[i].get("card_type")\
+                or not cards_type_info[i].get("card_trigger"):
+                continue
+            if cards_type_info[i].get("card_type")==CardType.CX.value:
+                cx_trigger.append(
+                    {"index":i,
+                     "trigger":cards_type_info[i].get("card_trigger")})
+        
         return object.build_object_data(
             "stock",
             card_num=len(cards_info),
-            cards=cards_info)
+            char_card_num=char_card_num,
+            event_card_num=event_card_num,
+            cx_card_num=cx_card_num,
+            cards=cards_info,
+            cx_trigger=cx_trigger)
     
     @staticmethod
     def get_cx_data(player:"Player")->object.CXData:
