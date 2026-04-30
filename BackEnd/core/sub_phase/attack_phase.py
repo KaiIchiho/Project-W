@@ -103,6 +103,7 @@ class AttackPhase(Phase):
             return
         await self.step.on_exit(game)
         
+        print(f"Log: Current Step Is {self.step.step_name}")
         # アンコールステップの終了
         if self.step is self.encore_step:
             print("Log: Current Step Is Encore")
