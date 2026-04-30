@@ -4,14 +4,14 @@ from core.attack_type import AttackType
 from core.data_reader import DataReader
 from schemas import event_type,game_flow
 from config import setting_ingame
-from typing import TYPE_CHECKING,Callable
+from typing import TYPE_CHECKING,Callable,Awaitable
 if TYPE_CHECKING:
     from core.game import Game
 
 class AttackDeclaration(AttackStep):
     step_name="Attack Declaration"
     next_step=Trigger
-    def __init__(self,auto_next_step:Callable[[],None],attack_type:AttackType):
+    def __init__(self,auto_next_step:Callable[["Game"],Awaitable[None]],attack_type:AttackType):
         super().__init__(auto_next_step,attack_type,False,-1)
         self.handlers[event_type.ATTACK_PHASE_DECLARE]="on_start_attack"
         

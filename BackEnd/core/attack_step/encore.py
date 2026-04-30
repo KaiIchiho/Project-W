@@ -1,14 +1,14 @@
 from core.attack_step.attack_step_base import AttackStep
 from core.data_reader import DataReader
 from schemas import event_type,game_flow
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING,Callable,Awaitable
 if TYPE_CHECKING:
     from core.game import Game
 
 class Encore(AttackStep):
     step_name="Encore"
-    def __init__(self):
-        super().__init__(None,None,True)
+    def __init__(self,auto_next_step:Callable[["Game"],Awaitable[None]]):
+        super().__init__(auto_next_step,None,True)
         self.handlers[event_type.ATTACK_PHASE_ENCORE]="on_encore"
         self.waiting_process_stage:dict={}
         self.process_player_order:list[int]=[]
@@ -62,6 +62,7 @@ class Encore(AttackStep):
         await game.send_data_to_room(res)
     
     async def end_encord_check(self,game:"Game"):
+        print("Log: end_encord_check")
         await self.on_next_step(game)
     
     async def on_encore(

@@ -136,7 +136,7 @@ class AttackPhase(Phase):
         await self.step.on_enter(game)
         
     async def _in_encore_step(self,game:"Game"):
-        self.step=self.encore_step()
+        self.step=self.encore_step(self._on_next_attack_step)
         if self.step:
             await self.step.on_enter(game)
         
