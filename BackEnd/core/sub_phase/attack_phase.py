@@ -105,7 +105,7 @@ class AttackPhase(Phase):
         
         print(f"Log: Current Step Is {self.step.step_name}")
         # アンコールステップの終了
-        if self.step is self.encore_step:
+        if isinstance(self.step,self.encore_step):
             print("Log: Current Step Is Encore")
             self._is_frozen=False
             self.is_complete=True
