@@ -257,17 +257,6 @@ class Game():
         
         return success,identity
     
-    def _set_hand_to_clock(self,player_id:int,hand_index:int):
-        card_id=-1
-        player=self.check_command_player(player_id)
-        if not player:
-            return card_id
-        card=player.remove_hand(hand_index)
-        if card:
-            if_clock_full=player.set_card_to_clock(card)
-            card_id=card.card_id
-        return card_id
-    
     async def transition_to_next_phase(
         self,player_id:int,send_data_callback:Callable[["Game",int,bool],Awaitable[None]]
     ):
@@ -287,6 +276,17 @@ class Game():
         if _is_next_phase:
             self.phase=self.phase.next_phase()
             await self.phase.on_enter(self)
+    
+    def player_hand_to_clock(self,player_id:int,hand_index:int):
+        card_id=-1
+        player=self.check_command_player(player_id)
+        if not player:
+            return card_id
+        card=player.remove_hand(hand_index)
+        if card:
+            if_clock_full=player.set_card_to_clock(card)
+            card_id=card.card_id
+        return card_id
     
     def play_char_card(self,player_id:int,hand_index:int,stage_index:int):
         player=self.check_command_player(player_id)

@@ -172,15 +172,8 @@ class Playmat(GameObject):
             self.set_card_to_waiting_room(card)
         
     def set_card_to_clock(self,card:Card)->bool:
-        counter=0
-        for i in range(len(self.clock)):
-            if self.clock[i] is None:
-                self.clock[i]=card
-                counter+=1
-                break
-            else:
-                counter+=1
-        if counter==setting_ingame.CLOCK_LIMIT:
+        self.clock.append(card)
+        if len(self.clock)==setting_ingame.CLOCK_LIMIT:
             return True
         else:
             return False
