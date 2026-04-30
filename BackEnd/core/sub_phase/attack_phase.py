@@ -98,6 +98,7 @@ class AttackPhase(Phase):
         await self.step.on_enter(game)
     
     async def _on_next_attack_step(self,game:"Game"):
+        print("Log: _on_next_attack_step")
         if not self.step:
             return
         await self.step.on_exit(game)
@@ -108,6 +109,8 @@ class AttackPhase(Phase):
             self._is_frozen=False
             self.is_complete=True
             return
+        else:
+            print("Log: Current Step Is Not Encore")
         
         if not self.step.next_step:
             self._update_has_attacked_state(game)
