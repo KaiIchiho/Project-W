@@ -380,10 +380,22 @@ class Game():
     
     def set_player_stage_reverse(self,player_id:int,stage_index:int)->bool:
         return self.set_player_stage_status(player_id,stage_index,StageStatus.REVERSE)
-        
-    def get_player_stage_reverse_index(self,player_id:int)->list[int]:
+    
+    def set_player_stage_rest(self,player_id:int,stage_index:int)->bool:
+        return self.set_player_stage_status(player_id,stage_index,StageStatus.REST)
+    
+    def get_player_stage_index_by_status(self,player_id:int,status:StageStatus)->list[int]:
         player=self.check_command_player(player_id)
-        return player.get_stage_index_by_status(StageStatus.REVERSE)
+        return player.get_stage_index_by_status(status)
+    
+    def get_player_stage_reverse_index(self,player_id:int)->list[int]:
+        return self.get_player_stage_index_by_status(player_id,StageStatus.REVERSE)
+    
+    def get_player_stage_rest_index(self,player_id:int)->list[int]:
+        return self.get_player_stage_index_by_status(player_id,StageStatus.REST)
+    
+    def get_player_stage_stand_index(self,player_id:int)->list[int]:
+        return self.get_player_stage_index_by_status(player_id,StageStatus.STAND)
     
     def get_other_player_stage_is_empty(self,self_player_id:int,self_stage_index:int)->bool:
         other_player=self.check_command_other_player(self_player_id)

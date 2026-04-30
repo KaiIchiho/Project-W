@@ -137,6 +137,9 @@ class AttackPhaseEncoreRequest(WSCommonRequestBase):
 class AttackPhaseEncoreResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_ENCORE
     reverse_card_on_stage:list[dict]=Field(default_factroy=list)
+    
+class AttackPhaseStopAttackRequest(WSCommonRequestBase):
+    pass
 
 class EndPhaseCXRemoveResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.END_PHASE_CX_REMOVE
@@ -164,5 +167,6 @@ event_req={
     event_type.ATTACK_PHASE_DECLARE:AttackPhaseDeclareRequest,
     event_type.ATTACK_PHASE_COUNTER_CHECK:AttackPhaseCounterCheckRequest,
     event_type.ATTACK_PHASE_ENCORE:AttackPhaseEncoreRequest,
+    event_type.ATTACK_PHASE_STOP_ATTACK:AttackPhaseStopAttackRequest,
     event_type.END_PHASE_HAND_DISCARD:EndPhaseHandDiscardRequest
 }

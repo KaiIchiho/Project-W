@@ -34,6 +34,7 @@ ATTACK_PHASE_DAMAGE_CHECK="attack_phase_damage_check"
 ATTACK_PHASE_DAMAGE_PROCESS="attack_phase_damage_process"
 ATTACK_PHASE_BATTLE_PROCESS="attack_phase_battle_process"
 ATTACK_PHASE_ENCORE="attack_phase_encore"
+ATTACK_PHASE_STOP_ATTACK="attack_phase_stop_attack"
 
 END_PHASE_CX_REMOVE="end_phase_cx_remove"
 END_PHASE_HAND_EXCEED="end_phase_hand_exceed"
