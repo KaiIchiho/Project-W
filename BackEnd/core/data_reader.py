@@ -234,7 +234,7 @@ class DataReader():
         char_card_num,event_card_num,cx_card_num=\
             DataReader.calculate_card_num_by_type(cards_type_info)
         cx_trigger=[]
-        for i in range(cards_type_info):
+        for i in range(len(cards_type_info)):
             if not cards_type_info[i].get("card_type")\
                 or not cards_type_info[i].get("card_trigger"):
                 continue
@@ -254,7 +254,6 @@ class DataReader():
     
     @staticmethod
     def get_cx_data(player:"Player")->object.CXData:
-        # player=game.check_command_player(player_id)
         if not player:
             return object.CXData()
         if not player.playmat:
