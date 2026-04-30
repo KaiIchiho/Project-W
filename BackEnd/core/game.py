@@ -211,7 +211,7 @@ class Game():
         await self.phase.handle_action(self,action,event,player_id)
         
         if self.phase.is_complete:
-            await self.phase.on_next_phase(self,action)
+            await self.phase.on_next_phase(self,action,None,player_id)
     
     def draw_initial_hand(self,player_id:int)->bool:
         player=self._get_ingame_player_by_id(player_id)
