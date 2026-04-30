@@ -25,7 +25,7 @@ class Damage(AttackStep):
         
     async def player_damage_check(self,game:"Game"):
         player_id=game.get_turn_player_id()
-        player_name=game.get_turn_player_name()
+        player_name=game.get_other_player_name()
         self.has_attack_card=game.player_has_stage_card(player_id,self.stage_position_index)
         if self.has_attack_card:
             info_type=["card_soul"]
@@ -63,7 +63,6 @@ class Damage(AttackStep):
         await game.send_data_to_room(res)
         
         self.is_complete=True
-        # await self.on_next_step(game)
         
     async def player_damage_process(self,game:"Game"):
         if not self.has_attack_card:

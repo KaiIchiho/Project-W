@@ -45,15 +45,16 @@ class Battle(AttackStep):
             other_stage_index,
             ["card_power"])\
                 .get("card_power")
-        other_status=game.get_player_stage_status(
-            other_player_id,other_stage_index)
-        other_status_value=other_status.value\
-            if other_status is not None else None
         
         success=self.process_battle_result(
             game,player_id,other_player_id,
             power,other_power,
             self.stage_position_index,other_stage_index)
+        
+        other_status=game.get_player_stage_status(
+            other_player_id,other_stage_index)
+        other_status_value=other_status.value\
+            if other_status is not None else None
         
         common=DataReader.get_common_data(
             game,success,
