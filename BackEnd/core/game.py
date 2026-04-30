@@ -376,7 +376,7 @@ class Game():
     
     def set_player_stage_status(self,player_id:int,stage_index:int,status:StageStatus)->bool:
         player=self.check_command_player(player_id)
-        return player.set_player_stage_status(stage_index,status)
+        return player.set_stage_status(stage_index,status)
     
     def set_player_stage_reverse(self,player_id:int,stage_index:int)->bool:
         return self.set_player_stage_status(player_id,stage_index,StageStatus.REVERSE)
