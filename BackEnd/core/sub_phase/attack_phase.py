@@ -101,9 +101,13 @@ class AttackPhase(Phase):
         if not self.step:
             return
         await self.step.on_exit(game)
+        
+        # アンコールステップの終了
         if self.step is self.encore_step:
+            self._is_frozen=False
             self.is_complete=True
             return
+        
         if not self.step.next_step:
             self._update_has_attacked_state(game)
             self.step=None

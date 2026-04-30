@@ -22,3 +22,13 @@ function attack(attack_type){
     }
     sendJson(data)
 }
+
+function stopAttack(){
+    console.log("stopAttack")
+    let data={
+        "client_common":{
+            "event":"attack_phase_stop_attack"
+        }
+    }
+    sendJson(data)
+}
