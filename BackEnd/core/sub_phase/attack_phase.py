@@ -10,7 +10,7 @@ from core.data_reader import DataReader
 from models.playmat import StageStatus
 from schemas import event_type,game_flow
 from config import setting_ingame
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING,Type
 if TYPE_CHECKING:
     from core.game import Game
 
@@ -24,8 +24,8 @@ class AttackPhase(Phase):
         self.handlers[event_type.ATTACK_PHASE_STOP_ATTACK]="stop_attakc"
         
         self.step:AttackStep=None
-        self.first_step:AttackStep=AttackDeclaration
-        self.encore_step:AttackStep=Encore
+        self.first_step:Type[AttackStep]=AttackDeclaration
+        self.encore_step:Type[AttackStep]=Encore
         self.has_attacked_state:dict={}
     
     async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
@@ -104,6 +104,7 @@ class AttackPhase(Phase):
         
         # アンコールステップの終了
         if self.step is self.encore_step:
+            print("Log: Current Step Is Encore")
             self._is_frozen=False
             self.is_complete=True
             return
