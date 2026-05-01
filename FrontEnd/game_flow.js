@@ -1,23 +1,3 @@
-function standby(){
-    if(ws.readyState!==WebSocket.OPEN){
-        console.error("WebSocket not open:",ws.readyState);
-        return
-    }
-    ws.send(JSON.stringify({
-        event:"standby"
-    }));
-}
-
-function nextPhase(){
-    console.log("nextPhase");
-    let data={
-        client_common:{
-            event:"next_phase"
-        }
-    }
-    sendJson(data);
-}
-
 function handleSelectDeck(data){
     if(data.success===undefined||
         data.log===undefined)
