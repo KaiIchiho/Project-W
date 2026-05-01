@@ -38,6 +38,11 @@ class OnPhaseChangedResponse(WSCommonResponseBase):
 class ShuffleResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.SHUFFLE
 
+class LevelUpResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.LEVEL_UP
+class LevelUpRequest(WSCommonRequestBase):
+    chosen_clock_card:int
+
 class NextPhaseRequest(WSCommonRequestBase):
     pass
 class NextPhaseResponse(WSCommonResponseBase):
@@ -131,12 +136,12 @@ class AttackPhaseBattleProcessResponse(WSCommonResponseBase):
     attack_character:dict=Field(default_factroy=dict)
     defense_character:dict=Field(default_factroy=dict)
 
-class AttackPhaseEncoreRequest(WSCommonRequestBase):
-    chosen_cost:str
-    order:list[int]=Field(default_factroy=list)
 class AttackPhaseEncoreResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_ENCORE
     reverse_card_on_stage:list[dict]=Field(default_factroy=list)
+class AttackPhaseEncoreRequest(WSCommonRequestBase):
+    chosen_cost:str
+    order:list[int]=Field(default_factroy=list)
     
 class AttackPhaseStopAttackRequest(WSCommonRequestBase):
     pass
@@ -159,6 +164,7 @@ event_req={
     event_type.SWAP_HAND_CARDS:SwapHandCardsRequest,
     event_type.NEXT_PHASE:NextPhaseRequest,
     event_type.NEXT_TURN:NextTurnRequest,
+    event_type.LEVEL_UP:LevelUpRequest,
     event_type.CLOCK_PHASE_CLOCK:ClockPhaseClockRequest,
     event_type.MAIN_PHASE_CHAR_PLAY:MainPhaseCharPlayRequest,
     event_type.MAIN_PHASE_EVENT_PLAY:MainPhaseEventPlayRequest,

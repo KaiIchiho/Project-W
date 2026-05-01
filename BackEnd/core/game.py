@@ -49,13 +49,17 @@ class Game():
         if player_1 is not None:
             if player_1 is self.player_2:
                 raise ValueError("2 Player Are the Same.")
-        self.player_1=player_1
+        self._set_player(self.player_1,player_1)
     
     def set_player_2(self,player_2:Player):
         if player_2 is not None:
             if player_2 is self.player_1:
                 raise ValueError("2 Player Are the Same.")
-        self.player_2=player_2
+        self._set_player(self.player_2,player_2)
+    
+    def _set_player(self,target_player:Player,player:Player):
+        target_player=player
+        target_player.handle_level_up=self.handle_level_up
     
     async def auto_set_first_player(self):
         await self.set_first_player(self.player_1)
@@ -65,10 +69,7 @@ class Game():
             raise ValueError("Player is not in Game.")
         self.turn_player=player
         
-    async def set_player_to_none(
-        self,player:Player
-        # ,callback:Optional[Callable[[int],Awaitable[None]]]=None
-    )->int:
+    async def set_player_to_none(self,player:Player)->int:
         if player is None:
             raise ValueError("None Player !")
         elif player is self.player_1 or player is self.player_2:
@@ -79,10 +80,10 @@ class Game():
             return result
         
         if self.player_1 is None:
-            self.player_1=player
+            self.set_player_1(player)
             result=1
         elif self.player_2 is None:
-            self.player_2=player
+            self.set_player_2(player)
             result=2
         
         return result
@@ -213,6 +214,10 @@ class Game():
         if self.phase.is_complete:
             await self.phase.on_next_phase(self,action,self.get_turn_player_id())
     
+    async def handle_level_up(self,player_id:int):
+        if self.phase:
+            await self.phase.start_level_up(self,player_id)
+    
     def draw_initial_hand(self,player_id:int)->bool:
         player=self._get_ingame_player_by_id(player_id)
         if not player:
@@ -277,14 +282,15 @@ class Game():
             self.phase=self.phase.next_phase()
             await self.phase.on_enter(self)
     
-    def player_hand_to_clock(self,player_id:int,hand_index:int):
+    async def player_hand_to_clock(self,player_id:int,hand_index:int):
         card_id=-1
         player=self.check_command_player(player_id)
         if not player:
             return card_id
         card=player.remove_hand(hand_index)
         if card:
-            if_clock_full=player.set_card_to_clock(card)
+            # if_clock_full=
+            await player.set_card_to_clock(card)
             card_id=card.card_id
         return card_id
     
@@ -454,15 +460,19 @@ class Game():
                 break
         return is_broken,checked_card_info
     
-    def player_process_resolution_to_waiting_room(self,player_id:id):
+    def player_process_resolution_to_waiting_room(self,player_id:int):
         player=self.check_command_player(player_id)
         player.process_resolution_to_waiting_room()
-    def player_process_resolution_to_stock(self,player_id:id):
+    def player_process_resolution_to_stock(self,player_id:int):
         player=self.check_command_player(player_id)
         player.process_resolution_to_stock()
-    def player_process_resolution_to_clock(self,player_id:id):
+    async def player_process_resolution_to_clock(self,player_id:int):
         player=self.check_command_player(player_id)
-        player.process_resolution_to_clock()
+        await player.process_resolution_to_clock()
+    
+    def player_process_level_up(self,player_id:int,clock_index:int)->bool:
+        player=self.check_command_player(player_id)
+        return player.process_level_up(clock_index)
     
     def check_is_first_phase(self)->bool:
         return isinstance(self.phase,self.first_phase)

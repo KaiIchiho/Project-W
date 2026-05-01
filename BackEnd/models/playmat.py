@@ -167,7 +167,6 @@ class Playmat(GameObject):
         return True
     
     def set_cards_to_waiting_room(self,cards:list[Card]):
-        # self.waiting_room.extend(cards)
         for card in cards:
             self.set_card_to_waiting_room(card)
         
@@ -183,6 +182,13 @@ class Playmat(GameObject):
             return False
         card.init_info()
         self.stock.append(card)
+        return True
+    
+    def set_card_to_level(self,card:Card)->bool:
+        if not card:
+            return False
+        card.init_info()
+        self.level.append(card)
         return True
     
     def _level_up(self):
@@ -226,12 +232,25 @@ class Playmat(GameObject):
         for i in range(num):
             print("Log: 1 Resolution Card Switch To Waiting Room")
             self.set_card_to_stock(self.resolution.pop(0))
-    def resolution_to_clock(self):
-        num=len(self.resolution)
-        for i in range(num):
-            print("Log: 1 Resolution Card Switch To Waiting Room")
-            self.set_card_to_clock(self.resolution.pop(0))
-            
+    
+    def get_resolution_size(self)->int:
+        return len(self.resolution)
+    
+    def resolution_pop(self,index:int=-1)->Card:
+        if not 0<=index<len(self.resolution):
+            return self.resolution.pop()
+        return self.resolution.pop(index)
+    
+    def process_level_up(self,clock_index:int)->bool:
+        if len(self.clock)<setting_ingame.CLOCK_LIMIT:
+            return False
+        if not 0<=clock_index<len(self.clock):
+            return False
+        card=self.clock.pop(clock_index)
+        self.set_cards_to_waiting_room(self.clock)
+        self.clock=[]
+        return self.set_card_to_level(card)
+    
     def move_stage_char(self,ori_index:int,tar_index:int):
         result=False
         tar_card_id=None

@@ -95,7 +95,7 @@ class Damage(AttackStep):
             game.player_process_resolution_to_waiting_room(player_id)
         else:
             print(f"{player_id} process resolution to clock")
-            game.player_process_resolution_to_clock(player_id)
+            await game.player_process_resolution_to_clock(player_id)
             
         await self.on_next_step(game)
         

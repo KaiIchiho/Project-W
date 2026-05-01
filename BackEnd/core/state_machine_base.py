@@ -1,11 +1,27 @@
 from schemas import game_flow
 from services.parse_model import parse_model
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from core.game import Game
 
 class StateMachine():
+    waiting_for = {
+        "type": "",
+        "player_id":-1
+    }
+    def __init_subclass__(cls, **kwargs):
+        super.__init_subclass__(**kwargs)
+        cls.waiting_for=cls.waiting_for.copy()
+    
     async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
         model,req=self.parse_action_model(action,event)
         if not model or not req:
             return False
+        
+        if not self.match_expected_action(event,player_id):
+            return False
+        else:
+            self.set_waiting_event()
         
         handler_name=self.handlers.get(event)
         if not handler_name:
@@ -23,3 +39,17 @@ class StateMachine():
             return None,None
         req=parse_model(action,model)
         return model,req
+    
+    def set_waiting_event(self,type:str="",player_id:int=-1):
+        self.waiting_for["type"]=type
+        self.waiting_for["player_id"]=player_id
+    
+    def match_expected_action(self,type:str,player_id:int)->bool:
+        current_type=self.waiting_for.get("type")
+        current_player_id=self.waiting_for.get("player_id")
+        if current_type is None:
+            return True
+        elif current_type==type and current_player_id==player_id:
+                return True
+        else:
+            return False

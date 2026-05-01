@@ -116,7 +116,7 @@ class AttackPhase(Phase):
         if not self.step.next_step:
             self._update_has_attacked_state(game)
             self.step=None
-            await self._on_attack_end(game)
+            # await self._on_attack_end(game)
             return
         attack_type=self.step.attack_type
         stage_position_index=self.step.stage_position_index
@@ -132,7 +132,7 @@ class AttackPhase(Phase):
                 if not self.step.next_step.next_step:
                     self._update_has_attacked_state(game)
                     self.step=None
-                    await self._on_attack_end(game)
+                    # await self._on_attack_end(game)
                     return
                 else:
                     self.step=self.step.next_step.next_step(self._on_next_attack_step,attack_type,stage_position_index)

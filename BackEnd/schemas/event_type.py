@@ -10,6 +10,7 @@ SWAP_HAND_CARDS="swap_hand_cards"
 CARD_INFO="card_info"
 
 SHUFFLE="shuffle"
+LEVEL_UP="level_up"
 
 NEXT_PHASE="next_phase"
 NEXT_TURN="next_turn"

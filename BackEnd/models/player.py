@@ -5,9 +5,10 @@ from models.playmat import Playmat
 from core.card_type import CardType
 from config import setting_ingame
 from models.playmat import StageStatus
-from typing import Optional
+from typing import Callable,Awaitable
 
-class Player(GameObject):    
+class Player(GameObject):
+    handle_level_up:Callable[[int],Awaitable[None]]=None
     def __init__(self,
                  player_id:int,
                  name:str,
@@ -175,8 +176,11 @@ class Player(GameObject):
             card=self.hand.pop(index)
         return card
     
-    def set_card_to_clock(self,card:Card)->bool:
-        return self.playmat.set_card_to_clock(card)
+    async def set_card_to_clock(self,card:Card)->bool:
+        level_up=self.playmat.set_card_to_clock(card)
+        if level_up and self.handle_level_up:
+            await self.handle_level_up(self.player_id)
+        return level_up
     
     def check_has_stage_card(self,stage_index:int)->bool:
         if self.playmat:
@@ -243,12 +247,23 @@ class Player(GameObject):
             return self.playmat.resolution_to_stock()
         else:
             raise ValueError(f"{self.player_id} No Playmat")
-    def process_resolution_to_clock(self):
+    async def process_resolution_to_clock(self):
         if self.playmat:
-            return self.playmat.resolution_to_clock()
+            for i in range(self.playmat.get_resolution_size):
+                card=self.playmat.resolution_pop(0)
+                level_up=self.playmat.set_card_to_clock(card)
+                if level_up and self.handle_level_up:
+                    await self.handle_level_up(self.player_id)
+                    return
         else:
             raise ValueError(f"{self.player_id} No Playmat")
-        
+    
+    def process_level_up(self,clock_index:int)->bool:
+        if self.playmat:
+            return self.playmat.process_level_up(clock_index)
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")
+    
     def move_stage_char(self,ori_index:int,tar_index:int):
         if self.playmat:
             return self.playmat.move_stage_char(ori_index,tar_index)

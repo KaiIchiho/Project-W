@@ -24,7 +24,7 @@ class ClockPhase(Phase):
         if not game.check_is_turn_player_command(player_id):
             return
         hand_index=req.clocked_hand_card.hand_index
-        card_id=game.player_hand_to_clock(player_id,hand_index)
+        card_id=await game.player_hand_to_clock(player_id,hand_index)
         success=False
         log=""
         player_name=game.get_player_name_by_id(player_id)

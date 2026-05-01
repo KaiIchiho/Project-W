@@ -59,6 +59,7 @@ class Encore(AttackStep):
             common=common,
             reverse_card_on_stage=reverse_card_on_stage
         )
+        self.set_waiting_event(common.event,player_id)
         await game.send_data_to_room(res)
     
     async def end_encord_check(self,game:"Game"):

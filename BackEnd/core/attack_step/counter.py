@@ -37,6 +37,7 @@ class Counter(AttackStep):
             common=common_other,
             is_counter=False)# Temporary
         
+        self.set_waiting_event(common_other.event,player_id)
         await game.send_data_to_player(player_id,res_other)
         self.is_waiting_request=True
     

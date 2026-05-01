@@ -14,7 +14,6 @@ class Phase(StateMachine):
     is_complete=False
     phase_name="phase_base"
     next_phase=None
-    
     def __init_subclass__(cls, **kwargs):
         super.__init_subclass__(**kwargs)
         cls.handlers=cls.handlers.copy()
@@ -23,7 +22,7 @@ class Phase(StateMachine):
         return self._is_frozen
     
     async def on_enter(self,game:"Game"):
-        # await game.phase_enter_response()
+        print(f"Log: {self.phase_name} On Enter")
         common=DataReader.get_common_data(
             game,True,
             f"{self.phase_name}が始まります",
@@ -32,8 +31,7 @@ class Phase(StateMachine):
             common=common)
         await game.send_data_to_room(res)
     async def on_exit(self,game:"Game"):
-        # await game.phase_exit_response()
-        pass
+        print(f"Log: {self.phase_name} On Exit")
         
     async def on_next_phase(self,game:"Game",req:game_flow.NextPhaseRequest,player_id:int):
         print("Log: on_next_phase")
@@ -91,3 +89,30 @@ class Phase(StateMachine):
             if message.get("room") is not None:
                 message["room"]=room_message_text+message["room"]
             await game.send_message_backage(message,player_id)
+    
+    async def start_level_up(self,game:"Game",player_id:int):
+        player_name=game.get_player_name_by_id(player_id)
+        common=DataReader.get_common_data(
+            game,True,
+            f"{player_name}はレベルアップが発生しました",
+            player_id)
+        res=game_flow.LevelUpResponse(common=common)
+        self.set_waiting_event(common.event,player_id)
+        await game.send_data_to_room(res)
+        
+    async def process_level_up(
+        self,game:"Game",
+        req:game_flow.LevelUpRequest,
+        player_id:int
+    ):
+        success=\
+            game.player_process_level_up(
+                player_id,req.chosen_clock_card)
+        player_name=game.get_player_name_by_id(player_id)
+        if success:
+            # log=f"{player_name}のレベルアップが処理されました"
+            log=f"{player_name} Process Level Up Successed"
+        else:
+            # log=f"{player_name}のレベルアップが処理失敗です"
+            log=f"{player_name} Process Level Up Failed"
+        print(log)
