@@ -9,8 +9,9 @@ class Phase(StateMachine):
     _is_frozen:bool=False
     handlers={
         event_type.NEXT_PHASE:"on_next_phase",
-        event_type.NEXT_TURN:"on_next_turn"
-        }
+        event_type.NEXT_TURN:"on_next_turn",
+        event_type.LEVEL_UP:"process_level_up"
+    }
     is_complete=False
     phase_name="phase_base"
     next_phase=None
