@@ -72,7 +72,7 @@ async function enterRoom(isPlayer){
         console.error("Room ID Not Intiager");
         return;
     }
-    data={
+    let data={
         event:"enter_room",
         room_id:room_id,
         user_is_player:isPlayer

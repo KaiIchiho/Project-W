@@ -78,6 +78,10 @@ function handleShuffle(data){
     // console.log(data)
 }
 
+function handleLevelUp(data){
+    setComponentHidden("level_up",false)
+}
+
 function handleStandPhaseAllStand(data){
     
 }

@@ -121,6 +121,7 @@ event_method_dict={
     "card_info":"handleCardInfo",
     "on_phase_changed":"handleOnPhaseChanged",
     "shuffle":"handleShuffle",
+    "level_up":"handleLevelUp",
     "stand_phase_all_stand":"handleStandPhaseAllStand",
     "draw_phase_draw":"handleDrawPhaseDraw",
     "clock_phase_clock":"handleClockPhaseClock",
