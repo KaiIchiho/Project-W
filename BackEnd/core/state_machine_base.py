@@ -47,7 +47,7 @@ class StateMachine():
     def match_expected_action(self,type:str,player_id:int)->bool:
         current_type=self.waiting_for.get("type")
         current_player_id=self.waiting_for.get("player_id")
-        if current_type is None:
+        if not current_type:
             return True
         elif current_type==type and current_player_id==player_id:
                 return True
