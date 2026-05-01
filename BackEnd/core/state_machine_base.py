@@ -19,8 +19,10 @@ class StateMachine():
             return False
         
         if not self.match_expected_action(event,player_id):
+            print("Log: CANNOT match_expected_action")
             return False
         else:
+            print("Log: CAN match_expected_action")
             self.set_waiting_event()
         
         handler_name=self.handlers.get(event)
@@ -41,10 +43,14 @@ class StateMachine():
         return model,req
     
     def set_waiting_event(self,type:str="",player_id:int=-1):
+        print("Log: set_waiting_event")
         self.waiting_for["type"]=type
         self.waiting_for["player_id"]=player_id
+        print(self.waiting_for)
     
     def match_expected_action(self,type:str,player_id:int)->bool:
+        print("Log: match_expected_action")
+        print(self.waiting_for)
         current_type=self.waiting_for.get("type")
         current_player_id=self.waiting_for.get("player_id")
         if not current_type:

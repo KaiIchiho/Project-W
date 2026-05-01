@@ -106,6 +106,7 @@ class Phase(StateMachine):
         req:game_flow.LevelUpRequest,
         player_id:int
     ):
+        print("Log: process_level_up")
         success=\
             game.player_process_level_up(
                 player_id,req.chosen_clock_card)
