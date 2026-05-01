@@ -49,18 +49,22 @@ class Game():
         if player_1 is not None:
             if player_1 is self.player_2:
                 raise ValueError("2 Player Are the Same.")
-        self._set_player(self.player_1,player_1)
+        self._set_player(1,player_1)
     
     def set_player_2(self,player_2:Player):
         if player_2 is not None:
             if player_2 is self.player_1:
                 raise ValueError("2 Player Are the Same.")
-        self._set_player(self.player_2,player_2)
+        self._set_player(2,player_2)
     
-    def _set_player(self,target_player:Player,player:Player):
-        target_player=player
-        target_player.handle_level_up=self.handle_level_up
-    
+    def _set_player(self,identity:int,player:Player):
+        if identity==1 or identity==2:
+            player.handle_level_up=self.handle_level_up
+        if identity==1:
+            self.player_1=player
+        if identity==2:
+            self.player_2=player
+            
     async def auto_set_first_player(self):
         await self.set_first_player(self.player_1)
     
