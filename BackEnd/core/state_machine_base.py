@@ -5,13 +5,15 @@ if TYPE_CHECKING:
     from core.game import Game
 
 class StateMachine():
-    waiting_for = {
-        "type": "",
-        "player_id":-1
-    }
-    def __init_subclass__(cls, **kwargs):
-        super.__init_subclass__(**kwargs)
-        cls.waiting_for=cls.waiting_for.copy()
+    # def __init_subclass__(cls, **kwargs):
+    #     super.__init_subclass__(**kwargs)
+    #     cls.waiting_for=cls.waiting_for.copy()
+    def __init__(self):
+        self.waiting_for = {
+            "type": "",
+            "player_id":-1
+        }
+    
     
     async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
         model,req=self.parse_action_model(action,event)

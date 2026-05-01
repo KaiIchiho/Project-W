@@ -18,6 +18,7 @@ class AttackStep(StateMachine):
     def __init__(
         self,auto_next_step:Callable[["Game"],Awaitable[None]],attack_type:AttackType,is_declarated:bool,stage_position_index:int=-1
     ):
+        super.__init__()
         self.auto_next_step=auto_next_step
         self.attack_type=attack_type
         self.is_declarated=is_declarated

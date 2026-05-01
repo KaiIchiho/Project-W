@@ -15,6 +15,9 @@ class Phase(StateMachine):
     is_complete=False
     phase_name="phase_base"
     next_phase=None
+    def __init__(self):
+        super().__init__()
+        
     def __init_subclass__(cls, **kwargs):
         super.__init_subclass__(**kwargs)
         cls.handlers=cls.handlers.copy()
