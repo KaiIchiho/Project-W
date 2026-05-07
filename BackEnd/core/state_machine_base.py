@@ -23,7 +23,7 @@ class StateMachine():
             return False
         else:
             print("Log: CAN match_expected_action")
-            self.set_waiting_event()
+            self._clear_waiting_event()
             self._wait_event.set()
         
         handler_name=self.handlers.get(event)
@@ -43,10 +43,19 @@ class StateMachine():
         req=parse_model(action,model)
         return model,req
     
-    def set_waiting_event(self,type:str="",player_id:int=-1):
+    def set_waiting_event(self,type:str,player_id:int):
+        if not type:
+            raise ValueError("Set Waiting Event is Invalid")
         print("Log: set_waiting_event")
         self.waiting_for["type"]=type
         self.waiting_for["player_id"]=player_id
+        print(self.waiting_for)
+        self._wait_event.clear()
+    
+    def _clear_waiting_event(self):
+        print("Log: clear_waiting_event")
+        self.waiting_for["type"]=""
+        self.waiting_for["player_id"]=-1
         print(self.waiting_for)
     
     def match_expected_action(self,type:str,player_id:int)->bool:
