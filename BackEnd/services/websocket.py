@@ -81,7 +81,8 @@ async def websocket(ws:WebSocket):
                 pass
                 # await receive_text(ws,msg["text"])
             elif msg_type==2:
-                await receive_json(user_id,json.loads(msg["text"]))
+                # await receive_json(user_id,json.loads(msg["text"]))
+                asyncio.create_task(receive_json(user_id, json.loads(msg["text"])))
     except WebSocketDisconnect:
         print("Log: Client disconnected.")
     finally:
