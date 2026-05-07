@@ -49,6 +49,7 @@ class ClockPhase(Phase):
         
         if success:
             if is_wait:
+                print("Log: Wait Event")
                 await self._wait_event.wait()
             await self.clock_draw(game,player_id)
     

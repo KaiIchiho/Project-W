@@ -25,6 +25,7 @@ class StateMachine():
             print("Log: CAN match_expected_action")
             self._clear_waiting_event()
             self._wait_event.set()
+            print("Log: Set Event")
         
         handler_name=self.handlers.get(event)
         if not handler_name:
@@ -51,6 +52,7 @@ class StateMachine():
         self.waiting_for["player_id"]=player_id
         print(self.waiting_for)
         self._wait_event.clear()
+        print("Log: Clear Event")
     
     def _clear_waiting_event(self):
         print("Log: clear_waiting_event")
