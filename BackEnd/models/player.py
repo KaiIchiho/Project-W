@@ -182,13 +182,17 @@ class Player(GameObject):
     
     async def set_card_to_clock(
         self,card:Card,
-        clock_set_callback:Callable[[int,bool],Awaitable[None]]=None
+        clock_set_callback:Callable[[int],Awaitable[None]]=None,
+        clock_draw_callback:Callable[[bool],Awaitable[None]]=None
     )->bool:
         level_up=self.playmat.set_card_to_clock(card)
+        success=False
         if clock_set_callback:
-            await clock_set_callback(card.card_id,level_up)
+            success=await clock_set_callback(card.card_id)
         if level_up:
             await self._handle_flag_callback("clock")
+        if success and clock_draw_callback:
+            await clock_draw_callback(level_up)
         return level_up
     
     def check_has_stage_card(self,stage_index:int)->bool:

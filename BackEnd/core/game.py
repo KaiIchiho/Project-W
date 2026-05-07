@@ -288,21 +288,22 @@ class Game():
     
     async def player_hand_to_clock(
         self,player_id:int,hand_index:int,
-        clock_set_callback:Callable[[int,bool],Awaitable[None]]=None
+        clock_set_callback:Callable[[int],Awaitable[bool]]=None,
+        clock_draw_callback:Callable[[bool],Awaitable[None]]=None
     ):
         card_id=-1
         player=self.check_command_player(player_id)
         if not player:
             if clock_set_callback:
-                await clock_set_callback(card_id,False)
+                await clock_set_callback(card_id)
             return card_id
         card=player.remove_hand(hand_index)
         if card:
-            await player.set_card_to_clock(card,clock_set_callback)
+            await player.set_card_to_clock(card,clock_set_callback,clock_draw_callback)
             card_id=card.card_id
         else:
             if clock_set_callback:
-                await clock_set_callback(card_id,False)
+                await clock_set_callback(card_id)
         return card_id
     
     def play_char_card(self,player_id:int,hand_index:int,stage_index:int):

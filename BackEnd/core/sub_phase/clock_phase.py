@@ -25,12 +25,13 @@ class ClockPhase(Phase):
         if not game.check_is_turn_player_command(player_id):
             return
         hand_index=req.clocked_hand_card.hand_index
-        callback=partial(self.on_clock_set,game,player_id)
+        clock_set_callback=partial(self.on_clock_set,game,player_id)
+        clock_draw_callback=partial(self.clock_draw,game,player_id)
         # card_id=
-        await game.player_hand_to_clock(player_id,hand_index,callback)
+        await game.player_hand_to_clock(
+            player_id,hand_index,clock_set_callback,clock_draw_callback)
         
-        
-    async def on_clock_set(self,game:"Game",player_id:int,card_id:int,is_wait:bool):
+    async def on_clock_set(self,game:"Game",player_id:int,card_id:int):
         success=False
         log=""
         player_name=game.get_player_name_by_id(player_id)
@@ -47,14 +48,18 @@ class ClockPhase(Phase):
             common=common)
         await game.send_data_to_self_other(player_id,res_self,res_other)
         
-        if success:
-            if is_wait:
+        return success
+        
+        # if success:
+        #     if is_wait:
                 # print("Log: Wait Event")
                 # await self._wait_event.wait()
-                await self._waiting_event()
-            await self.clock_draw(game,player_id)
+                # await self._waiting_event()
+            # await self.clock_draw(game,player_id)
     
-    async def clock_draw(self,game:"Game",player_id:int):
+    async def clock_draw(self,game:"Game",player_id:int,is_wait:bool):
+        if is_wait:
+            await self._waiting_event()
         cards=[]
         success=True
         log=""
