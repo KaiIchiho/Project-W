@@ -3,6 +3,7 @@ from core.sub_phase.main_phase import MainPhase
 from schemas import event_type,game_flow
 from core.data_reader import DataReader
 from config import setting_ingame
+from functools import partial
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from core.game import Game
@@ -24,7 +25,12 @@ class ClockPhase(Phase):
         if not game.check_is_turn_player_command(player_id):
             return
         hand_index=req.clocked_hand_card.hand_index
-        card_id=await game.player_hand_to_clock(player_id,hand_index)
+        callback=partial(self.on_clock_set,game,player_id)
+        # card_id=
+        await game.player_hand_to_clock(player_id,hand_index,callback)
+        
+        
+    async def on_clock_set(self,game:"Game",player_id:int,card_id:int):
         success=False
         log=""
         player_name=game.get_player_name_by_id(player_id)
@@ -33,7 +39,6 @@ class ClockPhase(Phase):
             log=f"{player_name}は1枚の手札をクロック置き場に置きました"
         else:
             log=f"{player_name}はクロック置き場に手札を置けませんでした"
-        
         common=DataReader.get_common_data(game,success,log,player_id)
         res_self=game_flow.ClockPhaseClockSelfResponse(
             common=common,

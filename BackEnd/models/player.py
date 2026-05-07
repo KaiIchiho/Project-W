@@ -176,8 +176,13 @@ class Player(GameObject):
             card=self.hand.pop(index)
         return card
     
-    async def set_card_to_clock(self,card:Card)->bool:
+    async def set_card_to_clock(
+        self,card:Card,
+        clock_set_callback:Callable[[int],Awaitable[None]]=None
+    )->bool:
         level_up=self.playmat.set_card_to_clock(card)
+        if clock_set_callback:
+            await clock_set_callback(card.card_id)
         if level_up and self.handle_level_up:
             await self.handle_level_up(self.player_id)
         return level_up
