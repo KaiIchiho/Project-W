@@ -302,7 +302,7 @@ class Game():
             card_id=card.card_id
         else:
             if clock_set_callback:
-                await clock_set_callback(card_id)
+                await clock_set_callback(card_id,False)
         return card_id
     
     def play_char_card(self,player_id:int,hand_index:int,stage_index:int):
