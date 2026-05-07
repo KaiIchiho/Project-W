@@ -44,6 +44,12 @@ class StateMachine():
         req=parse_model(action,model)
         return model,req
     
+    async def _wait_event(self):
+        self._wait_event.clear()
+        print("Log: Clear Event")
+        await self._wait_event
+        print("Log: Wait Event")
+    
     def set_waiting_event(self,type:str,player_id:int):
         if not type:
             raise ValueError("Set Waiting Event is Invalid")
@@ -51,8 +57,6 @@ class StateMachine():
         self.waiting_for["type"]=type
         self.waiting_for["player_id"]=player_id
         print(self.waiting_for)
-        self._wait_event.clear()
-        print("Log: Clear Event")
     
     def _clear_waiting_event(self):
         print("Log: clear_waiting_event")
