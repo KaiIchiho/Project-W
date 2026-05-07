@@ -15,6 +15,7 @@ class StateMachine():
         self._wait_event.clear()
     
     async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
+        print("Log: handle_action")
         model,req=self.parse_action_model(action,event)
         if not model or not req:
             return False
