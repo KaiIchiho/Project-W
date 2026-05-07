@@ -121,3 +121,5 @@ class Phase(StateMachine):
             # log=f"{player_name}のレベルアップが処理失敗です"
             log=f"{player_name} Process Level Up Failed"
         print(log)
+        
+        await game.player_continue_handle_resolution(player_id,"clock")

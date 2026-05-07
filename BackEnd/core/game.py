@@ -471,15 +471,30 @@ class Game():
                 break
         return is_broken,checked_card_info
     
-    def player_process_resolution_to_waiting_room(self,player_id:int):
+    # def player_process_resolution_to_waiting_room(self,player_id:int):
+    #     player=self.check_command_player(player_id)
+    #     player.process_resolution_to_waiting_room()
+    # def player_process_resolution_to_stock(self,player_id:int):
+    #     player=self.check_command_player(player_id)
+    #     player.process_resolution_to_stock()
+    # async def player_process_resolution_to_clock(self,player_id:int):
+    #     player=self.check_command_player(player_id)
+    #     await player.process_resolution_to_clock()
+    
+    # 解決領域のカードを処理することを始める
+    # 戻り値：中断フラグ
+    async def player_start_handle_resolution(self,player_id:int,target:str)->bool:
         player=self.check_command_player(player_id)
-        player.process_resolution_to_waiting_room()
-    def player_process_resolution_to_stock(self,player_id:int):
+        flag=await player.start_handle_resolution(target)
+        return flag
+    # 解決領域のカードを処理することを続ける
+    # keyは存在する場合、処理中のtargetと対応しなければ動かない
+    # keyは存在しない場合普通に動く
+    # 戻り値：中断フラグ
+    async def player_continue_handle_resolution(self,player_id:int,key:str="")->bool:
         player=self.check_command_player(player_id)
-        player.process_resolution_to_stock()
-    async def player_process_resolution_to_clock(self,player_id:int):
-        player=self.check_command_player(player_id)
-        await player.process_resolution_to_clock()
+        flag=await player.continue_handle_resolution(key)
+        return flag
     
     def player_process_level_up(self,player_id:int,clock_index:int)->bool:
         player=self.check_command_player(player_id)

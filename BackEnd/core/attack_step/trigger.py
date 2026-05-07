@@ -37,7 +37,8 @@ class Trigger(AttackStep):
             triggers=all_triggers)
         await game.send_data_to_room(res)
         
-        game.player_process_resolution_to_stock(player_id)
+        # game.player_process_resolution_to_stock(player_id)
+        await game.player_start_handle_resolution(player_id,"stock")
         
         self.is_complete=True
         await self.on_next_step(game)

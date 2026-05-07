@@ -9,6 +9,10 @@ from typing import Callable,Awaitable
 
 class Player(GameObject):
     handle_level_up:Callable[[int],Awaitable[None]]=None
+    FLAG_CALLBACK_REGISTRY:dict={
+        "clock":"handle_level_up"
+    }
+    
     def __init__(self,
                  player_id:int,
                  name:str,
@@ -183,8 +187,10 @@ class Player(GameObject):
         level_up=self.playmat.set_card_to_clock(card)
         if clock_set_callback:
             await clock_set_callback(card.card_id)
-        if level_up and self.handle_level_up:
-            await self.handle_level_up(self.player_id)
+        if level_up:
+            # and self.handle_level_up:
+            # await self.handle_level_up(self.player_id)
+            await self._handle_flag_callback("clock")
         return level_up
     
     def check_has_stage_card(self,stage_index:int)->bool:
@@ -242,26 +248,65 @@ class Player(GameObject):
         else:
             raise ValueError(f"{self.player_id} No Playmat")
     
-    def process_resolution_to_waiting_room(self):
-        if self.playmat:
-            return self.playmat.resolution_to_waiting_room()
-        else:
+    # def process_resolution_to_waiting_room(self):
+    #     if self.playmat:
+    #         return self.playmat.resolution_to_waiting_room()
+    #     else:
+    #         raise ValueError(f"{self.player_id} No Playmat")
+    # def process_resolution_to_stock(self):
+    #     if self.playmat:
+    #         return self.playmat.resolution_to_stock()
+    #     else:
+    #         raise ValueError(f"{self.player_id} No Playmat")
+    # async def process_resolution_to_clock(self):
+    #     if self.playmat:
+    #         for i in range(self.playmat.get_resolution_size):
+    #             card=self.playmat.resolution_pop(0)
+    #             level_up=self.playmat.set_card_to_clock(card)
+    #             if level_up and self.handle_level_up:
+    #                 await self.handle_level_up(self.player_id)
+    #                 return
+    #     else:
+    #         raise ValueError(f"{self.player_id} No Playmat")
+    async def start_handle_resolution(self,target:str)->bool:
+        if not self.playmat:
             raise ValueError(f"{self.player_id} No Playmat")
-    def process_resolution_to_stock(self):
-        if self.playmat:
-            return self.playmat.resolution_to_stock()
-        else:
+        self.playmat.set_next_resolution_target(target)
+        for i in range(self.playmat.get_resolution_size()):
+            card=self.playmat.resolution_pop(0)
+            if not card:
+                continue
+            flag=await self.playmat.handle_set_card_to_target(card,target)
+            if flag:
+                await self._handle_flag_callback(target)
+                return True
+        self.playmat.set_next_resolution_target()
+        return False
+    
+    async def continue_handle_resolution(self,key:str="")->bool:
+        if not self.playmat:
             raise ValueError(f"{self.player_id} No Playmat")
-    async def process_resolution_to_clock(self):
-        if self.playmat:
-            for i in range(self.playmat.get_resolution_size):
-                card=self.playmat.resolution_pop(0)
-                level_up=self.playmat.set_card_to_clock(card)
-                if level_up and self.handle_level_up:
-                    await self.handle_level_up(self.player_id)
-                    return
-        else:
-            raise ValueError(f"{self.player_id} No Playmat")
+        target=self.playmat.get_next_resolution_target()
+        if key and target!=key:
+            return False
+        for i in range(self.playmat.get_resolution_size()):
+            card=self.playmat.resolution_pop(0)
+            if not card:
+                continue
+            flag=await self.playmat.handle_set_card_to_target(card,target)
+            if flag:
+                await self._handle_flag_callback(target)
+                return True
+        self.playmat.set_next_resolution_target()
+        return False
+    
+    async def _handle_flag_callback(self,name:str):
+        callback_name=self.FLAG_CALLBACK_REGISTRY.get(name)
+        if callback_name is None:
+            return
+        callback=getattr(self,callback_name)
+        if callback:
+            await callback(self.player_id)
     
     def process_level_up(self,clock_index:int)->bool:
         if self.playmat:

@@ -77,7 +77,8 @@ class MainPhase(Phase):
         await game.send_data_to_room(res)
         
         # Temporary
-        game.player_process_resolution_to_waiting_room(player_id)
+        # game.player_process_resolution_to_waiting_room(player_id)
+        await game.player_start_handle_resolution(player_id,"waiting_room")
         
     async def char_move(
         self,game:"Game",

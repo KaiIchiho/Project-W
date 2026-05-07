@@ -92,10 +92,12 @@ class Damage(AttackStep):
         
         if is_broken:
             print(f"{player_id} process resolution to waiting room")
-            game.player_process_resolution_to_waiting_room(player_id)
+            # game.player_process_resolution_to_waiting_room(player_id)
+            await game.player_start_handle_resolution(player_id,"waiting_room")
         else:
             print(f"{player_id} process resolution to clock")
-            await game.player_process_resolution_to_clock(player_id)
+            # await game.player_process_resolution_to_clock(player_id)
+            await game.player_start_handle_resolution(player_id,"clock")
             
         await self.on_next_step(game)
         
