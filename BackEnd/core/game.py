@@ -471,16 +471,6 @@ class Game():
                 break
         return is_broken,checked_card_info
     
-    # def player_process_resolution_to_waiting_room(self,player_id:int):
-    #     player=self.check_command_player(player_id)
-    #     player.process_resolution_to_waiting_room()
-    # def player_process_resolution_to_stock(self,player_id:int):
-    #     player=self.check_command_player(player_id)
-    #     player.process_resolution_to_stock()
-    # async def player_process_resolution_to_clock(self,player_id:int):
-    #     player=self.check_command_player(player_id)
-    #     await player.process_resolution_to_clock()
-    
     # 解決領域のカードを処理することを始める
     # 戻り値：中断フラグ
     async def player_start_handle_resolution(self,player_id:int,target:str)->bool:

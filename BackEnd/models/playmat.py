@@ -11,16 +11,8 @@ class StageStatus(str,Enum):
     REVERSE="reverse"
 
 class Playmat(GameObject):
-    # handle_level_up:Callable[[int],Awaitable[None]]=None
     on_stage_card_stand_changed:Callable[[int,StageStatus],None]=None
     
-    # deck:Optional[Deck]=None
-    # RESOLUT_METHOD_REGISTRY:dict={
-    #     "waiting_room":"resolution_to_waiting_room",
-    #     "stock":"resolution_to_stock",
-    #     "clock":"resolution_to_clock"
-    # }
-    # DEFAULT_RESOLUT_METHOD="resolution_to_waiting_room"
     _resolution_next_target:str=""
     SET_CARD_METHOD_REGISTRY:dict={
         "waiting_room":"set_card_to_waiting_room",
@@ -236,45 +228,12 @@ class Playmat(GameObject):
         self.resolution.append(card)
         return True
     
-    # async def resolution_to_waiting_room(self)->bool:
-    #     num=len(self.resolution)
-    #     for i in range(num):
-    #         print("Log: 1 Resolution Card Switch To Waiting Room")
-    #         self.set_card_to_waiting_room(self.resolution.pop(0))
-    #     return True
-    # async def resolution_to_stock(self)->bool:
-    #     num=len(self.resolution)
-    #     for i in range(num):
-    #         print("Log: 1 Resolution Card Switch To Waiting Room")
-    #         self.set_card_to_stock(self.resolution.pop(0))
-    #     return True
-    # async def resolution_to_clock(self)->bool:
-    #     num=len(self.resolution)
-    #     for i in range(num):
-    #         print("Log: 1 Resolution Card Switch To Waiting Room")
-    #         level_up=self.set_card_to_clock(self.resolution.pop(0))
-    #         if level_up:
-    #             self.set_next_resolution_target("clock")
-    #             if self.handle_level_up:
-    #                 await self.handle_level_up(self.ori_owner_id)
-    #             return False
-    #     return True
-    
     def set_next_resolution_target(self,target:str=""):
         self._resolution_next_target=target
     
     def get_next_resolution_target(self)->str:
         return self._resolution_next_target
         
-    # async def handle_resolution(self)->bool:
-        # method_name=\
-        #     self.RESOLUT_METHOD_REGISTRY.get(
-        #         self._resolution_next_target,self.DEFAULT_RESOLUT_METHOD)
-        # handler=getattr(self,method_name)
-        # is_complete=await handler()
-        # if is_complete:
-        #     self.set_next_resolution_target()
-        # return is_complete
     async def handle_set_card_to_target(self,card:Card,target:str):
         method_name=\
             self.SET_CARD_METHOD_REGISTRY.get(target)
