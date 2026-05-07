@@ -44,7 +44,7 @@ class StateMachine():
         req=parse_model(action,model)
         return model,req
     
-    async def _wait_event(self):
+    async def _waiting_event(self):
         self._wait_event.clear()
         print("Log: Clear Event")
         await self._wait_event

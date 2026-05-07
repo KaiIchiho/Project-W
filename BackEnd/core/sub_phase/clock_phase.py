@@ -51,7 +51,7 @@ class ClockPhase(Phase):
             if is_wait:
                 # print("Log: Wait Event")
                 # await self._wait_event.wait()
-                await self._wait_event()
+                await self._waiting_event()
             await self.clock_draw(game,player_id)
     
     async def clock_draw(self,game:"Game",player_id:int):
