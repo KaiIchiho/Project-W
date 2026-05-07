@@ -12,6 +12,7 @@ class StateMachine():
             "player_id":-1
         }
         self._wait_event = asyncio.Event()
+        self._wait_event.clear()
     
     async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
         model,req=self.parse_action_model(action,event)
@@ -45,10 +46,10 @@ class StateMachine():
         return model,req
     
     async def _waiting_event(self):
+        await self._wait_event.wait()
+        print("Log: Wait Event")
         self._wait_event.clear()
         print("Log: Clear Event")
-        await self._wait_event
-        print("Log: Wait Event")
     
     def set_waiting_event(self,type:str,player_id:int):
         if not type:
