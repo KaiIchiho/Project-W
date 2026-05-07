@@ -2,6 +2,7 @@ from core.state_machine_base import StateMachine
 from schemas import event_type,game_flow
 from core.data_reader import DataReader
 from typing import TYPE_CHECKING
+import asyncio
 if TYPE_CHECKING:
     from core.game import Game
 

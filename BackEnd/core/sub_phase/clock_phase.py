@@ -30,7 +30,7 @@ class ClockPhase(Phase):
         await game.player_hand_to_clock(player_id,hand_index,callback)
         
         
-    async def on_clock_set(self,game:"Game",player_id:int,card_id:int):
+    async def on_clock_set(self,game:"Game",player_id:int,card_id:int,is_wait:bool):
         success=False
         log=""
         player_name=game.get_player_name_by_id(player_id)
@@ -48,6 +48,8 @@ class ClockPhase(Phase):
         await game.send_data_to_self_other(player_id,res_self,res_other)
         
         if success:
+            if is_wait:
+                await self._wait_event.wait()
             await self.clock_draw(game,player_id)
     
     async def clock_draw(self,game:"Game",player_id:int):

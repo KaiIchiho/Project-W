@@ -1,19 +1,17 @@
 from schemas import game_flow
 from services.parse_model import parse_model
 from typing import TYPE_CHECKING
+import asyncio
 if TYPE_CHECKING:
     from core.game import Game
 
 class StateMachine():
-    # def __init_subclass__(cls, **kwargs):
-    #     super.__init_subclass__(**kwargs)
-    #     cls.waiting_for=cls.waiting_for.copy()
     def __init__(self):
         self.waiting_for = {
             "type": "",
             "player_id":-1
         }
-    
+        self._wait_event = asyncio.Event()
     
     async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
         model,req=self.parse_action_model(action,event)
@@ -26,6 +24,7 @@ class StateMachine():
         else:
             print("Log: CAN match_expected_action")
             self.set_waiting_event()
+            self._wait_event.set()
         
         handler_name=self.handlers.get(event)
         if not handler_name:
