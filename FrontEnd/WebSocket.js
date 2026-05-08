@@ -116,6 +116,7 @@ event_method_dict={
     "standby":"handleStandby",
     "first_turnplayer":"handleFirstTurnplayer",
     "game_start":"handleGameStart",
+    "determine_defeat":"handleDetermineDefeat",
     "draw_initial_hand":"handleDrawInitialHand",
     "swap_hand_cards":"handleSwapHandCards",
     "card_info":"handleCardInfo",

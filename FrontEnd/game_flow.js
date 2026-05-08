@@ -34,6 +34,10 @@ function handleGameStart(data){
     // console.log(data)
 }
 
+function handleDetermineDefeat(data){
+    
+}
+
 function handleFirstTurnplayer(data){
     // console.log(data)
 }
