@@ -109,17 +109,17 @@ class PlayerData(ObjectBaseData):
     memory:MemoryData
     resolution:ResolutionData
 
-@register("add_card",registry)
-class AddCardData(ObjectBaseData):
-     type:Literal["add_card"]=Field(default="add_card", exclude=True)
-     card_id:int=-1
-     card_img:str=""
+# @register("add_card",registry)
+# class AddCardData(ObjectBaseData):
+#      type:Literal["add_card"]=Field(default="add_card", exclude=True)
+#      card_id:int=-1
+#      card_img:str=""
     
-@register("stage_position",registry)
-class StagePositionData(ObjectBaseData):
-    type:Literal["stage_position"]=Field(default="stage_position", exclude=True)
-    index:int=-1,
-    is_empty:bool=False
+# @register("stage_position",registry)
+# class StagePositionData(ObjectBaseData):
+#     type:Literal["stage_position"]=Field(default="stage_position", exclude=True)
+#     index:int=-1,
+#     is_empty:bool=False
 
 def build_object_data(type:str,**kwargs)->ObjectBaseData:
     cls=registry.get(type)

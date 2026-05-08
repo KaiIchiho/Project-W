@@ -293,21 +293,21 @@ class DataReader():
             card_num=len(cards_info),
             cards=cards_info)
     
-    @staticmethod
-    def get_add_card_data(card_id:int)->object.AddCardData:
-        card_img=card_repo.read_card_field(card_id,"card_img")
-        if card_img is None:
-            card_img=""
-        return object.build_object_data(
-            "add_card",
-            card_id=card_id,
-            card_img=card_img
-        )
+    # @staticmethod
+    # def get_add_card_data(card_id:int)->object.AddCardData:
+    #     card_img=card_repo.read_card_field(card_id,"card_img")
+    #     if card_img is None:
+    #         card_img=""
+    #     return object.build_object_data(
+    #         "add_card",
+    #         card_id=card_id,
+    #         card_img=card_img
+    #     )
         
-    @staticmethod
-    def get_stage_position_data_pack(index:int,is_empty:bool)->object.StageData:
-        return object.build_object_data(
-            "stage_position",
-            index=index,
-            is_empty=is_empty
-        )
+    # @staticmethod
+    # def get_stage_position_data_pack(index:int,is_empty:bool)->object.StageData:
+    #     return object.build_object_data(
+    #         "stage_position",
+    #         index=index,
+    #         is_empty=is_empty
+    #     )

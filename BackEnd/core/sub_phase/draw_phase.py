@@ -2,6 +2,7 @@ from core.sub_phase.phase_base import Phase
 from core.sub_phase.clock_phase import ClockPhase
 from schemas import event_type,game_flow
 from core.data_reader import DataReader
+from db import card_repo
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from core.game import Game
@@ -24,7 +25,6 @@ class DrawPhase(Phase):
         log=""
         card_id=game.turn_player_draw()
         player_id=game.get_turn_player_id()
-        # other_player_id=game.get_other_player_id()
         player_name=game.get_turn_player_name()
         if card_id!=-1:
             success=True
@@ -35,7 +35,12 @@ class DrawPhase(Phase):
         common=DataReader.get_common_data(
             game,success,log,player_id
         )
-        add_card_data=DataReader.get_add_card_data(card_id)
+        # add_card_data=DataReader.get_add_card_data(card_id)
+        card_img=card_repo.read_card_field(card_id,"card_img")
+        add_card_data={
+            "card_id":card_id,
+            "card_img":card_img
+        }
         res_self=game_flow.DrawPhaseDrawSelfResponse(
             common=common,add_hand_card=add_card_data)
         res_other=game_flow.DrawPhaseDrawOtherResponse(

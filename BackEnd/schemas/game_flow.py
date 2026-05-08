@@ -23,6 +23,12 @@ class FirstTurnPlayerResponse(WSCommonResponseBase):
 class GameStartResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.GAME_START
 
+class DetermineDefeatResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.DETERMINE_DEFEAT
+
+# class GameEndResponse(WSCommonResponseBase):
+    # _DEFAULT_EVENT:str=event_type.GAME_END
+
 class DrawInitialHandResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.DRAW_INITIAL_HAND
 
@@ -58,7 +64,8 @@ class StandPhaseAllStandRepons(WSCommonResponseBase):
 
 class DrawPhaseDrawSelfResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.DRAW_PHASE_DRAW
-    add_hand_card:object.AddCardData
+    add_hand_card:dict=Field(default_factroy=dict)
+    #object.AddCardData
 class DrawPhaseDrawOtherResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.DRAW_PHASE_DRAW
 
@@ -83,7 +90,8 @@ class MainPhaseCharPlayRequest(WSCommonRequestBase):
 class MainPhaseCharPlayResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.MAIN_PHASE_CHAR_PLAY
     choice_hand_card:str=-1
-    stage_position:object.StagePositionData
+    stage_position:dict=Field(default_factroy=dict)
+    # object.StagePositionData
 
 class MainPhaseEventPlayRequest(WSCommonRequestBase):
     use_card:sub_request.MainPhaseEventPlayUserCard

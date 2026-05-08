@@ -41,8 +41,12 @@ class MainPhase(Phase):
         else:
             log=f"{player_name}は手札をステージに置けませんでした"
         
-        stage_position=DataReader.get_stage_position_data_pack(
-            req.stage_position,has_card)
+        # stage_position=DataReader.get_stage_position_data_pack(
+        #     req.stage_position,has_card)
+        stage_position={
+            "index":req.stage_position,
+            "is_empty":has_card
+        }
         common=DataReader.get_common_data(
             game,success,log,player_id)
         res=game_flow.MainPhaseCharPlayResponse(

@@ -112,7 +112,7 @@ class Phase(StateMachine):
     ):
         print("Log: process_level_up")
         success=\
-            game.player_process_level_up(
+            await game.player_process_level_up(
                 player_id,req.chosen_clock_card)
         player_name=game.get_player_name_by_id(player_id)
         if success:
@@ -125,3 +125,12 @@ class Phase(StateMachine):
         print(log)
         
         return success
+    
+    async def on_determine_defeat(self,game:"Game",defeat_player_id:int):
+        player_name=game.get_player_name_by_id(defeat_player_id)
+        common=DataReader.get_common_data(
+            game,True,
+            f"{player_name}は敗北しました",
+            defeat_player_id)
+        res=game_flow.DetermineDefeatResponse(common=common)
+        await game.send_data_to_room(res)

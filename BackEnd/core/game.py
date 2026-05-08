@@ -60,6 +60,7 @@ class Game():
     def _set_player(self,identity:int,player:Player):
         if identity==1 or identity==2:
             player.handle_level_up=self.handle_level_up
+            player.on_defeat=self.on_determine_defeat
         if identity==1:
             self.player_1=player
         if identity==2:
@@ -487,9 +488,9 @@ class Game():
         flag=await player.continue_handle_resolution(key)
         return flag
     
-    def player_process_level_up(self,player_id:int,clock_index:int)->bool:
+    async def player_process_level_up(self,player_id:int,clock_index:int)->bool:
         player=self.check_command_player(player_id)
-        return player.process_level_up(clock_index)
+        return await player.process_level_up(clock_index)
     
     def check_is_first_phase(self)->bool:
         return isinstance(self.phase,self.first_phase)
@@ -608,6 +609,13 @@ class Game():
             return False
         else:
             return True
+    
+    async def on_determine_defeat(self,defeat_player_id:int):
+        player=self.check_command_player(defeat_player_id)
+        if not player:
+            return
+        if self.phase:
+            await self.phase.on_determine_defeat(self,defeat_player_id)
     
     async def forced_game_end(self):
         self._is_in_progress=False

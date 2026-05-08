@@ -9,6 +9,8 @@ from typing import Callable,Awaitable
 
 class Player(GameObject):
     handle_level_up:Callable[[int],Awaitable[None]]=None
+    on_defeat:Callable[[int],Awaitable[None]]=None
+    
     FLAG_CALLBACK_REGISTRY:dict={
         "clock":"handle_level_up"
     }
@@ -290,11 +292,19 @@ class Player(GameObject):
         if callback:
             await callback(self.player_id)
     
-    def process_level_up(self,clock_index:int)->bool:
-        if self.playmat:
-            return self.playmat.process_level_up(clock_index)
-        else:
+    async def process_level_up(self,clock_index:int)->bool:
+        if not self.playmat:
             raise ValueError(f"{self.player_id} No Playmat")
+        if not self.playmat.is_waiting_level_up():
+            return False
+        level_card=self.playmat.clock_pop(clock_index)
+        for i in range(self.playmat.get_clock_size()):
+            card=self.playmat.clock_pop(0)
+            await self.playmat.handle_set_card_to_target(card,"waiting_room")
+        is_defeat=self.playmat.handle_set_card_to_target(level_card,"level")
+        if is_defeat:
+            self.Defeat()
+        return True
     
     def move_stage_char(self,ori_index:int,tar_index:int):
         if self.playmat:
@@ -356,3 +366,7 @@ class Player(GameObject):
             return self.playmat.stage_to_waiting_room(stage_index)
         else:
             raise ValueError(f"{self.player_id} No Playmat")
+        
+    async def Defeat(self):
+        if self.on_defeat:
+            await self.on_defeat(self.player_id)
