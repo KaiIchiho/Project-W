@@ -134,3 +134,4 @@ class Phase(StateMachine):
             defeat_player_id)
         res=game_flow.DetermineDefeatResponse(common=common)
         await game.send_data_to_room(res)
+        await self._waiting_event()
