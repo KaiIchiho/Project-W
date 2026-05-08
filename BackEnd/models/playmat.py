@@ -230,12 +230,14 @@ class Playmat(GameObject):
         return self._resolution_next_target
         
     async def handle_set_card_to_target(self,card:Card,target:str):
+        print("Log: handle_set_card_to_target")
         method_name=\
             self.SET_CARD_METHOD_REGISTRY.get(target)
         if method_name is None:
             raise ValueError("Set Card Method Name Invalid")
+        print(f"Log: method_name: {method_name}")
         handler=getattr(self,method_name)
-        flag=await handler(card)
+        flag=handler(card)
         if flag is None:
             flag=False
         return flag
