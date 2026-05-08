@@ -303,7 +303,7 @@ class Player(GameObject):
             await self.playmat.handle_set_card_to_target(card,"waiting_room")
         is_defeat=self.playmat.handle_set_card_to_target(level_card,"level")
         if is_defeat:
-            self.Defeat()
+            await self.Defeat()
         return True
     
     def move_stage_char(self,ori_index:int,tar_index:int):
