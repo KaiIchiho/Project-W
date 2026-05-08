@@ -178,7 +178,7 @@ class Playmat(GameObject):
     def set_card_to_clock(self,card:Card)->bool:
         card.init_info()
         self.clock.append(card)
-        if len(self.clock)==self._clock_limit:
+        if len(self.clock)>=self._clock_limit:
             return True
         else:
             return False
@@ -190,7 +190,7 @@ class Playmat(GameObject):
     def set_card_to_level(self,card:Card)->bool:
         card.init_info()
         self.level.append(card)
-        if len(self.level)==self._level_limit:
+        if len(self.level)>=self._level_limit:
             return True
         else:
             return False
@@ -229,7 +229,7 @@ class Playmat(GameObject):
     def get_next_resolution_target(self)->str:
         return self._resolution_next_target
         
-    async def handle_set_card_to_target(self,card:Card,target:str):
+    def handle_set_card_to_target(self,card:Card,target:str):
         print("Log: handle_set_card_to_target")
         method_name=\
             self.SET_CARD_METHOD_REGISTRY.get(target)
@@ -267,15 +267,6 @@ class Playmat(GameObject):
         if not 0<=index<len(self.clock):
             return self.clock.pop()
         return self.clock.pop(index)
-    
-    def process_level_up(self,clock_index:int)->bool:
-        # if not 0<=clock_index<len(self.clock):
-        #     return False
-        # card=self.clock.pop(clock_index)
-        self.set_cards_to_waiting_room(self.clock)
-        self.clock=[]
-        is_defeat=self.set_card_to_level(card)
-        return True
     
     def move_stage_char(self,ori_index:int,tar_index:int):
         result=False
@@ -369,7 +360,4 @@ class Playmat(GameObject):
                 return False
         else:
             return False
-        
-    # def defeat(self):
-        
     

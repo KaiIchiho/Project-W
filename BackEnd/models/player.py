@@ -260,7 +260,7 @@ class Player(GameObject):
             card=self.playmat.resolution_pop(0)
             if not card:
                 continue
-            flag=await self.playmat.handle_set_card_to_target(card,target)
+            flag=self.playmat.handle_set_card_to_target(card,target)
             if flag:
                 await self._handle_flag_callback(target)
                 return True
@@ -277,7 +277,7 @@ class Player(GameObject):
             card=self.playmat.resolution_pop(0)
             if not card:
                 continue
-            flag=await self.playmat.handle_set_card_to_target(card,target)
+            flag=self.playmat.handle_set_card_to_target(card,target)
             if flag:
                 await self._handle_flag_callback(target)
                 return True
@@ -300,7 +300,7 @@ class Player(GameObject):
         level_card=self.playmat.clock_pop(clock_index)
         for i in range(self.playmat.get_clock_size()):
             card=self.playmat.clock_pop(0)
-            await self.playmat.handle_set_card_to_target(card,"waiting_room")
+            self.playmat.handle_set_card_to_target(card,"waiting_room")
         is_defeat=self.playmat.handle_set_card_to_target(level_card,"level")
         if is_defeat:
             await self.Defeat()
