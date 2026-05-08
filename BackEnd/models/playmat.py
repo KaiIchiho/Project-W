@@ -38,6 +38,7 @@ class Playmat(GameObject):
         # self.stage_stand:list[bool]=[True]*5
         
         # self.clock:list[Optional[Card]]=[None]*6
+        self.clock_limit=setting_ingame.INIT_CLOCK_LIMIT
         self.clock:list[Card]=[]
         # self.level:list[Optional[Card]]=[None]*4
         self.level:list[Card]=[]
@@ -178,7 +179,7 @@ class Playmat(GameObject):
         
     def set_card_to_clock(self,card:Card)->bool:
         self.clock.append(card)
-        if len(self.clock)==setting_ingame.CLOCK_LIMIT:
+        if len(self.clock)==self.clock_limit:
             return True
         else:
             return False
@@ -256,7 +257,7 @@ class Playmat(GameObject):
         return self.resolution.pop(index)
     
     def process_level_up(self,clock_index:int)->bool:
-        if len(self.clock)<setting_ingame.CLOCK_LIMIT:
+        if len(self.clock)<self.clock_limit:
             return False
         if not 0<=clock_index<len(self.clock):
             return False

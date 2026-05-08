@@ -118,9 +118,10 @@ class Phase(StateMachine):
         if success:
             # log=f"{player_name}のレベルアップが処理されました"
             log=f"{player_name} Process Level Up Successed"
+            await game.player_continue_handle_resolution(player_id,"clock")
         else:
             # log=f"{player_name}のレベルアップが処理失敗です"
             log=f"{player_name} Process Level Up Failed"
         print(log)
         
-        await game.player_continue_handle_resolution(player_id,"clock")
+        return success

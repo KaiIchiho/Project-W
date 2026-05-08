@@ -24,20 +24,22 @@ class StateMachine():
             print("Log: CANNOT match_expected_action")
             return False
         else:
-            print("Log: CAN match_expected_action")
-            self._clear_waiting_event()
-            self._wait_event.set()
-            print("Log: Set Event")
-        
-        handler_name=self.handlers.get(event)
-        if not handler_name:
-            print(f"Action {handler_name} Not Found")
-            return False
-        
-        print(f"Log: handler action name: {handler_name}")
-        handler=getattr(self,handler_name)
-        await handler(game,req,player_id)
-        return True
+            handler_name=self.handlers.get(event)
+            if not handler_name:
+                print(f"Action {handler_name} Not Found")
+                return False
+            
+            print(f"Log: handler action name: {handler_name}")
+            handler=getattr(self,handler_name)
+            result=await handler(game,req,player_id)
+            if result is None:
+                result=True
+            if result is True:
+                print("Log: CAN match_expected_action")
+                self._clear_waiting_event()
+                self._wait_event.set()
+                print("Log: Set Event")            
+            return result
     
     def parse_action_model(self,action:dict,event:str):
         model=game_flow.event_req.get(event)
