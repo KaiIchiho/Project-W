@@ -12,7 +12,8 @@ class Player(GameObject):
     on_defeat:Callable[[int],Awaitable[None]]=None
     
     FLAG_CALLBACK_REGISTRY:dict={
-        "clock":"handle_level_up"
+        "clock":"handle_level_up",
+        "level":"on_defeat"
     }
     
     def __init__(self,
@@ -256,16 +257,7 @@ class Player(GameObject):
         if not self.playmat:
             raise ValueError(f"{self.player_id} No Playmat")
         self.playmat.set_next_resolution_target(target)
-        for i in range(self.playmat.get_resolution_size()):
-            card=self.playmat.resolution_pop(0)
-            if not card:
-                continue
-            flag=self.playmat.handle_set_card_to_target(card,target)
-            if flag:
-                await self._handle_flag_callback(target)
-                return True
-        self.playmat.set_next_resolution_target()
-        return False
+        return await self._handle_resolution(target)
     
     async def continue_handle_resolution(self,key:str="")->bool:
         if not self.playmat:
@@ -273,6 +265,9 @@ class Player(GameObject):
         target=self.playmat.get_next_resolution_target()
         if key and target!=key:
             return False
+        return await self._handle_resolution(target)
+        
+    async def _handle_resolution(self,target:str)->bool:
         for i in range(self.playmat.get_resolution_size()):
             card=self.playmat.resolution_pop(0)
             if not card:
@@ -284,6 +279,8 @@ class Player(GameObject):
         self.playmat.set_next_resolution_target()
         return False
     
+    # 置き場にカードのセットによりフラグが立った時、
+    # 対応するplayer_idをパラメータにするコールバックを呼び出す
     async def _handle_flag_callback(self,name:str):
         callback_name=self.FLAG_CALLBACK_REGISTRY.get(name)
         if callback_name is None:
@@ -303,7 +300,8 @@ class Player(GameObject):
             self.playmat.handle_set_card_to_target(card,"waiting_room")
         is_defeat=self.playmat.handle_set_card_to_target(level_card,"level")
         if is_defeat:
-            await self.Defeat()
+            # await self._on_defeat()
+            await self._handle_flag_callback("level")
         return True
     
     def move_stage_char(self,ori_index:int,tar_index:int):
@@ -367,6 +365,6 @@ class Player(GameObject):
         else:
             raise ValueError(f"{self.player_id} No Playmat")
         
-    async def Defeat(self):
-        if self.on_defeat:
-            await self.on_defeat(self.player_id)
+    # async def _on_defeat(self):
+    #     if self.on_defeat:
+    #         await self.on_defeat(self.player_id)

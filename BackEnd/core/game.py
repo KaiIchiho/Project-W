@@ -21,7 +21,6 @@ class Game():
     ws_send_data_to_room_except_target:Callable[[int,int,BaseModel],Awaitable[None]]
     
     phase:Optional[Phase]=None
-    #attack_step:Optional[AttackStep]=None
     
     _is_in_progress=False
     
