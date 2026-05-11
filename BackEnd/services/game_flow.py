@@ -193,7 +193,7 @@ async def end_game(game:Game,defeated_player_id:int):
         turn_player_id=game.get_turn_player_id()
         turn_player_identity=game.check_player_identity_by_id(turn_player_id)
         turn_player_deck_id,turn_player_deck_name=game.get_player_deck_info(turn_player_id)
-        other_player_id=game.check_command_other_player(turn_player_id) 
+        other_player_id=game.get_other_player_id() 
         other_player_deck_id,other_player_deck_name=game.get_player_deck_info(other_player_id)
         user_1={
             "user_id": turn_player_id,
