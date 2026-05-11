@@ -17,9 +17,15 @@ class Deck(GameObject):
         self._deck_id=-1
         self._deck_name=""
         self.cards:list[Card]=None
+    
+    def get_deck_id(self)->int:
+        return self._deck_id
+    def get_deck_name(self)->str:
+        return self._deck_name
         
     def init_deck_by_deck_id(self,deck_id:int)->bool:
         self._deck_id=deck_id
+        self._deck_name=deck_repo.read_deck_name_by_id(deck_id)
         print(f"Log: init_deck_by_deck_id, ID: {self._deck_id}")
         card_info_list=deck_repo.read_cards_info_by_deck_id(self._deck_id)
         if not card_info_list:

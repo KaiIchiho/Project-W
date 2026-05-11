@@ -365,6 +365,8 @@ class Player(GameObject):
         else:
             raise ValueError(f"{self.player_id} No Playmat")
         
-    # async def _on_defeat(self):
-    #     if self.on_defeat:
-    #         await self.on_defeat(self.player_id)
+    def get_deck_info(self):
+        if self.playmat:
+            return self.playmat.get_deck_info()
+        else:
+            raise ValueError(f"{self.player_id} No Playmat")

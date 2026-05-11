@@ -126,12 +126,12 @@ class Phase(StateMachine):
         
         return success
     
-    async def on_determine_defeat(self,game:"Game",defeat_player_id:int):
-        player_name=game.get_player_name_by_id(defeat_player_id)
+    async def on_determine_defeat(self,game:"Game",defeated_player_id:int):
+        player_name=game.get_player_name_by_id(defeated_player_id)
         common=DataReader.get_common_data(
             game,True,
             f"{player_name}は敗北しました",
-            defeat_player_id)
+            defeated_player_id)
         res=game_flow.DetermineDefeatResponse(common=common)
         await game.send_data_to_room(res)
         await self._waiting_event()

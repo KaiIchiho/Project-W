@@ -361,3 +361,8 @@ class Playmat(GameObject):
         else:
             return False
     
+    def get_deck_info(self):
+        if self.deck:
+            return self.deck.get_deck_id(),self.deck.get_deck_name()
+        else:
+            return -1,""

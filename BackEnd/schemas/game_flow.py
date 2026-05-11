@@ -16,6 +16,18 @@ class StandbyRequest(WSRequestBase):
 class StandbyResponse(WSResponseBase):
     event:str=event_type.STANDBY
 
+class GameEndResponse(WSResponseBase):
+    event:str=event_type.GAME_END
+    room_id:int
+    user:list[dict]=Field(default_factory=\
+        lambda:[{
+            "user_id": i,
+            "user_result": "",
+            "deck": {
+                "deck_id": 1,
+                "deck_name": "",
+        }} for i in range(2)])
+
 class FirstTurnPlayerResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.FIRST_TURNPLAYER
     first_turn_player:int=-1
@@ -25,9 +37,6 @@ class GameStartResponse(WSCommonResponseBase):
 
 class DetermineDefeatResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.DETERMINE_DEFEAT
-
-# class GameEndResponse(WSCommonResponseBase):
-    # _DEFAULT_EVENT:str=event_type.GAME_END
 
 class DrawInitialHandResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.DRAW_INITIAL_HAND
@@ -64,7 +73,7 @@ class StandPhaseAllStandRepons(WSCommonResponseBase):
 
 class DrawPhaseDrawSelfResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.DRAW_PHASE_DRAW
-    add_hand_card:dict=Field(default_factroy=dict)
+    add_hand_card:dict=Field(default_factory=dict)
     #object.AddCardData
 class DrawPhaseDrawOtherResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.DRAW_PHASE_DRAW
@@ -80,7 +89,7 @@ class ClockPhaseClockOtherResponse(WSCommonResponseBase):
 
 class ClockPhaseDrowSelfResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.CLOCK_PHASE_DRAW
-    add_two_hand_cards:list[dict]=Field(default_factroy=lambda:[{"card_id":-1} for _ in range(2)])
+    add_two_hand_cards:list[dict]=Field(default_factory=lambda:[{"card_id":-1} for _ in range(2)])
 class ClockPhaseDrowOtherResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.CLOCK_PHASE_DRAW
 
@@ -90,7 +99,7 @@ class MainPhaseCharPlayRequest(WSCommonRequestBase):
 class MainPhaseCharPlayResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.MAIN_PHASE_CHAR_PLAY
     choice_hand_card:str=-1
-    stage_position:dict=Field(default_factroy=dict)
+    stage_position:dict=Field(default_factory=dict)
     # object.StagePositionData
 
 class MainPhaseEventPlayRequest(WSCommonRequestBase):
@@ -103,8 +112,8 @@ class MainPhaseCharMoveRequest(WSCommonRequestBase):
     target_stage_position:sub_request.MainPhaseCharMoveStagePos
 class MainPhaseCharMoveResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.MAIN_PHASE_CHAR_MOVE
-    stage_position:dict=Field(default_factroy=dict)
-    target_stage_position:dict=Field(default_factroy=dict)
+    stage_position:dict=Field(default_factory=dict)
+    target_stage_position:dict=Field(default_factory=dict)
 
 class ClimaxPhaseCXSetRequest(WSCommonRequestBase):
     hand_index:int
@@ -117,14 +126,14 @@ class AttackPhaseDeclareRequest(WSCommonRequestBase):
     attack_type:str
 class AttackPhaseDeclareResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_DECLARE
-    target_stage_position:dict=Field(default_factroy=dict)
+    target_stage_position:dict=Field(default_factory=dict)
     attack_type:str
     is_first_turn:bool
     
 class AttackPhaseTriggerCheckResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_TRIGGER_CHECK
     trigger_card_id:int
-    triggers:list[dict]=Field(default_factroy=list)
+    triggers:list[dict]=Field(default_factory=list)
 
 class AttackPhaseCounterCheckResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_COUNTER_CHECK
@@ -134,22 +143,22 @@ class AttackPhaseCounterCheckRequest(WSCommonRequestBase):
     
 class AttackPhaseDamageCheckResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_DAMAGE_CHECK
-    attack_character:dict=Field(default_factroy=dict)
+    attack_character:dict=Field(default_factory=dict)
 class AttackPhaseDamageProcessResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_DAMAGE_PROCESS
-    revealed_card:list[dict]=Field(default_factroy=list)
+    revealed_card:list[dict]=Field(default_factory=list)
     is_damage_cancel:bool
 class AttackPhaseBattleProcessResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_BATTLE_PROCESS
-    attack_character:dict=Field(default_factroy=dict)
-    defense_character:dict=Field(default_factroy=dict)
+    attack_character:dict=Field(default_factory=dict)
+    defense_character:dict=Field(default_factory=dict)
 
 class AttackPhaseEncoreResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.ATTACK_PHASE_ENCORE
-    reverse_card_on_stage:list[dict]=Field(default_factroy=list)
+    reverse_card_on_stage:list[dict]=Field(default_factory=list)
 class AttackPhaseEncoreRequest(WSCommonRequestBase):
     chosen_cost:str
-    order:list[int]=Field(default_factroy=list)
+    order:list[int]=Field(default_factory=list)
     
 class AttackPhaseStopAttackRequest(WSCommonRequestBase):
     pass

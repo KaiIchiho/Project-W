@@ -609,6 +609,12 @@ class Game():
         else:
             return True
     
+    def get_player_deck_info(self,player_id:int):
+        player=self.check_command_player(player_id)
+        if not player:
+            return -1,""
+        return player.get_deck_info()
+    
     async def on_determine_defeat(self,defeat_player_id:int):
         player=self.check_command_player(defeat_player_id)
         if not player:
@@ -620,14 +626,12 @@ class Game():
         self._is_in_progress=False
         
         print("Log: forced game end.")
-        if not self.ws_send_message:
-            return
         
-        player_id=""
         if self.player_1:
             player_id=self.player_1.player_id
         elif self.player_2:
             player_id=self.player_2.player_id
         
-        if self.create_message:
-            await self.ws_send_message(self.create_message(None,"Game End"),player_id)
+        if self.ws_send_message and self.create_message:
+            await self.ws_send_message(
+                self.create_message(None,"Game End"),player_id)

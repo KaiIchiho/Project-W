@@ -9,6 +9,7 @@ from services.login_logout import get_logedin_user_name
 from schemas import event_type,game_flow
 from db.deck_repo import read_deck_name_by_id
 from core.data_reader import DataReader
+from schemas.global_registration import room_game
 
 ws_send_message_handler:Callable[[dict,str],Awaitable[None]]
 create_message_handler:Callable[[int,str],dict]
@@ -22,8 +23,7 @@ outgame_handlers={
         event_type.EXIT_ROOM:"handle_exit_room",
         event_type.SELECT_DECK:"handle_select_deck",
         event_type.STANDBY:"handle_standby",
-        # event_type.:"handle_deck_list",
-        event_type.CARD_INFO:"handle_card_info",
+        event_type.CARD_INFO:"handle_card_info"
         }
 
 async def handle_outgame_event(data:dict,user_id:int):
@@ -33,7 +33,6 @@ async def handle_outgame_event(data:dict,user_id:int):
         raise ValueError("Action Not Found")
     module = importlib.import_module("services.outgame_handle")
     handler = getattr(module, event, None)
-    # handler=globals().get(event)
     print("event:", event)
     print("handler:", handler)
     await handler(data,user_id)
@@ -164,3 +163,37 @@ async def auto_set_first_player(game:Game):
     res=game_flow.FirstTurnPlayerResponse(
         common=common,first_turn_player=player_id)
     await game.send_data_to_room(res)
+
+async def end_game(game:Game,defeated_player_id:int):
+    winner_player_id=game.check_command_other_player(defeated_player_id)
+    winner_identity=game.check_player_identity_by_id(winner_player_id)
+    # defeat_identity=game.check_player_identity_by_id(defeated_player_id)
+    winned_deck_id,winned_deck_name=game.get_player_deck_info(winner_player_id)
+    winner={
+        "user_id": winner_player_id,
+        "user_result":"win",
+        "deck": {
+            "deck_id": winned_deck_id,
+            "deck_name": winned_deck_name
+        }}
+    defeated_deck_id,defeated_deck_name=game.get_player_deck_info(defeated_player_id)
+    loser={
+        "user_id": defeated_player_id,
+        "user_result":"lose",
+        "deck": {
+            "deck_id": defeated_deck_id,
+            "deck_name": defeated_deck_name
+        }}
+    if winner_identity==1:
+        user_1=winner
+        user_2=loser
+    else:
+        user_1=loser
+        user_2=winner
+    user_list=[user_1,user_2]
+    
+    res=game_flow.GameEndResponse(room_id=game.room_id,user=user_list)
+    await game.send_data_to_room(res)
+    
+    room_game.pop(game.room_id)
+    game.forced_game_end

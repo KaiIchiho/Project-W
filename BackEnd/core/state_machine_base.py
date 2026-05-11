@@ -15,6 +15,9 @@ class StateMachine():
         self._wait_event.clear()
     
     async def handle_action(self,game:"Game",action:dict,event:str,player_id:int):
+        if not game.get_is_in_progress():
+            return False
+        
         print("Log: handle_action")
         model,req=self.parse_action_model(action,event)
         if not model or not req:
@@ -37,6 +40,8 @@ class StateMachine():
             if result is True:
                 print("Log: CAN match_expected_action")
                 self._clear_waiting_event()
+                
+                # イベントをセットして、待機しているイベントを解除する
                 self._wait_event.set()
                 print("Log: Set Event")            
             return result
@@ -48,6 +53,7 @@ class StateMachine():
         req=parse_model(action,model)
         return model,req
     
+    # 必要な場合では、イベントを待機させるための関数
     async def _waiting_event(self):
         self._wait_event.clear()
         print("Log: Clear Event")
