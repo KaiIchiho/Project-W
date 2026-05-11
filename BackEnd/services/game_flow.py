@@ -189,8 +189,6 @@ async def end_game(game:Game,defeated_player_id:int):
             user_1=loser
             user_2=winner
         user_list=[user_1,user_2]
-        
-        res=game_flow.GameEndResponse(room_id=game.room_id,user=user_list)
     else:
         turn_player_id=game.get_turn_player_id()
         turn_player_identity=game.check_player_identity_by_id(turn_player_id)
@@ -211,8 +209,12 @@ async def end_game(game:Game,defeated_player_id:int):
                 "deck_name": other_player_deck_name}}
         if turn_player_identity==2:
             user_1,user_2=user_2,user_1
-        users=[user_1,user_2]
-        res=game_flow.GameEndResponse(room_id=game.room_id,user=users)
+        user_list=[user_1,user_2]
+    res=game_flow.GameEndResponse(
+        success=True,
+        log="ゲーム終了",
+        room_id=game.room_id,
+        user=user_list)
     await game.send_data_to_room(res)
     
     global_registration.room_game.pop(game.room_id)
