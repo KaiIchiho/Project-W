@@ -20,6 +20,8 @@ class Game():
     ws_send_data_to_room:Callable[[int,BaseModel],Awaitable[None]]
     ws_send_data_to_room_except_target:Callable[[int,int,BaseModel],Awaitable[None]]
     
+    requested_end_game:Callable[["Game",int],Awaitable[None]]=None
+    
     phase:Optional[Phase]=None
     
     _is_in_progress=False
@@ -622,7 +624,7 @@ class Game():
         if self.phase:
             await self.phase.on_determine_defeat(self,defeat_player_id)
     
-    async def forced_game_end(self):
+    async def forced_game_end(self,defeat_player_id:int=None):
         self._is_in_progress=False
         
         print("Log: forced game end.")
@@ -631,6 +633,9 @@ class Game():
             player_id=self.player_1.player_id
         elif self.player_2:
             player_id=self.player_2.player_id
+        
+        if self.requested_end_game:
+            await self.requested_end_game(self,defeat_player_id)
         
         if self.ws_send_message and self.create_message:
             await self.ws_send_message(

@@ -9,7 +9,6 @@ from services.login_logout import get_logedin_user_name
 from schemas import event_type,game_flow
 from db.deck_repo import read_deck_name_by_id
 from core.data_reader import DataReader
-from schemas.global_registration import room_game
 
 ws_send_message_handler:Callable[[dict,str],Awaitable[None]]
 create_message_handler:Callable[[int,str],dict]
@@ -123,6 +122,7 @@ def _create_game_instance(room:Room)->Game:
         game.ws_send_data_to_user=ws_send_data_to_user_handler
         game.ws_send_data_to_room=ws_send_data_to_room_handler
         game.ws_send_data_to_room_except_target=ws_send_data_to_room_except_target_handler
+        game.requested_end_game=end_game
         global_registration.room_game[room_id]=game
     return game
     
@@ -165,35 +165,54 @@ async def auto_set_first_player(game:Game):
     await game.send_data_to_room(res)
 
 async def end_game(game:Game,defeated_player_id:int):
-    winner_player_id=game.check_command_other_player(defeated_player_id)
-    winner_identity=game.check_player_identity_by_id(winner_player_id)
-    # defeat_identity=game.check_player_identity_by_id(defeated_player_id)
-    winned_deck_id,winned_deck_name=game.get_player_deck_info(winner_player_id)
-    winner={
-        "user_id": winner_player_id,
-        "user_result":"win",
-        "deck": {
-            "deck_id": winned_deck_id,
-            "deck_name": winned_deck_name
-        }}
-    defeated_deck_id,defeated_deck_name=game.get_player_deck_info(defeated_player_id)
-    loser={
-        "user_id": defeated_player_id,
-        "user_result":"lose",
-        "deck": {
-            "deck_id": defeated_deck_id,
-            "deck_name": defeated_deck_name
-        }}
-    if winner_identity==1:
-        user_1=winner
-        user_2=loser
+    if defeated_deck_id is not None:
+        winner_player_id=game.check_command_other_player(defeated_player_id)
+        winner_identity=game.check_player_identity_by_id(winner_player_id)
+        winned_deck_id,winned_deck_name=game.get_player_deck_info(winner_player_id)
+        winner={
+            "user_id": winner_player_id,
+            "user_result":"win",
+            "deck": {
+                "deck_id": winned_deck_id,
+                "deck_name": winned_deck_name}}
+        defeated_deck_id,defeated_deck_name=game.get_player_deck_info(defeated_player_id)
+        loser={
+            "user_id": defeated_player_id,
+            "user_result":"lose",
+            "deck": {
+                "deck_id": defeated_deck_id,
+                "deck_name": defeated_deck_name}}
+        if winner_identity==1:
+            user_1=winner
+            user_2=loser
+        else:
+            user_1=loser
+            user_2=winner
+        user_list=[user_1,user_2]
+        
+        res=game_flow.GameEndResponse(room_id=game.room_id,user=user_list)
     else:
-        user_1=loser
-        user_2=winner
-    user_list=[user_1,user_2]
-    
-    res=game_flow.GameEndResponse(room_id=game.room_id,user=user_list)
+        turn_player_id=game.get_turn_player_id()
+        turn_player_identity=game.check_player_identity_by_id(turn_player_id)
+        turn_player_deck_id,turn_player_deck_name=game.get_player_deck_info(turn_player_id)
+        other_player_id=game.check_command_other_player(turn_player_id) 
+        other_player_deck_id,other_player_deck_name=game.get_player_deck_info(other_player_id)
+        user_1={
+            "user_id": turn_player_id,
+            "user_result":"draw",
+            "deck": {
+                "deck_id": turn_player_deck_id,
+                "deck_name": turn_player_deck_name}}
+        user_2={
+            "user_id": other_player_id,
+            "user_result":"draw",
+            "deck": {
+                "deck_id": other_player_deck_id,
+                "deck_name": other_player_deck_name}}
+        if turn_player_identity==2:
+            user_1,user_2=user_2,user_1
+        users=[user_1,user_2]
+        res=game_flow.GameEndResponse(room_id=game.room_id,user=users)
     await game.send_data_to_room(res)
     
-    room_game.pop(game.room_id)
-    game.forced_game_end
+    global_registration.room_game.pop(game.room_id)

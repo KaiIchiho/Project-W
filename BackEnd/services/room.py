@@ -181,7 +181,7 @@ async def exit_room_by_id(user_id:int)->ExitRoomResponse:
         log=f"{user_name} がルーム{room_name}を退室しました"
         user_room.pop(user_id,None)
         print("Exit Room.")
-        game = room_game.pop(room_id, None)
+        game = room_game.get(room_id)
         if game:
             await game.forced_game_end()
             print("Game End.")

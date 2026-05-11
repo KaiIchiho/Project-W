@@ -34,6 +34,10 @@ function handleGameStart(data){
     // console.log(data)
 }
 
+function handleGameEnd(data){
+    
+}
+
 function handleDetermineDefeat(data){
     
 }
