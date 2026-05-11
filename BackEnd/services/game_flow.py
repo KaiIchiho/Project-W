@@ -166,7 +166,7 @@ async def auto_set_first_player(game:Game):
 
 async def end_game(game:Game,defeated_player_id:int):
     if defeated_player_id is not None:
-        winner_player_id=game.check_command_other_player(defeated_player_id)
+        winner_player_id=game.check_command_other_player(defeated_player_id).player_id
         winner_identity=game.check_player_identity_by_id(winner_player_id)
         winned_deck_id,winned_deck_name=game.get_player_deck_info(winner_player_id)
         winner={
