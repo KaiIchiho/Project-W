@@ -39,22 +39,26 @@ class Room():
         else:
             return False
         
-    def exit_by_id(self,player_id)->bool:
+    def exit_by_id(self,player_id):
         result=False
+        identity=-1
         if self.player_1 is not None:
             if self.player_1.player_id==player_id:
                 self.player_1=None
                 result=True
+                identity=1
         if self.player_2 is not None:
             if self.player_2.player_id==player_id:
                 self.player_2=None
                 result=True
+                identity=2
         if self.viewer is not None:
             if self.viewer.player_id==player_id:
                 self.viewer=None
                 result=True
-        return result
-    
+                identity=3
+        return result, identity
+
     def check_user_in_room(self,id)->bool:
         is_in_room=self.check_player_in_room(id) or self.check_viewer_in_room(id)
         return is_in_room

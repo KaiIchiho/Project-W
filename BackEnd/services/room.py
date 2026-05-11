@@ -173,11 +173,11 @@ async def exit_room_by_id(user_id:int)->ExitRoomResponse:
             log=f"在室中の {room_id} のルームが存在しません")
     
     # Result
-    result=room.exit_by_id(user_id)
+    result, identity=room.exit_by_id(user_id)
     user_name=player.name
     room_name=room.room_name
     log=None    
-    if result==True:
+    if result==True and identity in [1,2]:
         log=f"{user_name} がルーム{room_name}を退室しました"
         user_room.pop(user_id,None)
         print("Exit Room.")
