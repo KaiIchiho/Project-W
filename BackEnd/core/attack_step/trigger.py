@@ -23,7 +23,7 @@ class Trigger(AttackStep):
         
     async def trigger_check(self,game:"Game"):
         player_id=game.get_turn_player_id()
-        card_id,triggers=game.player_check_trigger(player_id)
+        card_id,triggers=await game.player_check_trigger(player_id)
         all_triggers=[{"type": trigger} for trigger in triggers]
         player_name=game.get_turn_player_name()
         triggers_str = ",".join(triggers)

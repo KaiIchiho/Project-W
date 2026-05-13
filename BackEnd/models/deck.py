@@ -1,12 +1,13 @@
 import random
 from models.base import GameObject
 from models.card import Card
-from typing import Optional,Callable
+from typing import Optional,Callable,Awaitable
 from db import deck_repo
+from config import setting_ingame
 
 class Deck(GameObject):
     MAX_CARDS_SIZE=50
-    on_deck_empty:Optional[Callable[[],None]]=None
+    on_deck_empty:Optional[Callable[[],Awaitable[None]]]=None
     
     def __init__(self, 
                  ori_owner_id:int,
@@ -23,9 +24,10 @@ class Deck(GameObject):
     def get_deck_name(self)->str:
         return self._deck_name
         
-    def init_deck_by_deck_id(self,deck_id:int)->bool:
+    def init_deck_by_deck_id(self,deck_id:int,deck_name:str)->bool:
         self._deck_id=deck_id
-        self._deck_name=deck_repo.read_deck_name_by_id(deck_id)
+        # self._deck_name=deck_repo.read_deck_name_by_id(deck_id)
+        self._deck_name=deck_name
         print(f"Log: init_deck_by_deck_id, ID: {self._deck_id}")
         card_info_list=deck_repo.read_cards_info_by_deck_id(self._deck_id)
         if not card_info_list:
@@ -59,13 +61,16 @@ class Deck(GameObject):
         random.shuffle(self.cards)
         print(f"{self.ori_owner_id}: shuffle")
         
-    def draw(self)->Card:
+    async def draw(self)->Card:
         print(f"{self.ori_owner_id} Draw")
         if len(self.cards)==0:
             return None
         
         card=self.cards.pop(0)
-        if len(self.cards)==0:
-            self.on_deck_empty()
+        if len(self.cards)<=setting_ingame.REFRESH_TRIGGER_REMAIN:
+            await self.on_deck_empty()
             
         return card
+    
+    def add_cards_by_list(self,card_list:list[Card]):
+        self.cards.extend(card_list)

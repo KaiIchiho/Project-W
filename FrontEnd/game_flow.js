@@ -70,6 +70,9 @@ function handleLevelUp(data){
     setComponentHidden("level_up",false)
 }
 
+function handleRefresh(data){
+}
+
 function handleStandPhaseAllStand(data){
     
 }

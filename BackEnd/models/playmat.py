@@ -50,7 +50,7 @@ class Playmat(GameObject):
     
     def set_init_deck(self,init_deck:Deck):
         self.deck=init_deck
-        self.deck.on_deck_empty=self.reset_deck
+        # self.deck.on_deck_empty=self.reset_deck
     
     def get_deck_cards_info_by_list(self,card_info_list:list[str])->list[dict]:
         if self.deck:
@@ -140,9 +140,18 @@ class Playmat(GameObject):
         if self.deck:
             self.deck.shuffle()
     
-    def reset_deck(self):
-        if self.deck is None:
-            return
+    def refresh(self)->bool:
+        if not self.deck or self.waiting_room is None:
+            return False
+        self.deck.add_cards_by_list(self.waiting_room)
+        self.waiting_room.clear()
+        self.deck.shuffle()
+        return True
+            
+    
+    # def reset_deck(self):
+    #     if self.deck is None:
+    #         return
     
     def get_all_stage_status(self)->list:
         status_list=[]
@@ -312,8 +321,8 @@ class Playmat(GameObject):
         self.remove_cx()
         self.climax=card
         
-    def flip_over_deck_one_card(self)->Card:
-        return self.deck.draw()
+    async def flip_over_deck_one_card(self)->Card:
+        return await self.deck.draw()
     
     def get_stage_card_owner_id(self,stage_index:int)->int:
         if 0<=stage_index<len(self.stage):

@@ -75,7 +75,7 @@ class Damage(AttackStep):
         soul_damage=self._calculate_damage(game,player_id)
         
         is_broken,revealed_card=\
-            game.player_check_damage(
+            await game.player_check_damage(
                 other_player_id,
                 soul_damage,
                 revealed_card_info)

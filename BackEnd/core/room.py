@@ -60,7 +60,9 @@ class Room():
         return result, identity
 
     def check_user_in_room(self,id)->bool:
-        is_in_room=self.check_player_in_room(id) or self.check_viewer_in_room(id)
+        _is_player = self.check_player_in_room(id)
+        _is_viewer = self.check_viewer_in_room(id)
+        is_in_room = _is_player or _is_viewer
         return is_in_room
     
     def check_player_in_room(self,id)->bool:
@@ -76,7 +78,7 @@ class Room():
     def check_viewer_in_room(self,id)->bool:
         is_in_room=False
         if self.viewer is not None:
-            if self.viewer.id==id:
+            if self.viewer.player_id==id:
                 is_in_room=True
         return is_in_room
     
@@ -95,3 +97,25 @@ class Room():
             return True
         else:
             return False
+        
+    def get_members_info(self)->list[dict]:
+        members_info:list[dict]=[]
+        if self.player_1 is not None:
+            members_info.append({
+                "user_id": self.player_1.player_id,
+                "user_name": self.player_1.name, 
+                "is_player": True,
+                "select_deck": self.player_1.get_deck_name()})
+        if self.player_2 is not None:
+            members_info.append({
+                "user_id": self.player_2.player_id,
+                "user_name": self.player_2.name, 
+                "is_player": True,
+                "select_deck": self.player_2.get_deck_name()})
+        if self.viewer is not None:
+            members_info.append({
+                "user_id": self.viewer.player_id,
+                "user_name": self.viewer.name, 
+                "is_player": False,
+                "select_deck": None})
+        return members_info

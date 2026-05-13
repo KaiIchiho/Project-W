@@ -64,7 +64,7 @@ class ClockPhase(Phase):
         success=True
         log=""
         for i in range(setting_ingame.CLOCK_DRAW):
-            card_id=game.player_draw(player_id)
+            card_id=await game.player_draw(player_id)
             if card_id==-1:
                 success=False
             cards.append({"card_id":card_id})

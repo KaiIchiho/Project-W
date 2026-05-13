@@ -124,6 +124,7 @@ event_method_dict={
     "on_phase_changed":"handleOnPhaseChanged",
     "shuffle":"handleShuffle",
     "level_up":"handleLevelUp",
+    "refresh":"handleRefresh",
     "stand_phase_all_stand":"handleStandPhaseAllStand",
     "draw_phase_draw":"handleDrawPhaseDraw",
     "clock_phase_clock":"handleClockPhaseClock",

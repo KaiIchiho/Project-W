@@ -62,6 +62,7 @@ class Game():
         if identity==1 or identity==2:
             player.handle_level_up=self.handle_level_up
             player.on_defeat=self.on_determine_defeat
+            player.on_refresh=self.on_player_refresh
         if identity==1:
             self.player_1=player
         if identity==2:
@@ -210,6 +211,10 @@ class Game():
             result=player.deck_shuffle()
         return result
     
+    async def on_player_refresh(self,player_id:int):
+        if self.phase:
+            await self.phase.on_refresh(self,player_id)
+    
     async def handle_action(self,action:dict,event:str,player_id:int):
         if self.check_is_full_players()==False:
             await self.send_message("Game Is Not Players Full !",None,None)
@@ -224,12 +229,12 @@ class Game():
         if self.phase:
             await self.phase.start_level_up(self,player_id)
     
-    def draw_initial_hand(self,player_id:int)->bool:
+    async def draw_initial_hand(self,player_id:int)->bool:
         player=self._get_ingame_player_by_id(player_id)
         if not player:
             return False
         for i in range(setting_ingame.INITIAL_HAND):
-            player.draw()
+            await player.draw()
         return True
     
     def player_all_stage_rest_stand(self,player_id:int)->bool:
@@ -240,23 +245,23 @@ class Game():
         player.all_stage_rest_stand()
         return True
     
-    def player_draw(self,player_id:int)->int:
+    async def player_draw(self,player_id:int)->int:
         identity=self.check_player_identity_by_id(player_id)
         card_id=-1
         if identity==1:
-            card_id=self.player_1.draw()
+            card_id=await self.player_1.draw()
         elif identity==2:
-            card_id=self.player_2.draw()
+            card_id=await self.player_2.draw()
         return card_id
     
-    def turn_player_draw(self)->int:
+    async def turn_player_draw(self)->int:
         player=self.turn_player
         card_id=-1
         if player:
-            card_id=player.draw()
+            card_id=await player.draw()
         return card_id
     
-    def swap_hand_cards(self,player_id:int,hand_index_list:list[int]):
+    async def swap_hand_cards(self,player_id:int,hand_index_list:list[int]):
         player:Player=self.check_command_player(player_id)
         identity=self.check_player_identity(player)
         success=False
@@ -264,7 +269,7 @@ class Game():
             if identity==2 and not self.player_1.get_is_swap_hand():
                 success=False
             else:
-                success=player.swap_hand_cards(hand_index_list)
+                success=await player.swap_hand_cards(hand_index_list)
         
         return success,identity
     
@@ -451,24 +456,24 @@ class Game():
         player=self.check_command_player(player_id)
         return player.check_has_stage_card(stage_index)
     
-    def player_check_trigger(self,player_id:int):
+    async def player_check_trigger(self,player_id:int):
         player=self.check_command_player(player_id)
-        checked_card=player.flip_over_deck_one_card()
+        checked_card=await player.flip_over_deck_one_card()
         card_id=checked_card.card_id
         triggers=checked_card.get_triggers()
-        player.set_card_to_resolution(checked_card)
+        await player.set_card_to_resolution(checked_card)
         return card_id,triggers
     
-    def player_check_damage(self,player_id:int,times:int,info_list:list):
+    async def player_check_damage(self,player_id:int,times:int,info_list:list):
         player=self.check_command_player(player_id)
         checked_card_info=[]
         is_broken=False
         for i in range(times):
-            checked_card=player.flip_over_deck_one_card()
+            checked_card=await player.flip_over_deck_one_card()
             card_info=checked_card.get_current_info_by_list(info_list)
             checked_card_info.append(card_info)
             card_type=checked_card.get_card_type()
-            player.set_card_to_resolution(checked_card)
+            await player.set_card_to_resolution(checked_card)
             if card_type==CardType.CX:
                 is_broken=True
                 break

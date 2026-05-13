@@ -17,5 +17,6 @@ class CardInfoRequest(WSRequestBase):
     
 class CardInfoResponse(WSResponseBase):
     event:str=event_type.CARD_INFO
+    card_id:int
     columns:dict
     

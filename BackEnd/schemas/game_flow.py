@@ -53,6 +53,9 @@ class OnPhaseChangedResponse(WSCommonResponseBase):
 class ShuffleResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.SHUFFLE
 
+class RefreshResponse(WSCommonResponseBase):
+    _DEFAULT_EVENT:str=event_type.REFRESH
+
 class LevelUpResponse(WSCommonResponseBase):
     _DEFAULT_EVENT:str=event_type.LEVEL_UP
 class LevelUpRequest(WSCommonRequestBase):

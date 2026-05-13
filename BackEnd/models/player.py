@@ -6,10 +6,12 @@ from core.card_type import CardType
 from config import setting_ingame
 from models.playmat import StageStatus
 from typing import Callable,Awaitable
+from db import deck_repo
 
 class Player(GameObject):
     handle_level_up:Callable[[int],Awaitable[None]]=None
     on_defeat:Callable[[int],Awaitable[None]]=None
+    on_refresh:Callable[[int],Awaitable[None]]=None
     
     FLAG_CALLBACK_REGISTRY:dict={
         "clock":"handle_level_up",
@@ -23,6 +25,7 @@ class Player(GameObject):
                  ):
         super().__init__(player_id)
         self._deck_id:int=-1
+        self._deck_name:str=""
         self.player_id=player_id
         self.name=name
         self.playmat=playmat
@@ -32,6 +35,21 @@ class Player(GameObject):
     
     def set_deck_id(self,deck_id:int)->bool:
         self._deck_id=deck_id
+        self._deck_name=deck_repo.read_deck_name_by_id(deck_id)
+        return True
+    def get_deck_id(self)->int:
+        return self._deck_id
+    def get_deck_name(self)->str:
+        return self._deck_name
+    
+    def init_playmat(self)->bool:
+        self.playmat=Playmat(self.ori_owner_id)
+        deck=Deck(self.ori_owner_id)
+        deck.on_deck_empty=self.on_deck_empty
+        if not deck.init_deck_by_deck_id(self._deck_id,self._deck_name):
+            return False
+        self.playmat.set_init_deck(deck)
+        # self.playmat.deck_shuffle()
         return True
     
     def get_deck_cards_info_by_list(self,card_info_list:list[str])->list[dict]:
@@ -103,16 +121,7 @@ class Player(GameObject):
             return False
         else:
             return True
-    
-    def init_playmat(self)->bool:
-        self.playmat=Playmat(self.ori_owner_id)
-        deck=Deck(self.ori_owner_id)
-        if not deck.init_deck_by_deck_id(self._deck_id):
-            return False
-        self.playmat.set_init_deck(deck)
-        # self.playmat.deck_shuffle()
-        return True
-    
+        
     def deck_shuffle(self)->bool:
         if self.playmat:
             self.playmat.deck_shuffle()
@@ -120,21 +129,43 @@ class Player(GameObject):
         else:
             return False
     
-    def draw(self)->int:
+    # デッキからカードを引いて手札に加える
+    async def draw(self)->int:
         print(f"{self.name} Draw")
-        draw_card=self.playmat.deck.draw()
+        draw_card=await self.playmat.deck.draw()
         self.hand.append(draw_card)
         return draw_card.card_id
         
-    def init_hand(self)->bool:
+    async def on_deck_empty(self):
+        print("Deck is Empty")
+        result=self.refresh()
+        if not result:
+            print(f"{self.player_id} refresh failed")
+            return
+        await self.rule_damage(setting_ingame.REFRESH_RULE_DAMAGE)
+        if self.on_refresh:
+            await self.on_refresh(self.player_id)
+    
+    def refresh(self)->bool:
+        if not self.playmat:
+            raise ValueError(f"{self.player_id} No Playmat")
+        return self.playmat.refresh()
+    
+    async def rule_damage(self,damage:int):
+        for _ in range(damage):
+            card=await self.flip_over_deck_one_card()
+            await self.set_card_to_clock(card)
+    
+    async def init_hand(self)->bool:
         now_hand_lenth=len(self.hand)
         if now_hand_lenth>=5:
             return False
         for i in range(now_hand_lenth,5):
-            self.draw()
+            await self.draw()
         return True
-        
-    def swap_hand_cards(self,hand_index_list:list[int])->bool:
+    
+    # 選択した手札を控え室に置いて、残りの手札を引き直す
+    async def swap_hand_cards(self,hand_index_list:list[int])->bool:
         if self._is_swap_hand:
             return False
         if not hand_index_list:
@@ -155,7 +186,7 @@ class Player(GameObject):
                 self.hand.remove(waiting_card)
         
         self._set_cards_to_waiting_room(waiting_cards)
-        self.init_hand()
+        await self.init_hand()
         self._is_swap_hand=True
         return True
     
@@ -183,6 +214,9 @@ class Player(GameObject):
             card=self.hand.pop(index)
         return card
     
+    # カードをクロック置き場に置く
+    # レベルアップしたらレベルアップの処理も行う
+    # レベルアップかどうかを返す
     async def set_card_to_clock(
         self,card:Card,
         clock_set_callback:Callable[[int],Awaitable[None]]=None,
@@ -223,15 +257,16 @@ class Player(GameObject):
         else:
             raise ValueError("Hand Index Over the Range")
         
-    def flip_over_deck(self,times:int)->list[Card]:
+    async def flip_over_deck(self,times:int)->list[Card]:
         cards:list[Card]=[]
         for one_time in times:
-            cards.append(self.flip_over_deck_one_card())
+            cards.append(await self.flip_over_deck_one_card())
         return cards
-        
-    def flip_over_deck_one_card(self)->Card:
+    
+    # デッキの一番上のカードをめくる
+    async def flip_over_deck_one_card(self)->Card:
         if self.playmat:
-            return self.playmat.flip_over_deck_one_card()
+            return await self.playmat.flip_over_deck_one_card()
         else:
             raise ValueError(f"{self.player_id} No Playmat")
     
@@ -364,7 +399,8 @@ class Player(GameObject):
             return self.playmat.stage_to_waiting_room(stage_index)
         else:
             raise ValueError(f"{self.player_id} No Playmat")
-        
+    
+    # ゲーム進行中のプレイヤーのデッキの情報を取得する
     def get_deck_info(self):
         if self.playmat:
             return self.playmat.get_deck_info()

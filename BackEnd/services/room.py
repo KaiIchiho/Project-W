@@ -96,6 +96,7 @@ def enter_room(user_id:int,req:EnterRoomRequest)->EnterRoomResponse:
             success=False,
             user_is_player=req.user_is_player,
             log=f"{room_id}のルームが存在しません")
+    others_info=room.get_members_info()
     # Check If User is In Target Room
     if room.check_user_in_room(user_id)==True:
         return EnterRoomResponse(
@@ -114,10 +115,8 @@ def enter_room(user_id:int,req:EnterRoomRequest)->EnterRoomResponse:
             log=f"ルームID{room_id}は間違っています")
     
     # Enter Room
-    result=None
     user_name=player.name
     room_name=room.room_name
-    log=None
     if is_player:
         result=room.entered_as_player(player)
     else:
@@ -127,15 +126,21 @@ def enter_room(user_id:int,req:EnterRoomRequest)->EnterRoomResponse:
     if result==True:
         user_room[user_id]=room_id
         log=f"{user_name} がルーム{room_name}に入室しました"
+        return EnterRoomResponse(
+                room_id=room_id,
+                user_id=user_id,
+                success=result,
+                user_is_player=req.user_is_player,
+                log=log,
+                others=others_info)
     else:
         log=f"{user_name} がルーム{room_name}に入室できませんでした"
-        
-    return EnterRoomResponse(
-            room_id=room_id,
-            user_id=user_id,
-            success=result,
-            user_is_player=req.user_is_player,
-            log=log)
+        return EnterRoomResponse(
+                room_id=room_id,
+                user_id=user_id,
+                success=result,
+                user_is_player=req.user_is_player,
+                log=log)
     
 async def eixt_room(req:ExitRoomRequest):
     return await exit_room_by_id(req.user_id)

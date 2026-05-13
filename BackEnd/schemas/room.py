@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 from schemas.object import UserData
 from schemas.base import ResponseBase,WSRequestBase,WSResponseBase
 from schemas import event_type
@@ -21,6 +21,14 @@ class EnterRoomResponse(WSResponseBase):
     room_id:int
     user_id:int
     user_is_player:bool
+    others:list[dict]=Field(
+        default_factory=\
+            lambda:[{
+                "user_id": -1,
+                "user_name": "", 
+                "is_player": False,
+                "select_deck": ""}\
+                    for _ in range(2)])
     
 class ExitRoomRequest(WSRequestBase):
     event:str=event_type.EXIT_ROOM

@@ -13,6 +13,7 @@ CARD_INFO="card_info"
 
 SHUFFLE="shuffle"
 LEVEL_UP="level_up"
+REFRESH="refresh"
 
 NEXT_PHASE="next_phase"
 NEXT_TURN="next_turn"

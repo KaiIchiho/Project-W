@@ -23,7 +23,7 @@ class DrawPhase(Phase):
     async def draw_drap_phase_hand(self,game:"Game"):
         success=False
         log=""
-        card_id=game.turn_player_draw()
+        card_id=await game.turn_player_draw()
         player_id=game.get_turn_player_id()
         player_name=game.get_turn_player_name()
         if card_id!=-1:

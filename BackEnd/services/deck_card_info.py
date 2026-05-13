@@ -21,6 +21,7 @@ def card_info(req:CardInfoRequest)->CardInfoResponse:
     res=CardInfoResponse(
         success=True,
         columns=result,
+        card_id=req.card_id,
         log="カード情報の取得が成功しました")
     return res
     

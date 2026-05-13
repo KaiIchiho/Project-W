@@ -136,3 +136,12 @@ class Phase(StateMachine):
         await game.send_data_to_room(res)
         await game.forced_game_end(defeated_player_id)
         await self._waiting_event()
+        
+    async def on_refresh(self,game:"Game",player_id:int):
+        print("Log: on_refresh")
+        common=DataReader.get_common_data(
+            game,True,
+            f"{game.get_player_name_by_id(player_id)}はリフレッシュを行います",
+            player_id)
+        res=game_flow.RefreshResponse(common=common)
+        await game.send_data_to_room(res)
